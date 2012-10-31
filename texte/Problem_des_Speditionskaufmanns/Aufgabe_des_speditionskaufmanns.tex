@@ -1,0 +1,91 @@
+\documentclass{article}
+
+\title{Das Problem des Speditionskaufmanns}
+\author{Alexander Haritonov}
+
+
+\usepackage[utf8]{inputenc}
+%\usepackage{ngerman}
+\usepackage{enumerate}
+\usepackage{eurosym}
+\usepackage{amssymb}
+
+
+\begin{document}
+\maketitle
+
+In diesem Artikel wird unter dem Problem des Speditionskaufmanns das Problem der Zuweisung der Aufträge den einzelnen Fahrzeugen verstanden.
+In der Praxis liegen die Aufträge nicht alle auf einmal vor, sondern kommen laufend rein und sind jeweils mit einem Verfallszeitpunkt verbunden.
+Man hat also zu jedem Zeitpunkt einige Fahrzeuge die Ihre Routen fahren und einen Pool der Aufträge, die auf eine Zuweisung warten. 
+Wird ein Auftrag einem Fahrzeug zugewiesen, ändert sich die geplante Route des Fahrzeugs und wird klar wie hoch die Selbstkosten (sebestoimost') des Auftrags für den zugewiesenen Fahrer sind, denn für die Berechnung der wirklichen Selbstkosten die gesamte Tour vom Home-Station bis zurück zu der Home-Station und nicht nur die Auftragsroute wichtig sind. Allerdings erst wenn die Selbstkosten bekannt sind, kann auch der Gewinn für den Speditionskaufmann berechnet werden.
+
+In der Praxis ist ein Speditionskaufmann unter Druck jeden Auftrag, der reinkommt, sofort anzunehmen oder abzuweisen. Eine innovative Bisness-Idee besteht darin, die für die aktuelle Situation der Fahrzeug-Flotte ungünstige Aufträge nicht abzuweisen, sondern zunächst in einem Pool abzulegen, in der Hoffnung später solche Aufträge zu Touren verketten zu können, die für einen Fahrer günstig sind, weil sie fast einen geschlossenen Kreis bilden, sodass der Aufwand für die Heimreise entfällt. (Idee von E. Turok). An dieser Stelle wird eine Assistenz-Software für den SpeditionsKaufmann interessant, die Aufträge im Pool verwalten, solche Touren planen und möglichst optimale Touren vorschlagen kann. \\
+
+Im Folgenden wird eine formale Definition des Problems des Speditionskaufmanns versucht.
+\\
+
+Das Gewicht einer Ladung kann in Kilogramm und das Volumen in Liter gemessen werden, so können Kapazitäten der Fahrzeuge und Ladungsgrößen als 2-dimensionale Tupeln $(m, v) \in LG = M \times V \subset 
+\mathbb{N}\times\mathbb{N} $dargestellt werden.\\
+Eine Ladung kann als Paar $(t, lg) \in T \times LG$ dartgestellt werden, wo $t$ -Typ der Ladung, $lg$ - Ladungsgröße. Wahrscheinlich kann man zumindest in der Theorie davon ausgehen, dass es eine begrenzte Anzahl von Ladungstypen gibt. \\
+\\
+Eine Station eines Auftrags kann als Tupel\\
+$S = (type, l, (t_1, t_2), coord)$ definiert werden, wo:
+\begin{itemize}
+\item $type \in {0,1}$ angibt ob aufgeladen oder abgeladen wird
+\item $l \in T \times LG$ bezeichnet die Ladung
+\item $(t_1, t_2)$ der Zeitinterval in dem die Lade/Ablade operation erfolgen soll
+\item $coord$ die geographischen Koordinaten der station
+\end{itemize}
+
+\noindent Ein Auftrag $c \in C$ ($C$ - Menge der Au8fträge bzw. Contracts) ist dann etwa durch eine Auftragsroute bzw. Sequenz der Lade/Ablade - Stationen $S_1, S_2, \dots S_N$ gegeben, welche in meisten Fällen nur aus genau 2 Stationen $S_1=(1, l, (t_1,t_2), coord_1)$ und $S_2=(0, l, (t_1,t_2), coord_1)$ besteht.
+Zu jedem Auftrag ist ausserdem noch folgendes bekannt:
+\begin{itemize}
+\item $p: C \mapsto \mathbb{N}$ der geschätzte Preis (etwa in Euro-Cents)
+\item $sealed: C \mapsto \{0,1\}$ angibt ob Ladung weiterer Aufträge dazugeladen werden kann ($0$) oder das Fahrzeug plombiert bleiben soll ($1$).
+\item $decay: C \mapsto time$ Verfallszeitpunkt des Auftrages
+\end{itemize}
+
+
+Nun, auf der anderen Seite existiert die Flotte bzw. eine Menge der Fahrzeuge $F = {f_1, ..., f_n}$
+Für jedes Fahrzeug ist folgendes bekannt:
+\begin{itemize}
+\item $priceKm: F \mapsto \mathbb{N}$ (in Euro-Cents)
+\item $priceHourWaiting: F \mapsto \mathbb{N}$
+\item $cap: F \mapsto LG$ - die Kapazitätdes Fahrzeugs
+\item $allowance: F \times T \mapsto \{0,1\}$ eine Funktion welche definiert ob Ladungstyp $t \in T$ durch das Fahrzeug befördert werden kann.
+\item $home: F \mapsto Coord$ die home-station des Fahrzeugs
+\end{itemize}
+
+$S$ sei die Menge der Stationen aller Aufträge, zu jedem Zeitpunkt sind die Aufträge aufgeteilt in solche die zugeweisen sind und solche die noch im Pool liegen:  $C = C_{pool} \uplus C_{fin}$. 
+Dementspechend ist $S = S_{pool} \uplus \S_{fin}$.
+
+Zu jedem Zeitpunkt $t$ ist jedem Fahrzeug eine Route zugewiesen, dann kann die Fahrzeug-Zuweisung modelliert werden durch eine Funktion (Assignment)\\
+$A: S_{fin} \times TIME \mapsto F \times \mathbb{N}$.\\
+Hierbei verstehen wir unter $TIME$ die Menge der Zeitpunkte an denen sich das System ändert, bzw. die Menge der Zeitpunkte an denen im System ein Ereignis passiert, z.B. Zuweisung eines Auftrages an ein Fahrzeug oder eingabe eines neuen Auftrages.\\
+
+Für jeden Zeitpunkt $t \in TIME$ betrachten wir eine Funktion\\
+$A_t S_{fin,t} \mapsto F \times \mathbb{N}$, welche eine Situation bzw. Fahrzeugbelegung zum Zeitpunkt $t$ ausdrückt, indem jeder Station ein Fahrzeug und eine Nummer in der Sequenz der geplannten Route zugewiesen wird.
+\\
+Weiter, wir sagen dass durch eine (Zuweisungs)-Aktion, die einige Auftragen aus dem Pool an die Fahrzeuge zuweist, aus dem Situation $A_t$ die Situation $A_{t+1}$ entsteht.\\
+Für einzelne Fahrzeuge ist es sinnvoll die individuellen Belegungs-Fuktionen zu definieren,
+etwa für $f \in F$ gibt es eine Familie von Funktionen: $S_{fin,t} \mapsto \mathbb{N}$. \\
+
+Für einen festgelegten Zeitpunkt $t$ (z.B. für den aktuellen) betrachten wir die Umkehrfunktion $R_f:\mathbb{N} \mapsto S_{fin}$ und bezeichnen diese als die für Fahrzeug $f$ geplannte Route.
+Unter der für ein Fahrzeug geplannten Tour verstehen wir eine Funktion $tour_f: \mathbb{N} \mapsto S_{fin} \cup home(f)$, welche die Home-Station des Fahrzeugs als die letzte Station zu der Route hinzufügt.
+\\
+Gegeben eine Route oder eine Tour ist es möglich (wenn auch recht aufwendig, wegen Einsatz des Routers) deren SelbstKosten $cost(R_f)$ bzw. $cost(tour_f)$ zu berechnen.
+\\
+ \\
+Unter der endgültigen Route eines Fahrzeugs verstehen wir die Tour die dann wirklich gefahren wird, d.h für eing $k$ gilt $finTour_f = tour_f,t$ für alle $t > t_k$.
+Sei $C_{acc}$ die Menge der tatsächlich gefahrenen Aufträge.
+Das Problem des Speditionskaufmanns besteht darin, für jede Situation $A_t, t \in TIME$ eine optimale Zuweisungsaktion zu finden, sodass\\
+ $[\sum_{f \in F} cost(finTour_f)] / [\sum_{c \in C_{acc}} price(c)]$ minimal wird.\\
+ \\
+ Dies ist natürlich eine sehr ehrgeizige Formulierung, stattdessen wollen wir einen Online-Algorithmus entwickeln, welches die analoge Relation in jedem Zeitpunkt t lokal minimisiert:\\
+ \\
+ $[\sum_{f \in F} cost(tour_{t,f})] / [\sum_{c \in C_{t,fin}} price(c)]$
+\\
+\\
+
+
+\end{document}
