@@ -1,0 +1,63 @@
+<html>
+<head>
+<head>
+<meta http-equiv="content-type" content="text/html; charset=ISO-8859-1">
+
+</head>
+<title>Beispiel zum UMN MapServer</title>
+</head>
+<body font face="VERDANA,ARIAL,HELVETICA">
+<b>Beispiel: UMN MapServer und WMS</b><br>
+
+
+<br>
+ <a href="http://localhost/cgi-bin/mapserv.exe?map=C:/ms4w/Apache/htdocs/routing/routing.map">Ausgangszustand</a>
+
+<form method="GET" action="/cgi-bin/mapserv.exe">
+
+<table>
+<tr>
+
+<td valign="top">
+
+
+<input type="image" name="img" src="[img]" border="1">
+
+<br></td><td align="left" valign="top">
+
+
+
+<input type="hidden" name="map" value="[map]"> <!-- Pfad zur map-Datei -->
+<input type="hidden" name="imgext" value="[mapext]"> <!-- Kartenausdehnung -->
+
+
+<b>M&ouml;chten Sie "Browsen" oder eine Abfrage durchf&uuml;hren?</b><br>
+  <input type="radio" name="mode" value="browse" checked>Browse</input><br>
+  <input type="radio" name="mode" value="query">Abfrage</input><br><br><br>
+  Zoom<br>
+<select name="zoom" size="1">
+<option value="5">5X hinein</option>
+<option value="4">4X hinein</option>
+<option value="2">2X hinein</option>
+<option value="1.05">1.05</option>
+<option value="1" selected>nein</option>
+<option value="-1.05">1.05</option>
+<option value="-2">2X heraus</option>
+<option value="-4">4X heraus</option>
+<option value="-5">5X heraus</option>
+
+</select>
+</form><br><br>
+ [version]<br><br>Ma&szlig;stab:[scale]
+</td>
+</tr>
+<table>
+
+
+<br>
+
+
+
+</body>
+
+</html>
