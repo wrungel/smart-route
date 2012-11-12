@@ -72,7 +72,6 @@ CREATE TABLE IF NOT EXISTS ContractStation
  volumeUnits SMALLINT,                   -- Euro-Paletten
  timeFrom DATETIME,
  timeUntil DATETIME,
- routeStationId INT,                     -- corresponding station on a route of truckif exists, NULL otherwise
  address VARCHAR(300),                   -- complete adress
  zip     VARCHAR(10),                    -- Postleitzahl
  latitude  DECIMAL(8, 6),                -- geo coordinate
