@@ -1,10 +1,10 @@
-message-manager
+smart-route
 =====================
 
 What is it?
 -----------
 
-This is your project! It is a sample, deployable Maven 3 project to help you get your foot in the door developing with Java EE 6 on JBoss Enterprise Application Platform 6 or JBoss AS 7.1. 
+This is smart-route JEE6 project! It is a sample, deployable Maven 3 project to help you get your foot in the door developing with Java EE 6 on JBoss Enterprise Application Platform 6 or JBoss AS 7.1. 
 
 This project is setup to allow you to create a compliant Java EE 6 application using JSF 2.0, CDI 1.0, EJB 3.1, JPA 2.0 and Bean Validation 1.0. It includes a persistence unit and some sample persistence and transaction code to introduce you to database access in enterprise Java. 
 
@@ -43,13 +43,13 @@ _NOTE: The following build command assumes you have configured your Maven user s
 
         mvn clean package jboss-as:deploy
 
-4. This will deploy `target/message-manager.ear` to the running instance of the server.
+4. This will deploy `target/smart-route.ear` to the running instance of the server.
 
 
 Access the application 
 ---------------------
 
-The application will be running at the following URL <http://localhost:8080/message-manager/>.
+The application will be running at the following URL <http://localhost:8080/smart-route-web/>.
 
 1. Enter a name, email address, and Phone nubmer in the input field and click the _Register_ button.
 2. If the data entered is valid, the new member will be registered and added to the _Members_ display list.
@@ -119,5 +119,6 @@ If you want to debug the source code or look at the Javadocs of any library in t
 
         mvn dependency:sources
         mvn dependency:resolve -Dclassifier=javadoc
+
 
 
