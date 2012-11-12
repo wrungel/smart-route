@@ -1,0 +1,77 @@
+MAP
+  IMAGETYPE   JPEG
+  EXTENT       3428000 5787000 3444000 5800000
+  SIZE        600 600
+
+  IMAGECOLOR  255 255 255
+  SHAPEPATH   "C:/ms4w/Apache/htdocs/routing/data"
+SYMBOLSET    "C:/ms4w/Apache/htdocs/routing/symbols.sym"
+  FONTSET     "C:/ms4w/Apache/htdocs/routing/fonts/fonts.list"
+  
+  WEB
+  TEMPLATE "template.html"
+    IMAGEPATH "C:/ms4w/Apache/htdocs/tmp/"
+    IMAGEURL  "/tmp/"
+    
+    
+
+  END
+		
+  PROJECTION
+   "init=epsg:31467"
+  END
+
+
+  LAYER 
+    NAME "roads"
+    TYPE LINE
+   CONNECTION "user=postgres password=postgres dbname=routingdb host=localhost port=5432"
+   CONNECTIONTYPE postgis
+   DATA "the_geom from fridastreets"
+  
+   STATUS DEFAULT
+  #LABELITEM 'strname'
+  CLASSITEM    'strtypid'
+        CLASS
+        	  EXPRESSION '1'
+        	  STYLE
+        	  COLOR	255 0 0 
+        	  END 	
+        END
+      CLASS
+	       EXPRESSION '3'
+	       STYLE
+		     COLOR	255 255 0 
+	       END 	
+      END
+      CLASS
+	       EXPRESSION /./
+	       STYLE
+		     COLOR	200 200 200 
+	       END 	
+      END
+END
+
+
+
+
+  LAYER
+      NAME "path"
+      CONNECTION "user=postgres password=postgres dbname=routingdb host=localhost port=5432"
+      CONNECTIONTYPE postgis
+    STATUS ON
+      TYPE LINE
+			  
+      CLASS
+        NAME "path"
+	STYLE
+	SYMBOL 'circle'
+COLOR 255 0 0
+SIZE 8
+	END
+      END
+
+END
+ 
+
+END 

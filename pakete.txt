@@ -1,0 +1,33 @@
+git
+cmake
+cmake-data
+emacsen-common
+
+libmysqlclient-dev
+libmysqlclient16-dev
+
+libboost-date-time1.40.0 (1.40.0-4ubuntu4)
+libboost-date-time1.40.0-dev
+libboost-doc (1.40.0.1)
+libboost-filesystem1.40.0 (1.40.0-4ubuntu4)
+libboost-graph-dev (1.40.0.1)
+libboost-graph1.40-dev (1.40.0-4ubuntu4)
+libboost-graph1.40.0 (1.40.0-4ubuntu4)
+libboost-iostreams1.40.0 (1.40.0-4ubuntu4)
+libboost-math1.40.0 (1.40.0-4ubuntu4)
+libboost-regex-dev (1.40.0.1)
+libboost-regex1.40-dev (1.40.0-4ubuntu4)
+libboost-regex1.40.0 (1.40.0-4ubuntu4)
+libboost-serialization1.40-dev (1.40.0-4ubuntu4)
+libboost-serialization1.40.0 (1.40.0-4ubuntu4)
+libboost-system1.40.0 (1.40.0-4ubuntu4)
+libboost-test1.40-dev (1.40.0-4ubuntu4)
+libboost-test1.40.0 (1.40.0-4ubuntu4)
+libboost1.40-dev (1.40.0-4ubuntu4)
+libboost1.40-doc (1.40.0-4ubuntu4)
+libicu-dev
+
+http://packages.debian.org/stable/base/libstdc++5
+
+libmysqlcppconn4
+libmysqlcppconn-dev
