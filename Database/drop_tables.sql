@@ -4,9 +4,9 @@ DROP TABLE IF EXISTS FinalAssignment ;
 DROP TABLE IF EXISTS TentativeAssignment ;
 DROP TABLE IF EXISTS Suggestion ;
 
+DROP TABLE IF EXISTS Cargo;
 DROP TABLE IF EXISTS RouteStation ;
 DROP TABLE IF EXISTS Route ;
-
 DROP TABLE IF EXISTS ContractStation ;
 DROP TABLE IF EXISTS Contract ;
 
