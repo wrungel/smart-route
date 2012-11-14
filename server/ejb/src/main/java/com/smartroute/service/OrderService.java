@@ -33,6 +33,9 @@ public class OrderService {
     @Resource(mappedName="java:/scheduler/Queue")
     private Queue queue;
 
+    
+    
+    
     /**
      * Persists a new Order and sends JMS message to the queue for subsequent processing by scheduler.
      * The Scheduler will start processing in a new transaction.

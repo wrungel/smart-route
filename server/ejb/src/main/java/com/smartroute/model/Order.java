@@ -3,34 +3,27 @@ package com.smartroute.model;
 import org.hibernate.annotations.Type;
 import org.joda.time.DateTime;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 
 
 
 /**
- *     CREATE TABLE IF NOT EXISTS Contract -- Auftrag
-    (
-     loadType VARCHAR(50),
-     toBeAssigned BOOL,
-     sealed BOOL,                      -- soll Wagen plombiert werden
-     price DECIMAL(7, 2),              -- maximal: 99999,99 EUR :)
-     entireWeightKg INT,
-     entireVolumeM3 DECIMAL(5, 3),     -- in qubic meter
-     entireVolumeUnits SMALLINT,       -- Euro-Paletten
-     reception DATETIME,
-     decayTime DATETIME,               -- Verfallszeitpunkt des Auftrages
-     customersComment TEXT,
-     assignmentId INT,                 -- assignments id if assigned to a vehicle, NULL otherwise
-     id INT NOT NULL AUTO_INCREMENT PRIMARY KEY
-    );
-
- * @author frol
+ *  @author frol
  *
  */
 @Entity
@@ -51,6 +44,7 @@ public class Order {
     private boolean sealed;
     
     // TODO: use JScience
+    @NotNull
     private BigDecimal entireWeightKg;
     
     // TODO: use JScience
@@ -76,6 +70,11 @@ public class Order {
     @Size(max=500)
     private String customersComment;
     
+    @OneToMany(cascade=CascadeType.ALL, orphanRemoval=true, fetch=FetchType.EAGER, mappedBy="contract")
+    private List<ContractStation> stations = new ArrayList<>();
+    
+    @ManyToOne(optional=false)
+    private Customer customer;
     
     public Long getId() {
         return id;
@@ -105,4 +104,51 @@ public class Order {
         this.loadType = loadType;
     }
     
+    public List<ContractStation> getStations() {
+        return stations;
+    }
+    
+    public void setStations(List<ContractStation> stations) {
+        this.stations = stations;
+    }
+    
+    public boolean isToBeAssigned() {
+        return toBeAssigned;
+    }
+    
+    public void setToBeAssigned(boolean toBeAssigned) {
+        this.toBeAssigned = toBeAssigned;
+    }
+    
+    public boolean isSealed() {
+        return sealed;
+    }
+    
+    public void setSealed(boolean sealed) {
+        this.sealed = sealed;
+    }
+    
+    public Integer getEntireVolumeUnits() {
+        return entireVolumeUnits;
+    }
+    
+    public void setEntireVolumeUnits(Integer entireVolumeUnits) {
+        this.entireVolumeUnits = entireVolumeUnits;
+    }
+    
+    public BigDecimal getEntireWeightKg() {
+        return entireWeightKg;
+    }
+    
+    public void setEntireWeightKg(BigDecimal entireWeightKg) {
+        this.entireWeightKg = entireWeightKg;
+    }
+    
+    public BigDecimal getEntireVolumeM3() {
+        return entireVolumeM3;
+    }
+    
+    public void setEntireVolumeM3(BigDecimal entireVolumeM3) {
+        this.entireVolumeM3 = entireVolumeM3;
+    }
 }

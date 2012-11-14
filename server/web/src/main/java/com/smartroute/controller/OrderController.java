@@ -1,5 +1,7 @@
 package com.smartroute.controller;
 
+import com.smartroute.model.ConstractStationKind;
+import com.smartroute.model.ContractStation;
 import com.smartroute.model.Order;
 import com.smartroute.service.OrderService;
 import org.slf4j.Logger;
@@ -33,6 +35,16 @@ public class OrderController {
         return newOrder;
     }
 
+    
+    public void addStation() {
+        ContractStation station = new ContractStation();
+        station.setContract(newOrder);
+        newOrder.getStations().add(station);
+        logger.info("order has now " + newOrder.getStations().size() + " stations");
+    }
+    
+    
+
     public void create() throws Exception {
         logger.info("Creating order ...");
         orderService.create(newOrder);
@@ -45,6 +57,16 @@ public class OrderController {
     @PostConstruct
     public void initNewOrder() {
         newOrder = new Order();
+        
+        ContractStation sourceStation = new ContractStation();
+        sourceStation.setContract(newOrder);
+        newOrder.getStations().add(sourceStation);
+        sourceStation.setKind(ConstractStationKind.load);
+
+        ContractStation destinationStation = new ContractStation();
+        destinationStation.setContract(newOrder);
+        destinationStation.setKind(ConstractStationKind.unload);
+        newOrder.getStations().add(destinationStation);
     }
 
 }
