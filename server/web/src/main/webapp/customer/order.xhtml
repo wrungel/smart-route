@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	template="/WEB-INF/templates/default.xhtml">
+	
+	<ui:debug hotkey="x" />
+	
+	<ui:define name="content">
+		<h1>New Order</h1>
+
+		<h:form id="order">
+			<h2>New Order</h2>
+			<h:panelGrid columns="3" columnClasses="titleCell">
+				<h:outputLabel for="loadType" value="Load type:" />
+				<h:inputText id="loadType" value="#{newOrder.loadType}" />
+				<h:message for="loadType" errorClass="invalid" />
+
+				<h:outputLabel for="price" value="Price:" />
+				<h:inputText id="price" value="#{newOrder.price}" />
+				<h:message for="price" errorClass="invalid" />
+			</h:panelGrid>
+
+			<p>
+				<h:panelGrid columns="2">
+					<h:commandButton id="create" action="#{orderController.create}"
+						value="Create" styleClass="register" />
+					<h:messages styleClass="messages" errorClass="invalid"
+						infoClass="valid" warnClass="warning" globalOnly="true" />
+				</h:panelGrid>
+			</p>
+
+			<h2>Stations</h2>
+<!-- 			<h:panelGroup rendered="#{empty newOrder.stations}">
+				<em>No defined stations.</em>
+			</h:panelGroup>
+ -->			 
+			<h:dataTable var="_station" value="#{newOrder.stations}"
+				rendered="#{not empty stations}" styleClass="simpletablestyle">
+				<h:column>
+					<f:facet name="header">Number</f:facet>
+                #{_station.numberInSequence}
+            </h:column>
+<!-- 				<h:column>
+					<f:facet name="header">Kind</f:facet>
+                #{_station.kind}
+            </h:column>
+ -->				<h:column>
+					<f:facet name="header">Weight (kg)</f:facet>
+                #{_station.weightKg}
+            </h:column>
+				<h:column>
+					<f:facet name="header">volume (m3)</f:facet>
+                #{_station.volumeM3}
+            </h:column>
+			</h:dataTable>
+			<h:panelGroup>
+				<h:commandButton value="Add Station"
+					action="#{orderController.addStation}" />
+				<h:commandButton value="Submit" action="#{orderController.create}" />
+			</h:panelGroup>
+
+		</h:form>
+
+	</ui:define>
+</ui:composition>
