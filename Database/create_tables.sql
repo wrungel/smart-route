@@ -43,7 +43,6 @@ CREATE TABLE IF NOT EXISTS Truck
 
 CREATE TABLE IF NOT EXISTS Contract -- Auftrag  ..  aka 'Order' but cannot be callled so beacause of 'Order By' sql command
 (
- loadType VARCHAR(50),
  toBeAssigned BOOL,
  sealed BOOL,                                  -- soll Wagen plombiert werden
  price DECIMAL(7, 2),                          -- maximal: 99999,99 EUR :)
@@ -62,17 +61,15 @@ CREATE TABLE IF NOT EXISTS Contract -- Auftrag  ..  aka 'Order' but cannot be ca
 
 CREATE TABLE IF NOT EXISTS ContractStation
 (
+ id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+
  contractId INT NOT NULL,
  numberInSequence TINYINT NOT NULL,      -- the number inside of the itinerary for the contract
  INDEX(contractId, numberInSequence),
 
  kind ENUM('load', 'unload', 'driveBy'), -- driveBy not used, reserved for advanced features
- weightKg INT,                           -- kilogramm
- volumeM3 DECIMAL(5, 3),                 -- in qubic meter
- volumeUnits SMALLINT,                   -- Euro-Paletten
  timeFrom DATETIME,
  timeUntil DATETIME,
- routeStationId INT,                     -- corresponding station on a route of truckif exists, NULL otherwise
  address VARCHAR(300),                   -- complete adress
  zip     VARCHAR(10),                    -- Postleitzahl
  latitude  DECIMAL(8, 6),                -- geo coordinate
@@ -94,12 +91,13 @@ CREATE TABLE IF NOT EXISTS Route
 
 CREATE TABLE IF NOT EXISTS RouteStation
 (
+ id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+ 
  routeId INT NOT NULL,
  numberInSequence TINYINT NOT NULL,      -- the number inside of the itinerary
  INDEX(routeId, numberInSequence),
 
- contractId INT,                         -- corresponding contract (may be NULL f.e. if driver communicates he will be at some place on his own)
- contractStationSeqNum INT,              -- corresponding station of a contract (may be NULL f.e. if driver communicates he will be at some place on his own)
+ contractStation INT,                    -- corresponding contract station (may be NULL f.e. if driver communicates he will be at some place on his own)
 
  latitude  DECIMAL(8, 6),                -- geo coordinate
  longitude DECIMAL(8, 6),                -- geo coordinate
@@ -108,17 +106,30 @@ CREATE TABLE IF NOT EXISTS RouteStation
  timeFrom DATETIME,
  timeUntil DATETIME,
 
- weightKg INT,                           -- kilogramm, ammount to load/unload
- volumeM3 DECIMAL(5, 3),                 -- in qubic meter, ammount to load/unload
- volumeUnits SMALLINT,                   -- paletten, ammount to load/unload
-
  leftKg INT,                             -- kilogramm, capacity remaining
  leftM3 DECIMAL(5, 3),                   -- in qubic meter, capacity remaining
- leftUnits SMALLINT,                      -- paletten, capacity remaining
+ leftUnits SMALLINT,                     -- paletten, capacity remaining
 
- CONSTRAINT fk_Route FOREIGN KEY (routeId) REFERENCES Route(id) ON DELETE CASCADE ON UPDATE CASCADE
--- TODO: composed FOREIGN KEY (contractId, contractStationSeqNum)
+ CONSTRAINT fk_Route FOREIGN KEY (routeId) REFERENCES Route(id) ON DELETE CASCADE ON UPDATE CASCADE,
+
+ CONSTRAINT fk_contractStation FOREIGN KEY (contractStation) REFERENCES ContractStation(id) ON DELETE SET NULL ON UPDATE CASCADE
 ) ENGINE=InnoDB;
+
+CREATE TABLE IF NOT EXISTS Cargo
+(
+ weightKg INT,                           -- kilogramm
+ volumeM3 DECIMAL(5, 3),                 -- in qubic meter
+ volumeUnits SMALLINT,                   -- Euro-Paletten
+ cargoType VARCHAR(50),                  -- TODO: clear requirements, should it be INT or ENUM?
+ id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+ routeStationId INT,
+ contractStationId INT,
+
+CONSTRAINT fk_routeStationId FOREIGN KEY (routeStationId) REFERENCES RouteStation(id) ON DELETE SET NULL ON UPDATE CASCADE,
+CONSTRAINT fk_contractStationId FOREIGN KEY (contractStationId) REFERENCES ContractStation(id) ON DELETE SET NULL ON UPDATE CASCADE
+
+) ENGINE=InnoDB;
+
 
 -- a suggestion groups multiple TentativeAssignments (for a single truck?) which do not contradict each other
 CREATE TABLE IF NOT EXISTS Suggestion
@@ -155,5 +166,5 @@ CREATE TABLE IF NOT EXISTS FinalAssignment
  CONSTRAINT fk_OrderFin FOREIGN KEY (orderIdFin) REFERENCES Contract(id) ON DELETE CASCADE ON UPDATE CASCADE,
  CONSTRAINT fk_VehicleFin FOREIGN KEY (vehicleIdFin) REFERENCES Truck(id) ON DELETE CASCADE ON UPDATE CASCADE,
 
- CONSTRAINT fk_Tentative FOREIGN KEY (tentativeAssignmentId) REFERENCES TentativeAssignment(id) ON DELETE NO ACTION ON UPDATE NO ACTION
+ CONSTRAINT fk_Tentative FOREIGN KEY (tentativeAssignmentId) REFERENCES TentativeAssignment(id) ON DELETE SET NULL ON UPDATE SET NULL
 ) ENGINE=InnoDB;
