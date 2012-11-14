@@ -1,5 +1,7 @@
 package com.smartroute.service;
 
+import com.smartroute.model.Customer;
+
 import com.smartroute.model.Order;
 import org.slf4j.Logger;
 
@@ -16,6 +18,9 @@ import javax.jms.QueueSession;
 import javax.jms.Session;
 import javax.jms.TextMessage;
 import javax.persistence.EntityManager;
+import javax.persistence.TypedQuery;
+
+import java.util.List;
 
 
 @Stateless
@@ -33,8 +38,17 @@ public class OrderService {
     @Resource(mappedName="java:/scheduler/Queue")
     private Queue queue;
 
-    
-    
+    /**
+     * returns all orders for the given customer
+     * @param customer 
+     * @return all orders for the given customer
+     */
+    public List<Order> getCustomerOrders(Customer customer) {
+        TypedQuery<Order> query =
+                em.createQuery("SELECT o FROM Order o WHERE o.customer = :customer", Order.class);
+        query.setParameter("customer", customer);
+        return query.getResultList();
+    }
     
     /**
      * Persists a new Order and sends JMS message to the queue for subsequent processing by scheduler.

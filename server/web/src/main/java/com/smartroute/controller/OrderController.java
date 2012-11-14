@@ -7,17 +7,21 @@ import com.smartroute.service.OrderService;
 import org.slf4j.Logger;
 
 import javax.annotation.PostConstruct;
-import javax.enterprise.inject.Model;
+import javax.enterprise.context.SessionScoped;
 import javax.enterprise.inject.Produces;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
 
+import java.io.Serializable;
+import java.util.List;
 
 
-@Model
-public class OrderController {
+
+@SessionScoped
+@Named
+public class OrderController implements Serializable {
     @Inject
     private FacesContext facesContext;
 
@@ -30,9 +34,20 @@ public class OrderController {
     private Order newOrder;
 
     @Produces
+    @SessionScoped
     @Named
     public Order getNewOrder() {
         return newOrder;
+    }
+
+    
+    @Inject Authorization authorization;
+    
+    
+    @Produces
+    @Named
+    public List<Order> getOrders() {
+        return orderService.getCustomerOrders(authorization.getCurrent());
     }
 
     
@@ -57,6 +72,7 @@ public class OrderController {
     @PostConstruct
     public void initNewOrder() {
         newOrder = new Order();
+        newOrder.setCustomer(authorization.getCurrent());
         
         ContractStation sourceStation = new ContractStation();
         sourceStation.setContract(newOrder);

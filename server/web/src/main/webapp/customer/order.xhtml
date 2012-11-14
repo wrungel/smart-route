@@ -20,6 +20,7 @@
 				<h:outputLabel for="price" value="Price:" />
 				<h:inputText id="price" value="#{newOrder.price}" />
 				<h:message for="price" errorClass="invalid" />
+				
 			</h:panelGrid>
 
 			<p>
@@ -63,5 +64,36 @@
 
 		</h:form>
 
+	 <h2>Existing Orders</h2>
+      <h:panelGroup rendered="#{empty orders}">
+         <em>No registered orders.</em>
+      </h:panelGroup>
+      <h:dataTable var="_order" value="#{orders}" rendered="#{not empty orders}" styleClass="simpletablestyle">
+         <h:column>
+            <f:facet name="header">Id</f:facet>
+                #{_order.id}
+            </h:column>
+         <h:column>
+            <f:facet name="header">Entire weight (kg)</f:facet>
+                #{_order.entireWeightKg}
+            </h:column>
+         <h:column>
+            <f:facet name="header">Load type</f:facet>
+                #{_order.loadType}
+            </h:column>
+         <h:column>
+            <f:facet name="header">Sealed</f:facet>
+                #{_order.sealed}
+            </h:column>
+            <h:column>
+            <f:facet name="header"># stations</f:facet>
+                #{_order.stations.size()}
+            </h:column>
+            
+<!--          <f:facet name="footer">
+            REST URL for all customers: <a href="#{request.contextPath}/rest/customers">/rest/customers</a>
+         </f:facet>
+ -->      </h:dataTable>
+		
 	</ui:define>
 </ui:composition>

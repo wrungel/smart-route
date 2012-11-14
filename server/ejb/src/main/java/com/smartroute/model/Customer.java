@@ -24,64 +24,81 @@ import org.hibernate.validator.constraints.NotEmpty;
 @XmlRootElement
 @Table(name = "Customer", uniqueConstraints = @UniqueConstraint(columnNames = "email"))
 public class Customer implements Serializable {
-   /** Default value included to remove warning. Remove or modify at will. **/
-   private static final long serialVersionUID = 1L;
+    /** Default value included to remove warning. Remove or modify at will. **/
+    private static final long serialVersionUID = 1L;
 
-   @Id
-   @GeneratedValue(strategy=GenerationType.IDENTITY)
-   private Long id;
+    @Id
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
+    private Long id;
 
-   @NotNull
-   @Size(min = 1, max = 25)
-   @Pattern(regexp = "[A-Za-z ]*", message = "must contain only letters and spaces")
-   private String name;
+    @NotNull
+    @Size(min = 1, max = 25)
+    @Pattern(regexp = "[A-Za-z ]*", message = "must contain only letters and spaces")
+    private String name;
 
-   @NotNull
-   @NotEmpty
-   @Email
-   private String email;
 
-   @NotNull
-   @Size(min = 10, max = 24)
-   @Digits(fraction = 0, integer = 24)
-   @Column(name = "phone")
-   private String phoneNumber;
+    private String password;
 
-   public Long getId() {
-      return id;
-   }
+    @NotNull
+    @NotEmpty
+    @Email
+    private String email;
 
-   public void setId(Long id) {
-      this.id = id;
-   }
+    @NotNull
+    @Size(min = 10, max = 24)
+    @Digits(fraction = 0, integer = 24)
+    @Column(name = "phone")
+    private String phoneNumber;
 
-   public String getName() {
-      return name;
-   }
 
-   public void setName(String name) {
-      this.name = name;
-   }
 
-   public String getEmail() {
-      return email;
-   }
 
-   public void setEmail(String email) {
-      this.email = email;
-   }
+    public Long getId() {
+        return id;
+    }
 
-   public String getPhoneNumber() {
-      return phoneNumber;
-   }
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-   public void setPhoneNumber(String phoneNumber) {
-      this.phoneNumber = phoneNumber;
-   }
-   
-   
-   @Override
-	public String toString() {
-		return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
-	}
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+
+    public String getPassword() {
+        return password;
+    }
+
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
+
+
+    @Override
+    public String toString() {
+        return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
+    }
 }

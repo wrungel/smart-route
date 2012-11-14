@@ -10,12 +10,12 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.PrePersist;
 import javax.persistence.Table;
-import javax.validation.constraints.Max;
-import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
@@ -28,7 +28,7 @@ import java.util.List;
  */
 @Entity
 @Table(name="Contract")
-public class Order {
+public class Order implements Serializable {
     @Id
     @GeneratedValue
     private Long id;
@@ -45,7 +45,7 @@ public class Order {
     
     // TODO: use JScience
     @NotNull
-    private BigDecimal entireWeightKg;
+    private BigDecimal entireWeightKg = BigDecimal.ZERO;
     
     // TODO: use JScience
     private BigDecimal price;
@@ -75,6 +75,16 @@ public class Order {
     
     @ManyToOne(optional=false)
     private Customer customer;
+    
+    
+    public Customer getCustomer() {
+        return customer;
+    }
+    
+    public void setCustomer(Customer customer) {
+        this.customer = customer;
+    }
+    
     
     public Long getId() {
         return id;
@@ -151,4 +161,17 @@ public class Order {
     public void setEntireVolumeM3(BigDecimal entireVolumeM3) {
         this.entireVolumeM3 = entireVolumeM3;
     }
+    
+    
+    @PrePersist 
+    void onPrePersist() {
+        BigDecimal entireWeightKg = BigDecimal.ZERO;
+        for (ContractStation c: this.stations) {
+            entireWeightKg = entireWeightKg.add(c.getWeightKg());
+            
+        }
+        this.entireWeightKg = entireWeightKg;
+        
+    }
+    
 }

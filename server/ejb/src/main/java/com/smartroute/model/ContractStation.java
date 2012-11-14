@@ -21,7 +21,7 @@ public class ContractStation {
     private Order contract;
     
     private ConstractStationKind kind;
-    private BigDecimal weightKg;
+    private BigDecimal weightKg = BigDecimal.ZERO;
     private BigDecimal volumeM3;
     private Integer volumeUnits;
     

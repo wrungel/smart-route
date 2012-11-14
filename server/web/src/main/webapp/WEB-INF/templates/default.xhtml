@@ -20,7 +20,7 @@
 		</div>
 		<div id="aside">
 			<h:form>
-				<p>Customer</p>
+				<p>Customer <h:outputText value="#{auth.current.name}"/></p>
 				<ul>
 					<li><h:commandLink value="Logout" action="#{auth.logout}" />
 					</li>
