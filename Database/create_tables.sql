@@ -141,12 +141,14 @@ CONSTRAINT fk_contractStationId FOREIGN KEY (contractStationId) REFERENCES Contr
 ) ENGINE=InnoDB;
 
 
--- a suggestion groups multiple TentativeAssignments (for a single truck?) which do not contradict each other
+-- a suggestion groups multiple TentativeAssignments for a single truck which do not contradict each other
 CREATE TABLE IF NOT EXISTS Suggestion
 (
  id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
  schedulerStarted DATETIME,                       -- when the schudeluer was started
- subNumber TINYINT                                -- the number inside the output of a specific scheduler's run
+ subNumber TINYINT,                               -- the number inside the output of a specific scheduler's run
+ truckId INT,                                     -- one suggestion is for a single truck
+ CONSTRAINT fk_suggstion_truckId FOREIGN KEY (truckId) REFERENCES Truck(id) ON DELETE NO ACTION ON UPDATE CASCADE
 ) ENGINE=InnoDB;
 
 CREATE TABLE IF NOT EXISTS TentativeAssignment
