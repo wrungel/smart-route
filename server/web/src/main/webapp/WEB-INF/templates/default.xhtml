@@ -1,42 +1,42 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
-   xmlns:h="http://java.sun.com/jsf/html"
-   xmlns:ui="http://java.sun.com/jsf/facelets">
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
 <h:head>
-   <title>Java EE 6 Starter Application</title>
-   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-   <h:outputStylesheet name="css/screen.css" />
+	<title>Java EE 6 Starter Application</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<h:outputStylesheet name="css/screen.css" />
 </h:head>
 <h:body>
-   <div id="container">
-      <div class="dualbrand">
-         <img src="resources/gfx/dualbrand_logo.png" />
-      </div>
-      <div id="content">
-         <ui:insert name="content">
+	<div id="container">
+		<div class="dualbrand">
+			<img src="resources/gfx/dualbrand_logo.png" />
+		</div>
+		<div id="content">
+			<ui:insert name="content">
                     [Template content will be inserted here]
          </ui:insert>
-      </div>
-      <div id="aside">
-         <p>References</p>
-         <ul>
-            <li><a
-               href="http://www.openstreetmap.de/">Open street map</a></li>
-            <li><a href="http://xserver.ptvgroup.com/de/produkte/ptv-xserver/">Competition</a></li>
-         </ul>
-         <p>Learn more about Smart-Route.com</p>
-         <ul>
-            <li><a
-               href="http://smart-route.com/contact">Contact</a></li>
-            <li><a href="http://smart-route.com/impressum">Impressum</a></li>
-         </ul>            
-      </div>
-      <div id="footer">
-         <p>
-            Copyright © 2012 by smart-route.com. All rights reserved<br />
-         </p>
-      </div>
-   </div>
+		</div>
+		<div id="aside">
+			<h:form>
+				<p>Customer <h:outputText value="#{auth.current.name}"/></p>
+				<ul>
+					<li><h:commandLink value="Logout" action="#{auth.logout}" />
+					</li>
+				</ul>
+				<p>Learn more about Smart-Route.com</p>
+				<ul>
+					<li><a href="http://smart-route.com/contact">Contact</a></li>
+					<li><a href="http://smart-route.com/impressum">Impressum</a></li>
+				</ul>
+			</h:form>
+		</div>
+		<div id="footer">
+			<p>
+				Copyright © 2012 by smart-route.com. All rights reserved<br />
+			</p>
+		</div>
+	</div>
 </h:body>
 </html>

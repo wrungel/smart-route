@@ -1,13 +1,13 @@
 package com.smartroute.service;
 
-import java.util.logging.Logger;
+
+import com.smartroute.model.Customer;
+import org.slf4j.Logger;
 
 import javax.ejb.Stateless;
 import javax.enterprise.event.Event;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
-
-import com.smartroute.model.Customer;
 
 @Stateless
 public class CustomerRegistration {
