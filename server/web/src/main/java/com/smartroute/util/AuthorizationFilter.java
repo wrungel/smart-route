@@ -2,7 +2,6 @@ package com.smartroute.util;
 
 
 import com.smartroute.controller.Authorization;
-
 import org.slf4j.Logger;
 
 import javax.inject.Inject;
@@ -17,7 +16,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
-import java.util.Enumeration;
+import java.net.URLEncoder;
 
 @WebFilter("/user/*")
 public class AuthorizationFilter implements Filter {
@@ -28,20 +27,13 @@ public class AuthorizationFilter implements Filter {
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws ServletException, IOException {    
         HttpServletRequest req = (HttpServletRequest) request;
-        Enumeration attributeNames = req.getSession().getAttributeNames();
-       while (attributeNames.hasMoreElements()) {
-           Object nextElement = attributeNames.nextElement();
-           logger.info(nextElement.toString());
-       }
-//        Authorization auth = (Authorization) req.getSession().getAttribute("auth");
-
         if (auth != null && auth.isLoggedIn()) {
-            // User is logged in, so just continue request.
             chain.doFilter(request, response);
         } else {
-            // User is not logged in, so redirect to index.
+            String requestURI = req.getRequestURI();
             HttpServletResponse res = (HttpServletResponse) response;
-            res.sendRedirect(req.getContextPath() + "/login.html");
+            //res.sendRedirect(req.getContextPath() + "/login.jsf");
+            res.sendRedirect(req.getContextPath() + "/login.jsf?from=" + URLEncoder.encode(requestURI, "UTF-8"));
         }
     }
 

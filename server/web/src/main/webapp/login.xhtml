@@ -1,18 +1,19 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml"
-	xmlns:h="http://java.sun.com/jsf/html"
-	xmlns:f="http://java.sun.com/jsf/core"
-	xmlns:ui="http://java.sun.com/jsf/facelets"
-	xmlns:p="http://primefaces.org/ui">
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html"
+    template="/WEB-INF/templates/default.xhtml"
+>
+    <!-- http://stackoverflow.com/questions/3640635/how-to-dynamically-adding-fields-in-jsf
+ -->
+    <f:metadata>
+        <f:viewParam name="from" value="#{auth.from}" />
+    </f:metadata>
 
-<h:head>
-
-</h:head>
-<h:body>
-	<h:form>
-		<h:inputText value="#{auth.username}" />
-		<h:inputSecret value="#{auth.password}" />
-		<h:commandButton value="login" action="#{auth.login}" />
-	</h:form>
-</h:body>
-</html>
+    <ui:define name="content">
+        <h:form>
+            <h:inputText value="#{auth.username}" />
+            <h:inputSecret value="#{auth.password}" />
+            <h:commandButton value="login" action="#{auth.login}" />
+        </h:form>
+    </ui:define>
+</ui:composition>

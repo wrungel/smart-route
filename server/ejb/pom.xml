@@ -117,8 +117,9 @@
         <!-- Test scope dependencies -->
         <dependency>
             <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
+            <artifactId>junit-dep</artifactId>
             <scope>test</scope>
+            <version>4.10</version>
         </dependency>
 
         <dependency>
@@ -149,6 +150,23 @@
             <version>3.0.1</version>
         </dependency>
 
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-core</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.hamcrest</groupId>
+            <artifactId>hamcrest-library</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.hamcrest</groupId>
+            <artifactId>hamcrest-core</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+
         <!-- Optional, but highly recommended -->
         <!-- Arquillian allows you to test enterprise code such as EJBs and Transactional(JTA)
             JPA from JUnit/TestNG -->
@@ -161,6 +179,18 @@
         <dependency>
             <groupId>org.jboss.arquillian.protocol</groupId>
             <artifactId>arquillian-protocol-servlet</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-log4j12</artifactId>
             <scope>test</scope>
         </dependency>
 

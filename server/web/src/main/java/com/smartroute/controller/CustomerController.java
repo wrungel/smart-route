@@ -1,5 +1,7 @@
 package com.smartroute.controller;
 
+import com.smartroute.service.OrderService;
+
 import javax.annotation.PostConstruct;
 import javax.enterprise.inject.Model;
 import javax.enterprise.inject.Produces;
@@ -18,29 +20,33 @@ import com.smartroute.service.CustomerRegistration;
 @Model
 public class CustomerController {
 
-	@Inject
-	private FacesContext facesContext;
+    @Inject
+    private FacesContext facesContext;
 
-	@Inject
-	private CustomerRegistration customerRegistration;
+    @Inject
+    private CustomerRegistration customerRegistration;
 
-	private Customer newCustomer;
+    @Inject
+    private OrderService orderService;
 
-	@Produces
-	@Named
-	public Customer getNewCustomer() {
-		return newCustomer;
-	}
+    private Customer newCustomer;
 
-	public void register() throws Exception {
-		
-		customerRegistration.register(newCustomer);
-		facesContext.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Registered!", "Registration successful"));
-		initNewCustomer();
-	}
 
-	@PostConstruct
-	public void initNewCustomer() {
-		newCustomer = new Customer();
-	}
+    @Produces
+    @Named
+    public Customer getNewCustomer() {
+        return newCustomer;
+    }
+
+    public void register() throws Exception {
+
+        customerRegistration.register(newCustomer);
+        facesContext.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Registered!", "Registration successful"));
+        initNewCustomer();
+    }
+
+    @PostConstruct
+    public void initNewCustomer() {
+        newCustomer = new Customer();
+    }
 }

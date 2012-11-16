@@ -1,6 +1,6 @@
 package com.smartroute.service;
 
-import com.smartroute.model.Order;
+import com.smartroute.model.Contract;
 import org.slf4j.Logger;
 
 import javax.ejb.ActivationConfigProperty;
@@ -38,7 +38,7 @@ public class Scheduler implements MessageListener {
         try {
             orderId = Long.parseLong(((TextMessage)message).getText());
             log.info("orderId = " + orderId);
-            Order order = em.find(Order.class, orderId);
+            Contract order = em.find(Contract.class, orderId);
             log.info("processing Order " + order);
         } catch (JMSException e) {            
             e.printStackTrace();

@@ -1,5 +1,6 @@
 package com.smartroute.model;
 
+import com.smartroute.model.validation.ContractStationsValidatorDefault;
 import org.hibernate.annotations.Type;
 import org.joda.time.DateTime;
 
@@ -11,7 +12,6 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.PrePersist;
-import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
@@ -27,8 +27,7 @@ import java.util.List;
  *
  */
 @Entity
-@Table(name="Contract")
-public class Order implements Serializable {
+public class Contract implements Serializable {
     @Id
     @GeneratedValue
     private Long id;
@@ -37,6 +36,7 @@ public class Order implements Serializable {
     private String loadType;
     
     private boolean toBeAssigned;
+    
     
     /**
      * soll Wagen plombiert werden?
@@ -71,6 +71,7 @@ public class Order implements Serializable {
     private String customersComment;
     
     @OneToMany(cascade=CascadeType.ALL, orphanRemoval=true, fetch=FetchType.EAGER, mappedBy="contract")
+    @ContractStationsValidatorDefault
     private List<ContractStation> stations = new ArrayList<>();
     
     @ManyToOne(optional=false)
@@ -114,12 +115,9 @@ public class Order implements Serializable {
         this.loadType = loadType;
     }
     
+    
     public List<ContractStation> getStations() {
         return stations;
-    }
-    
-    public void setStations(List<ContractStation> stations) {
-        this.stations = stations;
     }
     
     public boolean isToBeAssigned() {
@@ -163,6 +161,14 @@ public class Order implements Serializable {
     }
     
     
+    public String getCustomersComment() {
+        return customersComment;
+    }
+    
+    public void setCustomersComment(String customersComment) {
+        this.customersComment = customersComment;
+    }
+    
     @PrePersist 
     void onPrePersist() {
         BigDecimal entireWeightKg = BigDecimal.ZERO;
@@ -171,7 +177,19 @@ public class Order implements Serializable {
             
         }
         this.entireWeightKg = entireWeightKg;
-        
     }
+
     
+
+    
+    /**
+     * ContractStation factory method: created ContractStation is automatically added to Contract
+     * @return
+     */
+    public ContractStation createStation() {
+       ContractStation station = new ContractStation();
+       station.setContract(this);
+       this.getStations().add(station);
+       return station;
+    }
 }

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html"
+    template="/WEB-INF/templates/default.xhtml"
+>
+    <!-- http://stackoverflow.com/questions/3640635/how-to-dynamically-adding-fields-in-jsf
+ -->
+    <ui:debug hotkey="x" />
+
+    <ui:define name="content">
+        <h2>Contracts</h2>
+        <h:dataTable var="c" value="#{contracts}" rendered="#{not empty contracts}" styleClass="simpletablestyle">
+            <h:column>
+                <f:facet name="header">Id</f:facet>
+                #{c.id}
+            </h:column>
+            <h:column>
+                <f:facet name="header">Load type</f:facet>
+                #{c.loadType}
+            </h:column>
+            <h:column>
+                <f:facet name="header">Price</f:facet>
+                #{c.price}
+            </h:column>
+            <h:column>
+                <f:facet name="header">Sealed</f:facet>
+                #{c.sealed}
+            </h:column>
+        </h:dataTable>
+        <h:outputLabel rendered="#{empty contracts}" value="No contracts defined" />
+    </ui:define>
+</ui:composition>

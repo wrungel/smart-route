@@ -1,7 +1,5 @@
 package com.smartroute.model;
 
-import org.hibernate.validator.util.Contracts;
-
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -18,10 +16,10 @@ public class ContractStation {
     private Long id;
     
     @ManyToOne(optional=false)
-    private Order contract;
+    private Contract contract;
     
-    private ConstractStationKind kind;
-    private BigDecimal weightKg = BigDecimal.ZERO;
+    private ContractStationKind kind;
+    private BigDecimal weightKg;
     private BigDecimal volumeM3;
     private Integer volumeUnits;
     
@@ -53,19 +51,28 @@ public class ContractStation {
     private BigDecimal longitude;
     
     
-    
-    
+    public boolean isLoad() {
+        return kind == ContractStationKind.load;
+    }
+
+    public void setLoad(boolean isLoad) {
+        if (isLoad)
+            kind = ContractStationKind.load;
+        else
+            kind = ContractStationKind.unload;
+    }
+
     public Long getId() {
         return id;
     }
     
 
     
-    public Order getContract() {
+    public Contract getContract() {
         return contract;
     }
     
-    public void setContract(Order contract) {
+    public void setContract(Contract contract) {
         this.contract = contract;
     }
     
@@ -79,11 +86,11 @@ public class ContractStation {
         this.numberInSequence = numberInSequence;
     }
         
-    public ConstractStationKind getKind() {
+    public ContractStationKind getKind() {
         return kind;
     }
     
-    public void setKind(ConstractStationKind kind) {
+    public void setKind(ContractStationKind kind) {
         this.kind = kind;
     }
     

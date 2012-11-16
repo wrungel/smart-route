@@ -2,7 +2,7 @@ package com.smartroute.service;
 
 import com.smartroute.model.Customer;
 
-import com.smartroute.model.Order;
+import com.smartroute.model.Contract;
 import org.slf4j.Logger;
 
 import javax.annotation.Resource;
@@ -43,9 +43,9 @@ public class OrderService {
      * @param customer 
      * @return all orders for the given customer
      */
-    public List<Order> getCustomerOrders(Customer customer) {
-        TypedQuery<Order> query =
-                em.createQuery("SELECT o FROM Order o WHERE o.customer = :customer", Order.class);
+    public List<Contract> getCustomerOrders(Customer customer) {
+        TypedQuery<Contract> query =
+                em.createQuery("SELECT o FROM Order o WHERE o.customer = :customer", Contract.class);
         query.setParameter("customer", customer);
         return query.getResultList();
     }
@@ -54,8 +54,9 @@ public class OrderService {
      * Persists a new Order and sends JMS message to the queue for subsequent processing by scheduler.
      * The Scheduler will start processing in a new transaction.
      */
-    public void create(Order order) {
+    public Contract create(Contract order) {
         log.info("Persisting order");
+        order = em.merge(order);
         em.persist(order);
         log.info("order persisted with id " + order.getId());
         QueueConnection connection = null;
@@ -65,7 +66,7 @@ public class OrderService {
             log.info("Creating connection");
             if (connectionFactory == null) {
                 log.error("connectionFactory is null!");
-                return;
+                return order;
             }
             QueueConnectionFactory qcf = (QueueConnectionFactory) connectionFactory;
             connection = qcf.createQueueConnection();
@@ -99,6 +100,6 @@ public class OrderService {
 
 
         log.info("creating order");
-
+        return order;
     }
 }

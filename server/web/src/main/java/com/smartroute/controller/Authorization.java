@@ -1,7 +1,6 @@
 package com.smartroute.controller;
 
 import com.smartroute.model.Customer;
-
 import com.smartroute.service.CustomerLoginService;
 import org.slf4j.Logger;
 
@@ -11,6 +10,7 @@ import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
 
+import java.io.IOException;
 import java.io.Serializable;
 
 @SessionScoped
@@ -21,6 +21,17 @@ public class Authorization implements Serializable {
     private String username;
 
     private Customer current;
+    
+    private String from;
+    
+    public String getFrom() {
+        return from;
+    }
+    
+    public void setFrom(String from) {
+        this.from = from;
+    }
+    
 
     @Inject CustomerLoginService customerLoginService;
 
@@ -47,15 +58,16 @@ public class Authorization implements Serializable {
         this.username = username;
     }
 
-    public String login() {
+    public void login() throws IOException {
         current = customerLoginService.login(username, password);
         if (current == null) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Unknown login, try again"));
-            return (username = password = null);
+            username = password = null;
+            return;
         } else {
             //Authorization auth = (Authorization) req.getSession().getAttribute("auth");
-
-            return "/customer/order.xhtml?faces-redirect=true";
+            FacesContext.getCurrentInstance().getExternalContext().redirect(from);
+            //return "/customer/order.xhtml?faces-redirect=true";
         }
     }
 
