@@ -1,77 +1,90 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets"
-    xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html" xmlns:p="http://primefaces.org/ui"
-    template="/WEB-INF/templates/default.xhtml"
->
-    <ui:define name="content">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	template="/WEB-INF/templates/default.xhtml">
+	<ui:define name="content">
 
-        <h2>Contract</h2>
+		<h2>Contract</h2>
 
-        <h:form>
-            <p:panelGrid columns="2">
-                <f:facet name="header">Contract data</f:facet>
+		<h:form>
+			<p:panelGrid columns="2">
+				<f:facet name="header">Contract data</f:facet>
 
-                <h:outputLabel for="price" value="Price: " />
-                <p:inputText id="price" value="#{contractEditor.contract.price}" label="Price" />
+				<h:outputLabel for="price" value="Price: " />
+				<p:inputText id="price" value="#{contractEditor.contract.price}"
+					label="Price" />
 
-                <h:outputLabel for="comment" value="Comment: " />
-                <p:inputTextarea id="comment" rows="6" cols="33" value="#{contractEditor.contract.customersComment}" />
+				<h:outputLabel for="comment" value="Comment: " />
+				<p:inputTextarea id="comment" rows="6" cols="33"
+					value="#{contractEditor.contract.customersComment}" />
 
-            </p:panelGrid>
+			</p:panelGrid>
 
-            <p:panelGrid columns="1">
-                <f:facet name="header">Stations</f:facet>
+			<f:facet name="header">Stations</f:facet>
 
-                <p:accordionPanel value="#{contractEditor.contract.stations}" var="station">
-                    <p:tab title="#{station.address}">
-                        <h:panelGrid columns="3" cellpadding="10">
-
-                            <h:outputText value="Address: " />
-                            <p:inputTextarea id="address" rows="6" cols="33" value="#{station.address}" />
-                            <h:message for="address" errorClass="invalid" />
-
-                            <h:outputText value="zip: " />
-                            <h:inputText id="zip" value="#{station.zip}" />
-                            <h:message for="zip" errorClass="invalid" />
-
-                            <h:outputText value="weightKg: " />
-                            <h:inputText id="weightKg" value="#{station.weightKg}" />
-                            <h:message for="weightKg" errorClass="invalid" />
-
-                            <h:outputText value="volumeM3: " />
-                            <h:inputText id="volumeM3" value="#{station.volumeM3}" />
-                            <h:message for="volumeM3" errorClass="invalid" />
-
-                            <h:outputText value="volumeUnits: " />
-                            <h:inputText id="volumeUnits" value="#{station.volumeUnits}" />
-                            <h:message for="volumeUnits" errorClass="invalid" />
+		
 
 
-                            <h:outputText value="Kind: " />
-                            <p:selectBooleanButton value="#{station.load}" onLabel="Load" offLabel="Unload" />
-                            <h:message for="kind" errorClass="invalid" />
+			<p:accordionPanel value="#{contractEditor.contract.stations}"
+				var="station">
 
-                            <h:outputText value="Time from: " />
-                            <p:calendar value="#{station.timeFrom}" pattern="MM/dd/yyyy HH:mm" />
-                            <h:message for="timeFrom" errorClass="invalid" />
+				<p:tab title="#{station.address}">
+					<p:panelGrid columns="3">
 
-                            <h:outputText value="Time until: " />
-                            <p:calendar value="#{station.timeUntil}" pattern="MM/dd/yyyy HH:mm" />
-                            <h:message for="timeUntil" errorClass="invalid" />
+						<h:outputText value="Address: " />
+						<p:inputTextarea id="address" rows="6" cols="33"
+							value="#{station.address}" />
+						<h:message for="address" errorClass="invalid" />
 
-                        </h:panelGrid>
+						<h:outputText value="zipk: " />
+						<h:inputText id="zip" value="#{station.zip}" />
+						<h:message for="zip" errorClass="invalid" />
 
-                    </p:tab>
-                </p:accordionPanel>
-            </p:panelGrid>
+						<h:outputText value="weightKg: " />
+						<h:inputText id="weightKg" value="#{station.weightKg}" />
+						<h:message for="weightKg" errorClass="invalid" />
 
-            <p:panelGrid columns="2">
+						<h:outputText value="volumeM3: " />
+						<h:inputText id="volumeM3" value="#{station.volumeM3}" />
+						<h:message for="volumeM3" errorClass="invalid" />
 
-                <h:commandButton value="Submit contract" action="#{contractEditor.saveContract}"/>
-                <h:commandButton value="Add station" action="#{contractEditor.addStation}" />
-            </p:panelGrid>
+						<h:outputText value="volumeUnits: " />
+						<h:inputText id="volumeUnits" value="#{station.volumeUnits}" />
+						<h:message for="volumeUnits" errorClass="invalid" />
 
-        </h:form>
 
-    </ui:define>
+						<h:outputText value="Kind: " />
+						<p:selectBooleanButton id="kind" value="#{station.load}"
+							onLabel="Load" offLabel="Unload" />
+						<h:message for="kind" errorClass="invalid" />
+
+						<h:outputText value="Time from: " />
+						<p:calendar id="timeFrom" value="#{station.timeFrom}"
+							pattern="MM/dd/yyyy HH:mm" />
+						<h:message for="timeFrom" errorClass="invalid" />
+
+						<h:outputText value="Time until: " />
+						<p:calendar id="timeUntil" value="#{station.timeUntil}"
+							pattern="MM/dd/yyyy HH:mm" />
+						<h:message for="timeUntil" errorClass="invalid" />
+					</p:panelGrid>
+
+
+				</p:tab>
+			</p:accordionPanel>
+
+			<p:panelGrid columns="2">
+
+				<h:commandButton value="Submit contract"
+					action="#{contractEditor.saveContract}" />
+				<h:commandButton value="Add station"
+					action="#{contractEditor.addStation}" />
+			</p:panelGrid>
+
+		</h:form>
+
+	</ui:define>
 </ui:composition>

@@ -1,7 +1,7 @@
 package com.smartroute.model;
 
 public enum ContractStationKind {
-    load,
-    unload,
-    driveBy
+    LOAD,
+    UNLOAD,
+    DRIVE_BY
 }

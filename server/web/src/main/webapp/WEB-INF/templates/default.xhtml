@@ -1,7 +1,6 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml"
-	xmlns:h="http://java.sun.com/jsf/html"
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:ui="http://java.sun.com/jsf/facelets">
 <h:head>
 	<title>Smart-route customer web application</title>
@@ -10,32 +9,16 @@
 </h:head>
 <h:body>
 	<div id="container">
-		<div class="dualbrand">
-			<img src="resources/gfx/dualbrand_logo.png" />
+		<div id="header">
+			<h:form>
+				<h:commandLink value="Logout" action="#{auth.logout}" />
+			</h:form>
 		</div>
+
 		<div id="content">
 			<ui:insert name="content">
                     [Template content will be inserted here]
          </ui:insert>
-		</div>
-		<div id="aside">
-			<h:form>
-				<p>Customer <h:outputText value="#{auth.current.name}"/></p>
-				<ul>
-					<li><h:commandLink value="Logout" action="#{auth.logout}" />
-					</li>
-                    <li><h:outputLink  value="contracts.xhtml">
-                    <h:outputText value="Contracts"/>
-                    </h:outputLink>
-                    </li>
-
-				</ul>
-				<p>Learn more about Smart-Route.com</p>
-				<ul>
-					<li><a href="http://smart-route.com/contact">Contact</a></li>
-					<li><a href="http://smart-route.com/impressum">Impressum</a></li>
-				</ul>
-			</h:form>
 		</div>
 		<div id="footer">
 			<p>

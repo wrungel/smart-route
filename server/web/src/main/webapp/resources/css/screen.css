@@ -15,7 +15,7 @@ body {
   border-left: 5px solid #8c8f91;
   border-right: 5px solid #8c8f91;
   border-bottom: 25px solid #8c8f91;
-  width: 865px; /* subtract 40px from banner width for padding */
+  width: 1100px; /* subtract 40px from banner width for padding */
   background: #FFFFFF;
   background-image: url(#{request.contextPath}/resources/gfx/headerbkg.png);
   background-repeat: repeat-x;
@@ -24,19 +24,14 @@ body {
 }
 #content {
   float: left;
-  width: 500px;
+  width: 1000px;
   margin: 20px;
 }
-#aside {
-  font-size: 0.9em;
-  width: 275px;
-  float: left;
-  margin: 20px 0px;
-  border: 1px solid #D5D5D5;
-  background: #F1F1F1;
-  background-image: url(#{request.contextPath}/resources/gfx/asidebkg.png);
-  background-repeat: repeat-x;
-  padding: 20px;
+#header {
+  clear: both;
+  text-align: right;
+  color: #666666;
+  font-size: 0.85em;
 }
 
 #aside ul {
@@ -83,12 +78,6 @@ h6 {
 span.invalid {
   padding-left: 3px;
   color: red;
-}
-form {
-  padding: 1em;
-  font: 80%/1 sans-serif;
-  width: 375px;
-  border: 1px solid #D5D5D5;
 }
 label {
   float: left;

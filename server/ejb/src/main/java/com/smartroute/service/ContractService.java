@@ -24,7 +24,7 @@ import java.util.List;
 
 
 @Stateless
-public class OrderService {
+public class ContractService {
     @Inject
     private Logger log;
 
@@ -45,7 +45,7 @@ public class OrderService {
      */
     public List<Contract> getCustomerOrders(Customer customer) {
         TypedQuery<Contract> query =
-                em.createQuery("SELECT o FROM Order o WHERE o.customer = :customer", Contract.class);
+                em.createQuery("SELECT o FROM Contract o WHERE o.customer = :customer", Contract.class);
         query.setParameter("customer", customer);
         return query.getResultList();
     }
@@ -54,11 +54,11 @@ public class OrderService {
      * Persists a new Order and sends JMS message to the queue for subsequent processing by scheduler.
      * The Scheduler will start processing in a new transaction.
      */
-    public Contract create(Contract order) {
-        log.info("Persisting order");
-        order = em.merge(order);
-        em.persist(order);
-        log.info("order persisted with id " + order.getId());
+    public Contract create(Contract contract) {
+        
+        contract = em.merge(contract);
+        em.persist(contract);
+        log.info("order persisted with id " + contract.getId());
         QueueConnection connection = null;
         QueueSession session = null;
         QueueSender messageSender = null;
@@ -66,22 +66,16 @@ public class OrderService {
             log.info("Creating connection");
             if (connectionFactory == null) {
                 log.error("connectionFactory is null!");
-                return order;
+                return contract;
             }
             QueueConnectionFactory qcf = (QueueConnectionFactory) connectionFactory;
             connection = qcf.createQueueConnection();
             
-            log.info("Creating session");
-            
             session = connection.createQueueSession(false, Session.AUTO_ACKNOWLEDGE);
-            log.info("Creating producer");
             messageSender = session.createSender(queue);
-            log.info("Creating text message");
             TextMessage message = session.createTextMessage();
-            message.setText(order.getId().toString());
-            log.info("sending message");
+            message.setText(contract.getId().toString());
             messageSender.send(message);
-            log.info("message sent");
 
         } catch (JMSException e) {
             log.error("JMSException", e);
@@ -100,6 +94,6 @@ public class OrderService {
 
 
         log.info("creating order");
-        return order;
+        return contract;
     }
 }

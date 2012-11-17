@@ -1,6 +1,6 @@
 package com.smartroute.controller;
 
-import com.smartroute.service.OrderService;
+import com.smartroute.service.ContractService;
 
 import javax.annotation.PostConstruct;
 import javax.enterprise.inject.Model;
@@ -27,7 +27,7 @@ public class CustomerController {
     private CustomerRegistration customerRegistration;
 
     @Inject
-    private OrderService orderService;
+    private ContractService orderService;
 
     private Customer newCustomer;
 

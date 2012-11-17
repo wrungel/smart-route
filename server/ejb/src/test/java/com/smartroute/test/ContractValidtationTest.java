@@ -51,9 +51,9 @@ public class ContractValidtationTest {
         Customer customer = Mockito.mock(Customer.class);
         contract.setCustomer(customer);
 
-        createStation(contract, "Amsterdam", ContractStationKind.load, new BigDecimal(12));
-        createStation(contract, "Hamburg", ContractStationKind.load, new BigDecimal(12));
-        createStation(contract, "Berlin", ContractStationKind.unload, new BigDecimal(12));
+        createStation(contract, "Amsterdam", ContractStationKind.LOAD, new BigDecimal(12));
+        createStation(contract, "Hamburg", ContractStationKind.LOAD, new BigDecimal(12));
+        createStation(contract, "Berlin", ContractStationKind.UNLOAD, new BigDecimal(12));
         
         Set<ConstraintViolation<Contract>> violations = validator.validate(contract, Default.class);
         
@@ -70,7 +70,6 @@ public class ContractValidtationTest {
         ContractStation station = contract.createStation();
         station.setAddress(address);
         station.setKind(kind);
-        station.setWeightKg(weightKg);
         return station;
     }
 

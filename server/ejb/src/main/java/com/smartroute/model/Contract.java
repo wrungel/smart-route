@@ -1,8 +1,9 @@
 package com.smartroute.model;
 
-import com.smartroute.model.validation.ContractStationsValidatorDefault;
-import org.hibernate.annotations.Type;
-import org.joda.time.DateTime;
+import java.io.Serializable;
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -11,14 +12,12 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.persistence.PrePersist;
+import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
-import java.io.Serializable;
-import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.List;
+import org.hibernate.annotations.Type;
+import org.joda.time.DateTime;
 
 
 
@@ -71,7 +70,7 @@ public class Contract implements Serializable {
     private String customersComment;
     
     @OneToMany(cascade=CascadeType.ALL, orphanRemoval=true, fetch=FetchType.EAGER, mappedBy="contract")
-    @ContractStationsValidatorDefault
+    @Valid
     private List<ContractStation> stations = new ArrayList<>();
     
     @ManyToOne(optional=false)
@@ -169,18 +168,7 @@ public class Contract implements Serializable {
         this.customersComment = customersComment;
     }
     
-    @PrePersist 
-    void onPrePersist() {
-        BigDecimal entireWeightKg = BigDecimal.ZERO;
-        for (ContractStation c: this.stations) {
-            entireWeightKg = entireWeightKg.add(c.getWeightKg());
-            
-        }
-        this.entireWeightKg = entireWeightKg;
-    }
-
-    
-
+   
     
     /**
      * ContractStation factory method: created ContractStation is automatically added to Contract

@@ -1,7 +1,7 @@
 package com.smartroute.controller;
 
 import com.smartroute.model.Contract;
-import com.smartroute.service.OrderService;
+import com.smartroute.service.ContractService;
 
 import javax.enterprise.context.RequestScoped;
 import javax.enterprise.inject.Produces;
@@ -14,7 +14,7 @@ import java.util.List;
 public class Orders {
     
     @Inject
-    OrderService orderService;
+    ContractService orderService;
     
     
     @Inject Authorization authorization;

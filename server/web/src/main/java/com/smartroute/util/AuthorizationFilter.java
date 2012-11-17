@@ -18,7 +18,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.net.URLEncoder;
 
-@WebFilter("/user/*")
+@WebFilter("/customer/*")
 public class AuthorizationFilter implements Filter {
 
     @Inject Logger logger;
@@ -33,7 +33,7 @@ public class AuthorizationFilter implements Filter {
             String requestURI = req.getRequestURI();
             HttpServletResponse res = (HttpServletResponse) response;
             //res.sendRedirect(req.getContextPath() + "/login.jsf");
-            res.sendRedirect(req.getContextPath() + "/login.jsf?from=" + URLEncoder.encode(requestURI, "UTF-8"));
+            res.sendRedirect(req.getContextPath() + "/login.xhtml?from=" + URLEncoder.encode(requestURI, "UTF-8"));
         }
     }
 
@@ -43,7 +43,7 @@ public class AuthorizationFilter implements Filter {
     }
 
     @Override
-    public void destroy() {
+    public void destroy() { 
     }
 
     

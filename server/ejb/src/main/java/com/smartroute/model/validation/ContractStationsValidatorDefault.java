@@ -20,7 +20,7 @@ import java.lang.annotation.Target;
 @Constraint(validatedBy = ContractStationsValidator.class)
 @Documented
 public @interface ContractStationsValidatorDefault {
-    String  message() default "weight not balanced";
+    String  message() default "Constract station invalid";
     Class<?>[] groups() default {};
     Class<? extends Payload>[] payload() default {};
 }

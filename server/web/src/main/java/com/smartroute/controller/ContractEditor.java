@@ -3,7 +3,7 @@ package com.smartroute.controller;
 
 import com.smartroute.model.ContractStation;
 import com.smartroute.model.Contract;
-import com.smartroute.service.OrderService;
+import com.smartroute.service.ContractService;
 
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.SessionScoped;
@@ -19,7 +19,7 @@ import java.math.BigDecimal;
 @Named
 public class ContractEditor  implements Serializable {
     @Inject private FacesContext facesContext;
-    @Inject private OrderService orderService;
+    @Inject private ContractService orderService;
     @Inject private Authorization authorization;
     private Contract contract;
 
@@ -30,14 +30,12 @@ public class ContractEditor  implements Serializable {
 
         ContractStation contractStation = new ContractStation();
         contractStation.setAddress("Moscow");
-        contractStation.setWeightKg(new BigDecimal(31));
         contractStation.setNumberInSequence(1);
         contractStation.setContract(contract);
         contract.getStations().add(contractStation);
 
         contractStation = new ContractStation();
         contractStation.setAddress("SPB");
-        contractStation.setWeightKg(new BigDecimal(11));
         contractStation.setNumberInSequence(2);
         contractStation.setContract(contract);
         contract.getStations().add(contractStation);
