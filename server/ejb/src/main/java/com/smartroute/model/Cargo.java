@@ -1,6 +1,5 @@
 package com.smartroute.model;
 
-// Generated 17.11.2012 01:35:47 by Hibernate Tools 3.4.0.CR1
 
 import static javax.persistence.GenerationType.IDENTITY;
 
@@ -18,19 +17,19 @@ public class Cargo implements java.io.Serializable {
 	@GeneratedValue(strategy = IDENTITY)
 	@Column(unique = true, nullable = false)
 	private Integer id;
-	
+
 	private Integer weightKg;
-	
+
 	@Column(precision = 5, scale = 3)	
 	private BigDecimal volumeM3;
-	
-	
+
+
 	private Short volumeUnits;
-	
+
 	@Column(name = "cargoType", length = 50)	
 	private String cargoType;
-	
-	
+
+
 	private Integer routeStationId;
 	private Integer contractStationId;
 

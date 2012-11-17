@@ -1,7 +1,5 @@
 package com.smartroute.model;
 
-// Generated 17.11.2012 01:35:47 by Hibernate Tools 3.4.0.CR1
-
 import static javax.persistence.GenerationType.IDENTITY;
 
 import java.util.Date;
@@ -30,6 +28,9 @@ public class Route implements java.io.Serializable {
 	private Suggestion suggestion;
 	
 	private Boolean isRealRoute;
+	
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(nullable = false, length = 19)		
 	private Date lastchange;
 
 	public Route() {
@@ -77,8 +78,6 @@ public class Route implements java.io.Serializable {
 		this.isRealRoute = isRealRoute;
 	}
 
-	@Temporal(TemporalType.TIMESTAMP)
-	@Column(name = "lastchange", nullable = false, length = 19)
 	public Date getLastchange() {
 		return this.lastchange;
 	}

@@ -1,7 +1,5 @@
 package com.smartroute.model;
 
-// Generated 17.11.2012 01:35:47 by Hibernate Tools 3.4.0.CR1
-
 import static javax.persistence.GenerationType.IDENTITY;
 
 import javax.persistence.Column;
@@ -9,11 +7,12 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToOne;
-import javax.persistence.Table;
+import javax.validation.constraints.Size;
+
+import org.hibernate.validator.constraints.Email;
 
 
 @Entity
-@Table(name = "driver", catalog = "LkwSchedulerDB")
 public class Driver implements java.io.Serializable {
 	@Id
 	@GeneratedValue(strategy = IDENTITY)
@@ -47,7 +46,7 @@ public class Driver implements java.io.Serializable {
 		return this.id;
 	}
 
-
+	@Size(min=2, max=150)
 	public String getName() {
 		return this.name;
 	}
@@ -56,6 +55,8 @@ public class Driver implements java.io.Serializable {
 		this.name = name;
 	}
 
+	@Email
+	@Size(max=100)
 	public String getEmail() {
 		return this.email;
 	}
@@ -68,7 +69,7 @@ public class Driver implements java.io.Serializable {
 		return this.account;
 	}
 
-	public void setAccountId(Account account) {
+	public void setAccount(Account account) {
 		this.account = account;
 	}
 

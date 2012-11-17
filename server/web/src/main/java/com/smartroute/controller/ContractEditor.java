@@ -1,9 +1,7 @@
 package com.smartroute.controller;
 
 
-import com.smartroute.model.ContractStation;
-import com.smartroute.model.Contract;
-import com.smartroute.service.ContractService;
+import java.io.Serializable;
 
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.SessionScoped;
@@ -12,8 +10,9 @@ import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
 
-import java.io.Serializable;
-import java.math.BigDecimal;
+import com.smartroute.model.Contract;
+import com.smartroute.model.ContractStation;
+import com.smartroute.service.ContractService;
 
 @SessionScoped
 @Named

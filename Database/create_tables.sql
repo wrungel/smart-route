@@ -34,8 +34,8 @@ CREATE TABLE IF NOT EXISTS Truck
 (
  driverId INT NOT NULL,                        -- foreign key
  isAvailable BOOL,                             -- whether it is available for scheduling
- vehicleModel VARCHAR(150),
- vehicleIdNummer VARCHAR(10),                  -- kfz-Nummer
+ truckModel VARCHAR(150),
+ truckIdNummer VARCHAR(10),                  -- kfz-Nummer
  capacityUnits SMALLINT,         				       -- Euro-Paletten
  capacityKg INT,
  capacityM3 DECIMAL(5, 3),    				         -- cubiq meter
@@ -62,7 +62,7 @@ CREATE TABLE IF NOT EXISTS Contract -- Auftrag  ..  aka 'Order' but cannot be ca
  reception DATETIME,
  decayTime DATETIME,                           -- Verfallszeitpunkt des Auftrages
  customersComment TEXT,
- assignmentId INT,                             -- assignments id if assigned to a vehicle, NULL otherwise
+ assignmentId INT,                             -- assignments id if assigned to a truck, NULL otherwise
  customerId INT,
  id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
 
@@ -157,26 +157,26 @@ CREATE TABLE IF NOT EXISTS TentativeAssignment
  suggId INT NOT NULL,
  orderId INT NOT NULL,
  INDEX(suggId, orderId),         -- a truck can get assigned multiple contracts, but in one Suggestion there can be only one truck for each contract
- vehicleId INT NOT NULL,         -- aka 'truckId'
+ truckId INT NOT NULL,         -- aka 'truckId'
  status ENUM('suggested', 'smsSent', 'driverDenied', 'driverAccepted', 'dismissed', 'promoted'),
  statusChange TIMESTAMP,
 
  CONSTRAINT fk_Sugg FOREIGN KEY (suggId) REFERENCES Suggestion(id) ON DELETE CASCADE ON UPDATE CASCADE,
  CONSTRAINT fk_Order FOREIGN KEY (orderId) REFERENCES Contract(id) ON DELETE CASCADE ON UPDATE CASCADE,
- CONSTRAINT fk_Vehicle FOREIGN KEY (vehicleId) REFERENCES Truck(id) ON DELETE CASCADE ON UPDATE CASCADE
+ CONSTRAINT fk_Truck_TentativeAssignment FOREIGN KEY (truckId) REFERENCES Truck(id) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB;
 
 CREATE TABLE IF NOT EXISTS FinalAssignment
 (
  id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
  orderIdFin INT NOT NULL,
- vehicleIdFin INT NOT NULL,
+ truckIdFin INT NOT NULL,
  tentativeAssignmentId INT,
  status ENUM('new', 'inProgress', 'done'),
  statusChange TIMESTAMP,
 
  CONSTRAINT fk_OrderFin FOREIGN KEY (orderIdFin) REFERENCES Contract(id) ON DELETE CASCADE ON UPDATE CASCADE,
- CONSTRAINT fk_VehicleFin FOREIGN KEY (vehicleIdFin) REFERENCES Truck(id) ON DELETE CASCADE ON UPDATE CASCADE,
+ CONSTRAINT fk_TruckFin FOREIGN KEY (truckIdFin) REFERENCES Truck(id) ON DELETE CASCADE ON UPDATE CASCADE,
 
  CONSTRAINT fk_Tentative FOREIGN KEY (tentativeAssignmentId) REFERENCES TentativeAssignment(id) ON DELETE SET NULL ON UPDATE SET NULL
 ) ENGINE=InnoDB;
