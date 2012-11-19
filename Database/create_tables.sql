@@ -4,17 +4,17 @@ USE `LkwSchedulerDB` ;
 
 CREATE TABLE IF NOT EXISTS Account
 (
-login VARCHAR(20),
-passwd VARCHAR(32),
-id INT NOT NULL AUTO_INCREMENT PRIMARY KEY
-)ENGINE=InnoDB;
+ login VARCHAR(20),
+ passwd VARCHAR(32),
+ name VARCHAR(150),
+ email VARCHAR(100),
+ id INT NOT NULL AUTO_INCREMENT PRIMARY KEY
+) ENGINE=InnoDB;
 
 CREATE TABLE IF NOT EXISTS Customer
 (
- name VARCHAR(150),
  address VARCHAR(300),
  phone VARCHAR(20),
- email VARCHAR(100),
  companyName VARCHAR(150),
  id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
  accountId INT NOT NULL,
@@ -23,8 +23,6 @@ CREATE TABLE IF NOT EXISTS Customer
 
 CREATE TABLE IF NOT EXISTS Driver  -- or Spedition?!
 (
- name VARCHAR(150),
- email VARCHAR(100),
  id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
  accountId INT NOT NULL,
  CONSTRAINT fk_driverAccount FOREIGN KEY (accountId) REFERENCES Account(id) ON DELETE CASCADE ON UPDATE CASCADE
@@ -102,7 +100,7 @@ CREATE TABLE IF NOT EXISTS Route
 CREATE TABLE IF NOT EXISTS RouteStation
 (
  id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
- 
+
  routeId INT NOT NULL,
  numberInSequence TINYINT NOT NULL,      -- the number inside of the itinerary
  INDEX(routeId, numberInSequence),
