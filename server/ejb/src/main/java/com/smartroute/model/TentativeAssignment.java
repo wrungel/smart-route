@@ -22,15 +22,12 @@ public class TentativeAssignment implements java.io.Serializable {
 	@Column(unique = true, nullable = false)
 	private Integer id;
 
-	@Column(nullable = false)
 	@ManyToOne(optional=false)
 	private Suggestion suggestion;
 
-	@Column(nullable = false)
 	@ManyToOne(optional=false)
 	private Contract contract;
 
-	@Column(nullable = false)
 	@ManyToOne(optional=false)
 	private Truck truck;
 

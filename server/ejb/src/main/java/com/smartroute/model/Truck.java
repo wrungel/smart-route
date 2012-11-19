@@ -18,7 +18,6 @@ public class Truck implements java.io.Serializable {
 	@Column(unique = true, nullable = false)
 	private Integer id;
 
-	@Column(nullable = false)
 	@ManyToOne(optional=false)
 	private Driver driver;
 

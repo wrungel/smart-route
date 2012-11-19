@@ -20,11 +20,10 @@ public class Route implements java.io.Serializable {
 	@Column(unique = true, nullable = false)
 	private Long id;
 	
-	@Column(name = "truckId", nullable = false)
-	@OneToOne	
+	@OneToOne(optional=false)	
 	private Truck truck;
 
-	@Column(name = "suggestionId")
+	@OneToOne(optional=false)
 	private Suggestion suggestion;
 	
 	private Boolean isRealRoute;

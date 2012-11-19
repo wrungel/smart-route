@@ -1,8 +1,7 @@
 package com.smartroute.controller;
 
-import com.smartroute.model.Customer;
-import com.smartroute.service.CustomerLoginService;
-import org.slf4j.Logger;
+import java.io.IOException;
+import java.io.Serializable;
 
 import javax.enterprise.context.SessionScoped;
 import javax.faces.application.FacesMessage;
@@ -10,8 +9,10 @@ import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
 
-import java.io.IOException;
-import java.io.Serializable;
+import org.slf4j.Logger;
+
+import com.smartroute.model.Customer;
+import com.smartroute.service.CustomerRepository;
 
 @SessionScoped
 @Named("auth")
@@ -33,7 +34,7 @@ public class Authorization implements Serializable {
     }
     
 
-    @Inject CustomerLoginService customerLoginService;
+    @Inject CustomerRepository customerRepository;
 
     @Inject Logger logger;
 
@@ -59,9 +60,9 @@ public class Authorization implements Serializable {
     }
 
     public void login() throws IOException {
-        current = customerLoginService.login(username, password);
-        if (current == null) {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Unknown login, try again"));
+        current = customerRepository.findCustomerByLogin(username);
+        if (current == null || current != null && current.getAccount().getPasswd().equals(password)) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Unknown login or invalid password, try again"));
             username = password = null;
             return;
         } else {

@@ -22,11 +22,10 @@ public class Driver implements java.io.Serializable {
 	@Column(length = 150)	
 	private String name;
 
-	@Column(name = "email", length = 100)
+	@Column(length = 100)
 	private String email;
 	
-	@Column(nullable = false)
-	@OneToOne
+	@OneToOne(optional=false)
 	private Account account;
 
 	public Driver() {

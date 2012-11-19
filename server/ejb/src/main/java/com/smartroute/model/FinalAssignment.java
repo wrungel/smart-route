@@ -21,11 +21,9 @@ public class FinalAssignment implements java.io.Serializable {
 	@Column(unique = true, nullable = false)
 	private Long id;
 
-	@Column(nullable = false)
-	@OneToOne
+	@OneToOne(optional=false)
 	private Contract contract;
 	
-	@Column(nullable = false)
 	@ManyToOne(optional=false)
 	private Truck truck;
 
@@ -35,7 +33,7 @@ public class FinalAssignment implements java.io.Serializable {
 	private FinalAssignmentStatus status;
 	
 	@Temporal(TemporalType.TIMESTAMP)
-	@Column(name = "statusChange", nullable = false, length = 19)	
+	@Column(nullable = false, length = 19)	
 	private Date statusChange;
 
 	public FinalAssignment() {

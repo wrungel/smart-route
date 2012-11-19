@@ -2,11 +2,13 @@ package com.smartroute.model;
 
 import java.io.Serializable;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.Digits;
@@ -24,8 +26,6 @@ import org.hibernate.validator.constraints.NotEmpty;
 @XmlRootElement
 @Table(uniqueConstraints = @UniqueConstraint(columnNames = "email"))
 public class Customer implements Serializable {
-    /** Default value included to remove warning. Remove or modify at will. **/
-    private static final long serialVersionUID = 1L;
 
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
@@ -35,9 +35,6 @@ public class Customer implements Serializable {
     @Size(min = 1, max = 25)
     @Pattern(regexp = "[A-Za-z ]*", message = "must contain only letters and spaces")
     private String name;
-
-
-    private String password;
 
     @NotNull
     @NotEmpty
@@ -50,16 +47,19 @@ public class Customer implements Serializable {
     @Column(name = "phone")
     private String phoneNumber;
 
+    @Size(max = 300)
+    private String address;
+    
+    @Size(max = 150)
+    private String companyName;
 
-
-
+    @OneToOne(optional=false, cascade={CascadeType.MERGE, CascadeType.PERSIST})
+    private Account account;
+    
     public Long getId() {
         return id;
     }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
 
 
     public String getName() {
@@ -70,15 +70,6 @@ public class Customer implements Serializable {
         this.name = name;
     }
 
-
-    public String getPassword() {
-        return password;
-    }
-
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
 
     public String getEmail() {
         return email;
@@ -96,6 +87,31 @@ public class Customer implements Serializable {
         this.phoneNumber = phoneNumber;
     }
 
+    
+    public String getCompanyName() {
+		return companyName;
+	}
+    
+    public void setCompanyName(String companyName) {
+		this.companyName = companyName;
+	}
+    
+    public String getAddress() {
+		return address;
+	}
+    
+    public void setAddress(String address) {
+		this.address = address;
+	}
+    
+    public Account getAccount() {
+		return account;
+	}
+    
+    
+    public void setAccount(Account account) {
+		this.account = account;
+	}
 
     @Override
     public String toString() {

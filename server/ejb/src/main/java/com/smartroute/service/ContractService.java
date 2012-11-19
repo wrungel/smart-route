@@ -35,7 +35,7 @@ public class ContractService {
     private ConnectionFactory connectionFactory;
 
 
-    @Resource(mappedName="java:/scheduler/Queue")
+    @Resource(mappedName="java:/queue/scheduler")
     private Queue queue;
 
     /**

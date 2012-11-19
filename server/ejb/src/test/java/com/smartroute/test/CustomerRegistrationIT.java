@@ -22,19 +22,17 @@ public class CustomerRegistrationIT {
 
 	@Inject org.slf4j.Logger log;
 
-	public static final String DEFAULT_PERSISTENCE_XML_PATH = "META-INF/test-persistence.xml";
+	public static final String DEFAULT_PERSISTENCE_XML_PATH = "META-INF/persistence-h2.xml";
 
 	@Deployment
 	public static Archive<?> createTestArchive() {
 
-
-		
 		return ShrinkWrap.create(WebArchive.class, "test.war")
 				.addClasses(Customer.class, CustomerRegistration.class, Resources.class)
-				.addAsResource(System.getProperty("persistenceXML", "META-INF/persistence.xml"))
+				.addAsResource(System.getProperty("persistenceXML", "META-INF/persistence-h2.xml"), "META-INF/persistence.xml")
 				.addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml")
 				// Deploy our test datasource
-				.addAsWebInfResource(System.getProperty("dataSource", "test-ds.xml"), "test-ds.xml");
+				.addAsWebInfResource(System.getProperty("dataSource", "ds-h2.xml"), "test-ds.xml");
 	}
 
 	@Inject
@@ -42,7 +40,7 @@ public class CustomerRegistrationIT {
 
 	@Test
 	public void testRegister() throws Exception {
-
+		log.info("start");
 		Customer newCustomer = new Customer();
 		newCustomer.setName("Jane Doe");
 		newCustomer.setEmail("jane@mailinator.com");
