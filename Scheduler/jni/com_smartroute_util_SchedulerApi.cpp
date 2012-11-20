@@ -3,13 +3,13 @@
 
 JNIEXPORT jstring JNICALL Java_com_smartroute_util_SchedulerApi_fnTryScheduleFavorable (JNIEnv *env, jobject obj, jintArray orderIDs, jint maxSuggestionsPerOrder)
 {
-	jstring ret = (*env)->NewStringUTF(env, "<suggestions></suggestions>");
+  jstring ret = env->NewStringUTF("<suggestions></suggestions>");
   return ret;
 }
 
 JNIEXPORT jstring JNICALL Java_com_smartroute_util_SchedulerApi_fnBestAvailable (JNIEnv *env, jobject obj, jintArray orderIDs, jint maxSuggestionsPerOrder)
 {
-  jstring ret = (*env)->NewStringUTF(env, "<suggestions></suggestions>");
+  jstring ret = env->NewStringUTF("<suggestions></suggestions>");
   return ret;
 }
 

@@ -51,16 +51,16 @@ public class SchedulerApi {
         System.loadLibrary(SCHEDULER_LIB);
         System.out.println("Library loaded");
 
-				SchedulerApi api = new SchedulerApi();
+        SchedulerApi scheduler = new SchedulerApi();
 
-        String favorableXML = api.fnTryScheduleFavorable(new int[]{1}, 2);
+        String favorableXML = scheduler.fnTryScheduleFavorable(new int[]{1}, 2);
         System.out.println("favorableXML = " + favorableXML);
 
-        String bestAvailableXML = api.fnBestAvailable(new int[]{1}, 2);
-        System.out.println("bestAvailable = " + bestAvailable);
+        String bestAvailableXML = scheduler.fnBestAvailable(new int[]{1}, 2);
+        System.out.println("bestAvailable = " + bestAvailableXML);
 
-        int priceEstimate = api.fnEstimatePrice("<order> </order>");
-        System.out.println("priceEstimate = " + priceEstimate.toString());
+        int priceEstimate = scheduler.fnEstimatePrice("<order> </order>");
+        System.out.println("priceEstimate = " + priceEstimate);
     }
 
 }
