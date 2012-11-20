@@ -17,7 +17,7 @@
     <param-value>bluesky</param-value>
   </context-param>
   <welcome-file-list>
-    <welcome-file>/customer/contract2.xhtml</welcome-file>
+    <welcome-file>/customer/login.xhtml</welcome-file>
   </welcome-file-list>
   <filter>
     <filter-name>AuthorizationFilter</filter-name>

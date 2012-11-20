@@ -8,14 +8,16 @@
     <persistence-unit name="primary">
         <!-- If you are running in a production environment, add a managed data source, the example data source is just for 
             development and testing! -->
-        <jta-data-source>java:jboss/datasources/message-managerDS</jta-data-source>
+        <jta-data-source>java:/datasources/smart-routeDS</jta-data-source>
+        
         <validation-mode>NONE</validation-mode>
 
         <properties>
             <!-- Properties for Hibernate -->
-            <property name="hibernate.hbm2ddl.auto" value="create-drop" />
+            <!-- <property name="hibernate.hbm2ddl.auto" value="create-drop" /> -->
             <property name="hibernate.show_sql" value="false" />
-        </properties>
+			<!-- <property name="hibernate.ejb.naming_strategy" value="org.hibernate.cfg.DefaultNamingStrategy"/> -->
+         </properties>
     </persistence-unit>
 
 

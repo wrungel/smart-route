@@ -22,6 +22,14 @@ Configure Maven
 If you have not yet done so, you must [Configure Maven](../README.html/#mavenconfiguration) before testing the quickstarts.
 
 
+
+Configure JBoss AS 7.1
+-------------------------
+
+1. add Mysql module: https://zorq.net/b/2011/07/12/adding-a-mysql-datasource-to-jboss-as-7/
+2. copy jboss-config/standalone-full.xml to JBOSS_HOME/standalone/configuration/standalone-full.xml 
+
+
 Start JBoss Enterprise Application Platform 6 or JBoss AS 7.1
 -------------------------
 

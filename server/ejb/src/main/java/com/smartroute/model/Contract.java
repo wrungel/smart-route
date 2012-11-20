@@ -31,9 +31,6 @@ public class Contract implements Serializable {
     @GeneratedValue
     private Long id;
 
-    @Size(max=50)
-    private String loadType;
-    
     private boolean toBeAssigned;
     
     
@@ -105,16 +102,7 @@ public class Contract implements Serializable {
         this.price = price;
     }
     
-    
-    public String getLoadType() {
-        return loadType;
-    }
-    
-    public void setLoadType(String loadType) {
-        this.loadType = loadType;
-    }
-    
-    
+
     public List<ContractStation> getStations() {
         return stations;
     }
