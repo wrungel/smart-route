@@ -9,10 +9,29 @@ extern "C" {
 #endif
 /*
  * Class:     com_smartroute_util_SchedulerApi
- * Method:    fnscheduler
- * Signature: ()I
+ * Method:    fnTryScheduleFavorable
+ *
  */
-JNIEXPORT jstring JNICALL Java_com_smartroute_util_SchedulerApi_fnscheduler
+JNIEXPORT jstring JNICALL Java_com_smartroute_util_SchedulerApi_fnTryScheduleFavorable
+  (JNIEnv *, jobject, jintArray, jint);
+
+
+/*
+ * Class:     com_smartroute_util_SchedulerApi
+ * Method:    fnTryScheduleFavorable
+ *
+ */
+JNIEXPORT jstring JNICALL Java_com_smartroute_util_SchedulerApi_fnBestAvailable
+  (JNIEnv *, jobject, jintArray, jint);
+
+
+/*
+ * Class:     com_smartroute_util_SchedulerApi
+ * Method:    fnEstimatePrice
+ *
+ * @ js
+ */
+JNIEXPORT jint JNICALL Java_com_smartroute_util_SchedulerApi_fnEstimatePrice
   (JNIEnv *, jobject, jstring);
 
 #ifdef __cplusplus
