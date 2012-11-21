@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+    <xs:simpleType name="truckIdType">
+      <xs:restriction base="xs:integer"/>
+    </xs:simpleType>
+
+    <xs:simpleType name="contractIdType">
+      <xs:restriction base="xs:integer"/>
+    </xs:simpleType>
+
+    <xs:simpleType name="coordType">
+      <xs:restriction base="xs:integer"/>
+    </xs:simpleType>
+
+    <xs:complexType name="assignmentType">
+      <xs:attribute name="contractId" type="contractIdType" use="required"/>
+    </xs:complexType>
+
+    <xs:complexType name="stationType">
+      <xs:sequence>
+        <xs:element name="contractId" type="contractIdType" minOccurs="0"/>
+        <xs:element name="sequenceNum" type="xs:nonNegativeInteger" minOccurs="0"/>
+        <xs:element name="latitude" type="coordType"/>
+        <xs:element name="longitude" type="coordType"/>
+        <xs:element name="arrival" type="xs:datetime"/>
+        <xs:element name="departure" type="xs:datetime"/>
+      </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="routeType">
+      <xs:sequence maxOccurs="unbounded" minOccurs="3">
+    		<xs:element name="station" type="stationType"/>
+    	</xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="suggestionType">
+      <xs:sequence>
+        <xs:element name="assignment" type="assignmentType" maxOccurs="unbounded" minOccurs="1"/>
+        <xs:element name="route" type="routeType"/>
+      </xs:sequence> 
+      <xs:attribute name="truckId" type="truckIdType" use="required"/>
+    </xs:complexType>
+
+    <xs:complexType name="schedulerResponseType">
+    	<xs:sequence maxOccurs="unbounded" minOccurs="0">
+    		<xs:element name="suggestion" type="suggestionType"/>
+    	</xs:sequence>
+    </xs:complexType>
+
+    <xs:element name="schedulerResponse" type="schedulerResponseType"/>
+</xs:schema>
