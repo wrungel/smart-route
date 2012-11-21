@@ -1,4 +1,3 @@
-
 CREATE DATABASE IF NOT EXISTS `LkwSchedulerDB` ;
 USE `LkwSchedulerDB` ;
 
@@ -13,24 +12,25 @@ CREATE TABLE IF NOT EXISTS Account
 
 CREATE TABLE IF NOT EXISTS Customer
 (
+ id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
  address VARCHAR(300),
  phone VARCHAR(20),
  companyName VARCHAR(150),
- id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
- accountId INT NOT NULL,
- CONSTRAINT fk_customerAccount FOREIGN KEY (accountId) REFERENCES Account(id) ON DELETE CASCADE ON UPDATE CASCADE
+ account_id INT NOT NULL,
+ CONSTRAINT fk_Account_Customer FOREIGN KEY (account_id) REFERENCES Account(id) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB;
 
 CREATE TABLE IF NOT EXISTS Driver  -- or Spedition?!
 (
  id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
- accountId INT NOT NULL,
- CONSTRAINT fk_driverAccount FOREIGN KEY (accountId) REFERENCES Account(id) ON DELETE CASCADE ON UPDATE CASCADE
+ account_id INT NOT NULL,
+ CONSTRAINT fk_Account_Driver FOREIGN KEY (account_id) REFERENCES Account(id) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB;
 
 CREATE TABLE IF NOT EXISTS Truck
 (
- driverId INT NOT NULL,                        -- foreign key
+ id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+ driver_id INT NOT NULL,                        -- foreign key
  isAvailable BOOL,                             -- whether it is available for scheduling
  truckModel VARCHAR(150),
  truckIdNummer VARCHAR(10),                  -- kfz-Nummer
@@ -44,13 +44,13 @@ CREATE TABLE IF NOT EXISTS Truck
  zipHome VARCHAR(10),                   			 -- plz der home-station
  latHome DECIMAL(8, 6),       		   	         -- latitude of the home-station
  longHome DECIMAL(8, 6),        			  	     -- longitude of the home-station
- id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
 
- CONSTRAINT fk_driver FOREIGN KEY (driverId) REFERENCES Driver(id) ON DELETE CASCADE ON UPDATE CASCADE
+ CONSTRAINT fk_Driver_Truck FOREIGN KEY (driver_id) REFERENCES Driver(id) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB;
 
 CREATE TABLE IF NOT EXISTS Contract -- Auftrag  ..  aka 'Order' but cannot be callled so beacause of 'Order By' sql command
 (
+ id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
  toBeAssigned BOOL,
  sealed BOOL,                                  -- soll Wagen plombiert werden
  price DECIMAL(7, 2),                          -- maximal: 99999,99 EUR :)
@@ -61,21 +61,20 @@ CREATE TABLE IF NOT EXISTS Contract -- Auftrag  ..  aka 'Order' but cannot be ca
  decayTime DATETIME,                           -- Verfallszeitpunkt des Auftrages
  customersComment TEXT,
  assignmentId INT,                             -- assignments id if assigned to a truck, NULL otherwise
- customerId INT,
- id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+ customer_id INT NOT NULL,
 
- CONSTRAINT fk_Customer FOREIGN KEY (customerId) REFERENCES Customer(id)
+ CONSTRAINT fk_Customer_Contract FOREIGN KEY (customer_id) REFERENCES Customer(id)
 ) ENGINE=InnoDB;
 
 CREATE TABLE IF NOT EXISTS ContractStation
 (
  id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
 
- contractId INT NOT NULL,
+ contract_id INT NOT NULL,
  numberInSequence TINYINT NOT NULL,      -- the number inside of the itinerary for the contract
- INDEX(contractId, numberInSequence),
+ INDEX(contract_id, numberInSequence),
 
- kind ENUM('load', 'unload', 'driveBy'), -- driveBy not used, reserved for advanced features
+ kind ENUM('LOAD', 'UNLOAD', 'DRIVE_BY'), -- DRIVE_BY not used, reserved for advanced features
  timeFrom DATETIME,
  timeUntil DATETIME,
  address VARCHAR(300),                   -- complete adress
@@ -83,60 +82,9 @@ CREATE TABLE IF NOT EXISTS ContractStation
  latitude  DECIMAL(8, 6),                -- geo coordinate
  longitude DECIMAL(8, 6),                -- geo coordinate
 
- CONSTRAINT fk_Contract FOREIGN KEY (contractId) REFERENCES Contract(id) ON DELETE CASCADE ON UPDATE CASCADE
+ CONSTRAINT fk_Contract_ContractStation FOREIGN KEY (contract_id) REFERENCES Contract(id) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB;
 
-CREATE TABLE IF NOT EXISTS Route
-(
- id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
- truckId INT NOT NULL,                   -- equals the key in corresponding record in the truck-table
- suggestionId INT,                       -- schould be set for a suggested route, may be NUll for a really driven one
- isRealRoute BOOL,                       -- 'true' means truck really drives the route,'false' - route is suggested but not actual truck route
- lastchange TIMESTAMP,
-
- CONSTRAINT fk_Truck FOREIGN KEY (truckId) REFERENCES Truck(id) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB;
-
-CREATE TABLE IF NOT EXISTS RouteStation
-(
- id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-
- routeId INT NOT NULL,
- numberInSequence TINYINT NOT NULL,      -- the number inside of the itinerary
- INDEX(routeId, numberInSequence),
-
- contractStation INT,                    -- corresponding contract station (may be NULL f.e. if driver communicates he will be at some place on his own)
-
- latitude  DECIMAL(8, 6),                -- geo coordinate
- longitude DECIMAL(8, 6),                -- geo coordinate
-
- kind ENUM('load', 'unload', 'driveBy'),
- timeFrom DATETIME,
- timeUntil DATETIME,
-
- leftKg INT,                             -- kilogramm, capacity remaining
- leftM3 DECIMAL(5, 3),                   -- in qubic meter, capacity remaining
- leftUnits SMALLINT,                     -- paletten, capacity remaining
-
- CONSTRAINT fk_Route FOREIGN KEY (routeId) REFERENCES Route(id) ON DELETE CASCADE ON UPDATE CASCADE,
-
- CONSTRAINT fk_contractStation FOREIGN KEY (contractStation) REFERENCES ContractStation(id) ON DELETE SET NULL ON UPDATE CASCADE
-) ENGINE=InnoDB;
-
-CREATE TABLE IF NOT EXISTS Cargo
-(
- weightKg INT,                           -- kilogramm
- volumeM3 DECIMAL(5, 3),                 -- in qubic meter
- volumeUnits SMALLINT,                   -- Euro-Paletten
- cargoType VARCHAR(50),                  -- TODO: clear requirements, should it be INT or ENUM?
- id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
- routeStationId INT,
- contractStationId INT,
-
-CONSTRAINT fk_routeStationId FOREIGN KEY (routeStationId) REFERENCES RouteStation(id) ON DELETE SET NULL ON UPDATE CASCADE,
-CONSTRAINT fk_contractStationId FOREIGN KEY (contractStationId) REFERENCES ContractStation(id) ON DELETE SET NULL ON UPDATE CASCADE
-
-) ENGINE=InnoDB;
 
 
 -- a suggestion groups multiple TentativeAssignments for a single truck which do not contradict each other
@@ -145,36 +93,89 @@ CREATE TABLE IF NOT EXISTS Suggestion
  id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
  schedulerStarted DATETIME,                       -- when the schudeluer was started
  subNumber TINYINT,                               -- the number inside the output of a specific scheduler's run
- truckId INT,                                     -- one suggestion is for a single truck
- CONSTRAINT fk_suggstion_truckId FOREIGN KEY (truckId) REFERENCES Truck(id) ON DELETE NO ACTION ON UPDATE CASCADE
+ truck_id INT,                                     -- one suggestion is for a single truck
+ CONSTRAINT fk_Truck_Suggestion FOREIGN KEY (truck_id) REFERENCES Truck(id) ON DELETE NO ACTION ON UPDATE CASCADE
 ) ENGINE=InnoDB;
+
+
+CREATE TABLE IF NOT EXISTS Route
+(
+ id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+ truck_id INT NOT NULL,                   -- equals the key in corresponding record in the truck-table
+ suggestion_id INT,                       -- schould be set for a suggested route, may be NUll for a really driven one
+ isRealRoute BOOL,                       -- 'true' means truck really drives the route,'false' - route is suggested but not actual truck route
+ lastchange TIMESTAMP,
+
+ CONSTRAINT fk_Truck_Route FOREIGN KEY (truck_id) REFERENCES Truck(id) ON DELETE CASCADE ON UPDATE CASCADE,
+ CONSTRAINT fk_Suggestion_Route FOREIGN KEY (suggestion_id) REFERENCES Suggestion(id) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB;
+
+CREATE TABLE IF NOT EXISTS RouteStation
+(
+ id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+
+ route_id INT NOT NULL,
+ numberInSequence TINYINT NOT NULL,      -- the number inside of the itinerary
+ INDEX(route_id, numberInSequence),
+
+ contractStation_id INT,                    -- corresponding contract station (may be NULL f.e. if driver communicates he will be at some place on his own)
+
+ latitude  DECIMAL(8, 6),                -- geo coordinate
+ longitude DECIMAL(8, 6),                -- geo coordinate
+
+ kind ENUM('LOAD', 'UNLOAD', 'DRIVE_BY'),
+ timeFrom DATETIME,
+ timeUntil DATETIME,
+
+ leftKg INT,                             -- kilogramm, capacity remaining
+ leftM3 DECIMAL(5, 3),                   -- in qubic meter, capacity remaining
+ leftUnits SMALLINT,                     -- paletten, capacity remaining
+
+ CONSTRAINT fk_Route_RouteStation FOREIGN KEY (route_id) REFERENCES Route(id) ON DELETE CASCADE ON UPDATE CASCADE,
+ CONSTRAINT fk_ContractStation_RouteStation FOREIGN KEY (contractStation_id) REFERENCES ContractStation(id) ON DELETE SET NULL ON UPDATE CASCADE
+) ENGINE=InnoDB;
+
+CREATE TABLE IF NOT EXISTS Cargo
+(
+ id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+ weightKg INT,                           -- kilogramm
+ volumeM3 DECIMAL(5, 3),                 -- in qubic meter
+ volumeUnits SMALLINT,                   -- Euro-Paletten
+ cargoType VARCHAR(50),                  -- TODO: clear requirements, should it be INT or ENUM?
+ routeStation_id INT,
+ contractStation_id INT,
+
+CONSTRAINT fk_RouteStation_Cargo FOREIGN KEY (routeStation_id) REFERENCES RouteStation(id) ON DELETE SET NULL ON UPDATE CASCADE,
+CONSTRAINT fk_ContractStation_Cargo FOREIGN KEY (contractStation_id) REFERENCES ContractStation(id) ON DELETE SET NULL ON UPDATE CASCADE
+
+) ENGINE=InnoDB;
+
 
 CREATE TABLE IF NOT EXISTS TentativeAssignment
 (
  id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
- suggId INT NOT NULL,
- orderId INT NOT NULL,
- INDEX(suggId, orderId),         -- a truck can get assigned multiple contracts, but in one Suggestion there can be only one truck for each contract
- truckId INT NOT NULL,         -- aka 'truckId'
- status ENUM('suggested', 'smsSent', 'driverDenied', 'driverAccepted', 'dismissed', 'promoted'),
+ suggestion_id INT NOT NULL,
+ contract_id INT NOT NULL,
+ INDEX(suggestion_id, contract_id),         -- a truck can get assigned multiple contracts, but in one Suggestion there can be only one truck for each contract
+ truck_id INT NOT NULL,
+ status ENUM('SUGGESTED', 'SMS_SENT', 'DRIVER_DENIED', 'DRIVER_ACCEPTED', 'DISMISSED', 'PROMOTED'),
  statusChange TIMESTAMP,
 
- CONSTRAINT fk_Sugg FOREIGN KEY (suggId) REFERENCES Suggestion(id) ON DELETE CASCADE ON UPDATE CASCADE,
- CONSTRAINT fk_Order FOREIGN KEY (orderId) REFERENCES Contract(id) ON DELETE CASCADE ON UPDATE CASCADE,
- CONSTRAINT fk_Truck_TentativeAssignment FOREIGN KEY (truckId) REFERENCES Truck(id) ON DELETE CASCADE ON UPDATE CASCADE
+ CONSTRAINT fk_Suggestion_TentativeAssignment FOREIGN KEY (suggestion_id) REFERENCES Suggestion(id) ON DELETE CASCADE ON UPDATE CASCADE,
+ CONSTRAINT fk_Contract_TentativeAssignment FOREIGN KEY (contract_id) REFERENCES Contract(id) ON DELETE CASCADE ON UPDATE CASCADE,
+ CONSTRAINT fk_Truck_TentativeAssignment FOREIGN KEY (truck_id) REFERENCES Truck(id) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB;
 
 CREATE TABLE IF NOT EXISTS FinalAssignment
 (
  id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
- orderIdFin INT NOT NULL,
- truckIdFin INT NOT NULL,
- tentativeAssignmentId INT,
- status ENUM('new', 'inProgress', 'done'),
+ contract_id INT NOT NULL,
+ truck_id INT NOT NULL,
+ tentativeAssignment_id INT,
+ status ENUM('NEW', 'IN_PROGRESS', 'DONE'),
  statusChange TIMESTAMP,
 
- CONSTRAINT fk_OrderFin FOREIGN KEY (orderIdFin) REFERENCES Contract(id) ON DELETE CASCADE ON UPDATE CASCADE,
- CONSTRAINT fk_TruckFin FOREIGN KEY (truckIdFin) REFERENCES Truck(id) ON DELETE CASCADE ON UPDATE CASCADE,
-
- CONSTRAINT fk_Tentative FOREIGN KEY (tentativeAssignmentId) REFERENCES TentativeAssignment(id) ON DELETE SET NULL ON UPDATE SET NULL
+ CONSTRAINT fk_Contract_FinalAssignment FOREIGN KEY (contract_id) REFERENCES Contract(id) ON DELETE CASCADE ON UPDATE CASCADE,
+ CONSTRAINT fk_Truck_FinalAssignment FOREIGN KEY (truck_id) REFERENCES Truck(id) ON DELETE CASCADE ON UPDATE CASCADE,
+ CONSTRAINT fk_TentativeAssignment_FinalAssignment FOREIGN KEY (tentativeAssignment_id) REFERENCES TentativeAssignment(id) ON DELETE SET NULL ON UPDATE SET NULL
 ) ENGINE=InnoDB;

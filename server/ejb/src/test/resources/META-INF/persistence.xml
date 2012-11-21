@@ -8,15 +8,28 @@
 	<persistence-unit name="test" transaction-type="RESOURCE_LOCAL">
 
 		<provider>org.hibernate.ejb.HibernatePersistence</provider>
-		<class>com.smartroute.model.Account</class>
-		<class>com.smartroute.model.Customer</class>
+        
+	
+        <class>com.smartroute.model.Account</class>
+        <class>com.smartroute.model.Cargo</class>
+        <class>com.smartroute.model.Contract</class>
+        <class>com.smartroute.model.ContractStation</class>
+        <class>com.smartroute.model.Customer</class>        
+        <class>com.smartroute.model.Driver</class>
+        <class>com.smartroute.model.FinalAssignment</class>                
+        <class>com.smartroute.model.Route</class>
+        <class>com.smartroute.model.RouteStation</class>
+        <class>com.smartroute.model.Suggestion</class>
+        <class>com.smartroute.model.TentativeAssignment</class>
+        <class>com.smartroute.model.Truck</class>
+        
 		<properties>
 			<property name="hibernate.connection.url" value="jdbc:h2:/~test" />
 			<property name="hibernate.dialect" value="org.hibernate.dialect.H2Dialect"></property>
 			<property name="hibernate.connection.driver_class" value="org.h2.Driver" />
 			<property name="hibernate.connection.password" value="admin" />
 			<property name="hibernate.connection.username" value="admin" />
-			<property name="hibernate.hbm2ddl.auto" value="create-drop" />
+			<property name="hibernate.hbm2ddl.auto" value="create" />
 		</properties>
 	</persistence-unit>
 </persistence>

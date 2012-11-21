@@ -39,17 +39,13 @@ public class Contract implements Serializable {
      */
     private boolean sealed;
     
-    // TODO: use JScience
     @NotNull
-    private BigDecimal entireWeightKg = BigDecimal.ZERO;
+    private BigDecimal entireWeightKg;
     
-    // TODO: use JScience
     private BigDecimal price;
     
-    // TODO: use JScience
     private Integer entireVolumeUnits;
     
-    // TODO: use JScience
     private BigDecimal entireVolumeM3;
     /**
      * Auftragseingang
@@ -72,6 +68,8 @@ public class Contract implements Serializable {
     
     @ManyToOne(optional=false)
     private Customer customer;
+    
+    private Integer assignmentId;
     
     
     public Customer getCustomer() {
@@ -156,7 +154,13 @@ public class Contract implements Serializable {
         this.customersComment = customersComment;
     }
     
-   
+    public Integer getAssignmentId() {
+        return assignmentId;
+    }
+    
+    public void setAssignmentId(Integer assignmentId) {
+        this.assignmentId = assignmentId;
+    }
     
     /**
      * ContractStation factory method: created ContractStation is automatically added to Contract

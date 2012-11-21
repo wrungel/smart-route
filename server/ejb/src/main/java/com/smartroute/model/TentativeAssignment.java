@@ -11,10 +11,13 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.UniqueConstraint;
 
 @Entity
+@Table(uniqueConstraints={@UniqueConstraint(columnNames={"suggestion_id", "contract_id"})})
 public class TentativeAssignment implements java.io.Serializable {
 
 	@Id

@@ -22,7 +22,6 @@ public class CustomerRegistration {
    private Event<Customer> customerEventSrc;
 
    public void register(Customer customer) throws Exception {
-      log.info("Registering " + customer.getName());
       em.persist(customer);
       customerEventSrc.fire(customer);
    }

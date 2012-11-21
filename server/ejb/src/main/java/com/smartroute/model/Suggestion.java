@@ -10,6 +10,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
@@ -25,6 +26,9 @@ public class Suggestion implements java.io.Serializable {
 	private Date schedulerStarted;
 	
 	private Integer subNumber;
+	
+	@ManyToOne
+	private Truck truck;
 
 	public Suggestion() {
 	}
@@ -55,4 +59,12 @@ public class Suggestion implements java.io.Serializable {
 		this.subNumber = subNumber;
 	}
 
+	
+	public Truck getTruck() {
+        return truck;
+    }
+	
+	public void setTruck(Truck truck) {
+        this.truck = truck;
+    }
 }

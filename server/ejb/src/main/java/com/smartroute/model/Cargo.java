@@ -9,6 +9,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 
 @Entity
 public class Cargo implements java.io.Serializable {
@@ -29,22 +30,11 @@ public class Cargo implements java.io.Serializable {
 	@Column(name = "cargoType", length = 50)	
 	private String cargoType;
 
-
-	private Integer routeStationId;
-	private Integer contractStationId;
-
-	public Cargo() {
-	}
-
-	public Cargo(Integer weightKg, BigDecimal volumeM3, Short volumeUnits,
-			String cargoType, Integer routeStationId, Integer contractStationId) {
-		this.weightKg = weightKg;
-		this.volumeM3 = volumeM3;
-		this.volumeUnits = volumeUnits;
-		this.cargoType = cargoType;
-		this.routeStationId = routeStationId;
-		this.contractStationId = contractStationId;
-	}
+	@ManyToOne
+	private RouteStation routeStation;
+	
+	@ManyToOne
+	private ContractStation contractStation;
 
 	public Integer getId() {
 		return this.id;
@@ -86,20 +76,20 @@ public class Cargo implements java.io.Serializable {
 		this.cargoType = cargoType;
 	}
 
-	public Integer getRouteStationId() {
-		return this.routeStationId;
+	public RouteStation getRouteStationId() {
+		return this.routeStation;
 	}
 
-	public void setRouteStationId(Integer routeStationId) {
-		this.routeStationId = routeStationId;
+	public void setRouteStationId(RouteStation routeStation) {
+		this.routeStation = routeStation;
 	}
 
-	public Integer getContractStationId() {
-		return this.contractStationId;
+	public ContractStation getContractStation() {
+		return this.contractStation;
 	}
 
-	public void setContractStationId(Integer contractStationId) {
-		this.contractStationId = contractStationId;
+	public void setContractStation(ContractStation contractStation) {
+		this.contractStation = contractStation;
 	}
 
 }

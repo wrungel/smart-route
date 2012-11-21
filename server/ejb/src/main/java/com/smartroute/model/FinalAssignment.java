@@ -27,6 +27,7 @@ public class FinalAssignment implements java.io.Serializable {
 	@ManyToOne(optional=false)
 	private Truck truck;
 
+	@OneToOne(optional=true)
 	private TentativeAssignment tentativeAssignment;
 
 	@Column(length = 10)

@@ -4,13 +4,17 @@ package com.smartroute.model;
 import static javax.persistence.GenerationType.IDENTITY;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
@@ -28,7 +32,8 @@ public class RouteStation implements java.io.Serializable {
 	
 	@Column(nullable = false)	
 	private int numberInSequence;
-	private Integer contractStation;
+	
+	private ContractStation contractStation;
 	
 	@Column(precision = 8, scale = 6)	
 	private BigDecimal latitude;
@@ -51,29 +56,15 @@ public class RouteStation implements java.io.Serializable {
 	
 	private Short leftUnits;
 
+    @OneToMany(cascade=CascadeType.ALL, orphanRemoval=true, mappedBy="routeStation")
+    private List<Cargo> cargos = new ArrayList<>(); 
+	
 	public RouteStation() {
 	}
 
 	public RouteStation(Route route, byte numberInSequence) {
 		this.route = route;
 		this.numberInSequence = numberInSequence;
-	}
-
-	public RouteStation(Route route, int numberInSequence,
-			Integer contractStation, BigDecimal latitude, BigDecimal longitude,
-			StationKind kind, Date timeFrom, Date timeUntil, Integer leftKg,
-			BigDecimal leftM3, Short leftUnits) {
-		this.route = route;
-		this.numberInSequence = numberInSequence;
-		this.contractStation = contractStation;
-		this.latitude = latitude;
-		this.longitude = longitude;
-		this.kind = kind;
-		this.timeFrom = timeFrom;
-		this.timeUntil = timeUntil;
-		this.leftKg = leftKg;
-		this.leftM3 = leftM3;
-		this.leftUnits = leftUnits;
 	}
 
 	public Integer getId() {
@@ -97,11 +88,11 @@ public class RouteStation implements java.io.Serializable {
 		this.numberInSequence = numberInSequence;
 	}
 
-	public Integer getContractStation() {
+	public ContractStation getContractStation() {
 		return this.contractStation;
 	}
 
-	public void setContractStation(Integer contractStation) {
+	public void setContractStation(ContractStation contractStation) {
 		this.contractStation = contractStation;
 	}
 
@@ -169,4 +160,12 @@ public class RouteStation implements java.io.Serializable {
 		this.leftUnits = leftUnits;
 	}
 
+	public List<Cargo> getCargos() {
+        return cargos;
+    }
+	
+	public void setCargos(List<Cargo> cargos) {
+        this.cargos = cargos;
+    }
+	
 }

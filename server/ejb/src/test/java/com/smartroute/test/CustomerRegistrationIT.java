@@ -42,12 +42,9 @@ public class CustomerRegistrationIT {
 	public void testRegister() throws Exception {
 		log.info("start");
 		Customer newCustomer = new Customer();
-		newCustomer.setName("Jane Doe");
-		newCustomer.setEmail("jane@mailinator.com");
-		newCustomer.setPhoneNumber("2125551234");
 		customerRegistration.register(newCustomer);
 		assertNotNull(newCustomer.getId());
-		log.info(newCustomer.getName() + " was persisted with id " + newCustomer.getId());
+		log.info("Customer was persisted with id " + newCustomer.getId());
 	}
 
 }

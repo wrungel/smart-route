@@ -20,56 +20,56 @@ import com.smartroute.service.CustomerRepository;
 
 public class CustomerRepositoryTest {
 
-	@Inject org.slf4j.Logger log;
+    @Inject org.slf4j.Logger log;
 
-	EntityManager em;
-	
-	private static final String LOGIN = "xxx";
-	
-	private static EntityManagerFactory emf;
-	
-	@BeforeClass
-	public static void beforeClass() {
-		emf = Persistence.createEntityManagerFactory("test");
-	}
-	
-	@Before
-	public void setUp() {
-		em = emf.createEntityManager();
-		em.getTransaction().begin();
-		
-		Customer customer = new Customer();
-		
-		customer.setAddress("asaa");
-		customer.setCompanyName("asdfkjah");
-		customer.setEmail("assa@gmail.com");
-		customer.setName("xxx");
-		customer.setPhoneNumber("1223423312312");
-		
-		Account account = new Account(LOGIN, "test123");
-		customer.setAccount(account);
-		
-		em.persist(customer);
-		em.flush();
-	}
-	
-	@After
-	public void cleanUp() {
-		em.getTransaction().rollback();
-	}
-	
-	@Test
-	public void customer_is_found_if_login_is_correct () {
-		CustomerRepository  customerRepository = new CustomerRepository(em);
-		Customer customer = customerRepository.findCustomerByLogin(LOGIN);
-		assertThat(customer, notNullValue(Customer.class));
-	}
-	
-	@Test
-	public void customer_is_not_found_if_login_is_not_correct () {
-		CustomerRepository  customerRepository = new CustomerRepository(em);
-		Customer customer = customerRepository.findCustomerByLogin(LOGIN + "123");
-		assertThat(customer, nullValue(Customer.class));
-	}
+    EntityManager em;
+
+    private static final String LOGIN = "testLogin";
+
+    private static EntityManagerFactory emf;
+
+    @BeforeClass
+    public static void beforeClass() {
+        emf = Persistence.createEntityManagerFactory("test");
+    }
+
+    @Before
+    public void setUp() {
+        em = emf.createEntityManager();
+        em.getTransaction().begin();
+
+        Account account = new Account(LOGIN, "testPassword", "testName");
+        em.persist(account);
+
+        Customer customer = new Customer(account);
+
+        customer.setAddress("asaa");
+        customer.setCompanyName("asdfkjah");
+
+
+        customer.setAccount(account);
+
+        em.persist(customer);
+        em.flush();
+    }
+
+    @After
+    public void cleanUp() {
+        em.getTransaction().rollback();
+    }
+
+    @Test
+    public void customer_is_found_if_login_is_correct () {
+        CustomerRepository  customerRepository = new CustomerRepository(em);
+        Customer customer = customerRepository.findCustomerByLogin(LOGIN);
+        assertThat(customer, notNullValue(Customer.class));
+    }
+
+    @Test
+    public void customer_is_not_found_if_login_is_not_correct () {
+        CustomerRepository  customerRepository = new CustomerRepository(em);
+        Customer customer = customerRepository.findCustomerByLogin(LOGIN + "123");
+        assertThat(customer, nullValue(Customer.class));
+    }
 
 }

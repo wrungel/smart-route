@@ -23,7 +23,7 @@ public class Route implements java.io.Serializable {
 	@OneToOne(optional=false)	
 	private Truck truck;
 
-	@OneToOne(optional=false)
+	@OneToOne(optional=true)
 	private Suggestion suggestion;
 	
 	private Boolean isRealRoute;
