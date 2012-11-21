@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+    <xs:simpleType name="coordType">
+      <xs:restriction base="xs:decimal"/>
+    </xs:simpleType>
+
+    <xs:simpleType name="loadType">
+      <xs:restriction base="xs:string">
+        <xs:enumeration value="LOAD"/>
+        <xs:enumeration value="UNLOAD"/>
+        <xs:enumeration value="DRIVE_BY"/>
+      </xs:restriction>
+    </xs:simpleType> 
+
+    <xs:complexType name="contractStationType">
+      <xs:sequence>        
+        <xs:element name="latitude" type="coordType"/>
+        <xs:element name="longitude" type="coordType"/>
+        <xs:element name="kind" type="loadType"/>
+        <xs:element name="units" type = "xs:positiveInteger"/>
+        <xs:element name="timeFrom" type="xs:dateTime"/>
+        <xs:element name="timeUntil" type="xs:dateTime"/>        
+      </xs:sequence>      
+    </xs:complexType>
+
+    <xs:complexType name="contractType">
+      <xs:sequence maxOccurs="unbounded" minOccurs="2">
+    		<xs:element name="station" type="contractStationType"/>
+    	</xs:sequence>
+      <xs:attribute name="sealed" type="xs:boolean"/>
+    </xs:complexType>
+
+    <xs:element name="contract" type="contractType"/>
+</xs:schema>
