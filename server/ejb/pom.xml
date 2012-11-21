@@ -77,10 +77,16 @@
 		</dependency>
 
 		<dependency>
-			<groupId>org.jscience</groupId>
-			<artifactId>jscience</artifactId>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-orm</artifactId>
+            <version>3.1.3.RELEASE</version>
+            <scope>test</scope>
 		</dependency>
-
+        <dependency>
+            <groupId>org.jadira.usertype</groupId>
+            <artifactId>usertype.jodatime</artifactId>
+            <scope>compile</scope>
+        </dependency>
 
 		<dependency>
 			<groupId>joda-time</groupId>
@@ -97,11 +103,6 @@
 			<artifactId>commons-lang3</artifactId>
 		</dependency>
 
-		<dependency>
-			<groupId>org.jadira.usertype</groupId>
-			<artifactId>usertype.jodatime</artifactId>
-			<scope>runtime</scope>
-		</dependency>
 
 		<dependency>
 			<groupId>org.hibernate</groupId>

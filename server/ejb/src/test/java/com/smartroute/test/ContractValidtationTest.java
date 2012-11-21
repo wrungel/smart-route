@@ -1,17 +1,12 @@
 package com.smartroute.test;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.empty;
-import static org.hamcrest.Matchers.not;
+import org.junit.After;
 
-import java.util.Set;
-
-import javax.validation.ConstraintViolation;
-import javax.validation.Validation;
-import javax.validation.Validator;
-import javax.validation.ValidatorFactory;
-import javax.validation.groups.Default;
-
+import com.google.common.base.Joiner;
+import com.smartroute.model.Contract;
+import com.smartroute.model.ContractStation;
+import com.smartroute.model.ContractStationKind;
+import com.smartroute.model.Customer;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Ignore;
@@ -20,11 +15,17 @@ import org.mockito.Mockito;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.google.common.base.Joiner;
-import com.smartroute.model.Contract;
-import com.smartroute.model.ContractStation;
-import com.smartroute.model.ContractStationKind;
-import com.smartroute.model.Customer;
+import javax.validation.ConstraintViolation;
+import javax.validation.Validation;
+import javax.validation.Validator;
+import javax.validation.ValidatorFactory;
+import javax.validation.groups.Default;
+
+import java.util.Set;
+
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.empty;
+import static org.hamcrest.Matchers.not;
 
 public class ContractValidtationTest {
 
@@ -61,8 +62,7 @@ public class ContractValidtationTest {
         assertThat("the sum of load stations is bigger than the sum of unload stations causes constraint violation", 
                 violations, not(empty()));
     }
-    
-    
+
     
 
     ContractStation createStation(Contract contract, String address, ContractStationKind kind) {

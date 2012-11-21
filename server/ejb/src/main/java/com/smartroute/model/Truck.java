@@ -92,10 +92,10 @@ public class Truck implements java.io.Serializable {
 	public Driver getDriverId() {
 		return this.driver;
 	}
-
-	public void setDriverId(Driver driver) {
-		this.driver = driver;
-	}
+	
+	public void setDriver(Driver driver) {
+        this.driver = driver;
+    }
 
 	public Boolean getIsAvailable() {
 		return this.isAvailable;
@@ -200,5 +200,6 @@ public class Truck implements java.io.Serializable {
 	public void setLongHome(BigDecimal longHome) {
 		this.longHome = longHome;
 	}
+
 
 }

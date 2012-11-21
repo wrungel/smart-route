@@ -7,11 +7,11 @@
    xsi:schemaLocation="http://www.jboss.org/ironjacamar/schema http://docs.jboss.org/ironjacamar/schema/datasources_1_0.xsd">
    <!-- The datasource is bound into JNDI at this location. We reference 
       this in META-INF/test-persistence.xml -->
-   <datasource jndi-name="java:jboss/datasources/message-managerTestDS"
-      pool-name="message-manager-test" enabled="true"
+   <datasource jndi-name="java:jboss/datasources/smart-routeDS"
+      pool-name="smart-routeTestDS" enabled="true"
       use-java-context="true">
       <connection-url>jdbc:mysql://127.0.0.1/LkwSchedulerDB</connection-url>
-      <driver>com-mysql</driver>
+      <driver>mysql</driver>
       <security>
          <user-name>LkwScheduler</user-name>
          <password>sched5</password>
