@@ -11,17 +11,21 @@ This project is setup to allow you to create a compliant Java EE 6 application u
 System requirements
 -------------------
 
-All you need to build this project is Java 6.0 (Java SDK 1.6) or better, Maven 3.0 or better.
-
-The application this project produces is designed to be run on JBoss Enterprise Application Platform 6 or JBoss AS 7.1. 
-
- 
-Configure Maven
----------------
-
-If you have not yet done so, you must [Configure Maven](../README.html/#mavenconfiguration) before testing the quickstarts.
+All you need to build this project is Java SE Development Kit 7 (JDK 7) or better,  Maven 3.0.4 or better:
+* http://www.oracle.com/technetwork/java/javase/downloads/index.html
+* http://maven.apache.org/
 
 
+Install MySQL Server
+-------------------------
+* http://www.mysql.com/
+
+
+Create MySQL Database users and tables
+-------------------------
+        cd ../Database
+        create_user.sh
+        create_tables.sh
 
 Configure JBoss AS 7.1
 -------------------------
@@ -30,14 +34,14 @@ Configure JBoss AS 7.1
 2. copy jboss-config/standalone-full.xml to JBOSS_HOME/standalone/configuration/standalone-full.xml 
 
 
-Start JBoss Enterprise Application Platform 6 or JBoss AS 7.1
+Start JBoss AS 7.1
 -------------------------
 
 1. Open a command line and navigate to the root of the JBoss server directory.
 2. The following shows the command line to start the server with the web profile:
 
-        For Linux:   JBOSS_HOME/bin/standalone.sh
-        For Windows: JBOSS_HOME\bin\standalone.bat
+        For Linux:   JBOSS_HOME/bin/standalone.sh --server-config=standalone-full.xml
+        For Windows: JBOSS_HOME\bin\standalone.bat --server-config=standalone-full.xml
 
  
 Build and Deploy the Quickstart
