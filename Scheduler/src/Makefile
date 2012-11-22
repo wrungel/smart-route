@@ -31,7 +31,6 @@ clean:
 	rm -rf Test/*.o
 	rm -rf ./*.o
 	rm -rf $(OUT_DIR)/*
-	rm -rf $(JNI_API_DIR)/com_smartroute_util_SchedulerApi.o
 
 
 
