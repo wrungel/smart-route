@@ -11,6 +11,7 @@
         <module>Database</module>
         <module>server</module>
         <module>Scheduler/jni</module>
+        <module>Scheduler/lib</module>
     </modules>
     
     <properties>

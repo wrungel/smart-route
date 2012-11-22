@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>com.smartroute</groupId>
+        <artifactId>smart-route-parent</artifactId>
+        <version>0.0.1-SNAPSHOT</version>
+    </parent>
+
+    <artifactId>smart-route-scheduler</artifactId>
+    <packaging>dll</packaging>
+
+    <dependencies>
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>smart-route-jni</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>native-maven-plugin</artifactId>
+                <version>1.0-alpha-7</version>
+                <extensions>true</extensions>
+                <configuration>
+                    <!-- trigger javah -->
+                    <javahOS>win32</javahOS>
+                    <javahClassNames>
+                        <javahClassName>com.smartroute.util.SchedulerApi</javahClassName>
+                    </javahClassNames>
+                    <compilerProvider>generic-classic</compilerProvider>
+                    <compilerExecutable>g++</compilerExecutable>
+                    <linkerExecutable>g++</linkerExecutable>
+                    <sources>
+                        <source>
+                            <directory>../src</directory>
+                            <fileNames>
+                                <fileName>main.cpp</fileName>
+                            </fileNames>
+
+                        </source>
+
+                        <source>
+                            <directory>D:\\bin\\boost\\1.52.0\\src</directory>
+                            <dependencyAnalysisParticipation>false</dependencyAnalysisParticipation>
+                        </source>
+
+                        <source>
+                            <directory>D:\\bin\\mysql-connector-c++-noinstall-1.1.1-win32\\include</directory>
+                            <dependencyAnalysisParticipation>false</dependencyAnalysisParticipation>
+                        </source>
+
+                    </sources>
+                    <compilerStartOptions>
+                
+                     <compilerStartOption></compilerStartOption>
+                    
+                    </compilerStartOptions>
+                    <linkerStartOptions>
+                        <linkerStartOption>-shared -mno-cygwin -Wl,--add-stdcall-alias</linkerStartOption>
+                    </linkerStartOptions>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>javah</id>
+                        <phase>generate-sources</phase>
+                        <goals>
+                            <goal>javah</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+
+
+</project>
