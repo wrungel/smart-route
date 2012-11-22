@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<jxb:bindings version="2.0" xmlns:jxb="http://java.sun.com/xml/ns/jaxb" xmlns:xs="http://www.w3.org/2001/XMLSchema"
+    xmlns:xjc="http://java.sun.com/xml/ns/jaxb/xjc" jxb:extensionBindingPrefixes="xjc">
+
+    <jxb:bindings schemaLocation="../xsd/contract_to_estimate.xsd" node="/xs:schema">
+        <jxb:schemaBindings>
+            <jxb:nameXmlTransform>
+                <jxb:typeName prefix="X" />
+                <jxb:anonymousTypeName prefix="X" />
+            </jxb:nameXmlTransform>
+
+        </jxb:schemaBindings>
+    </jxb:bindings>
+
+    <jxb:bindings schemaLocation="../xsd/scheduler_response.xsd" node="/xs:schema">
+        <jxb:schemaBindings>
+            <jxb:nameXmlTransform>
+                <jxb:typeName prefix="X" />
+                <jxb:anonymousTypeName prefix="X" />
+                <!-- <jxb:elementName prefix="Foo"/> -->
+            </jxb:nameXmlTransform>
+        </jxb:schemaBindings>
+    </jxb:bindings>
+
+</jxb:bindings>

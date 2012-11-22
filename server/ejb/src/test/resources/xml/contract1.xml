@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<ns2:contract sealed="true" xmlns:ns2="http://smartroute.com/scheduler/jni/contract_to_estimate" xmlns:ns3="scheduler_response">
+    <station>
+        <latitude>1</latitude>
+        <longitude>2</longitude>
+        <kind>LOAD</kind>
+        <units>123</units>
+        <timeFrom>2010-11-30T23:51:22.000Z</timeFrom>
+        <timeUntil>2010-11-30T23:55:22.000Z</timeUntil>
+    </station>
+    <station>
+        <latitude>1</latitude>
+        <longitude>2</longitude>
+        <kind>LOAD</kind>
+        <units>123</units>
+        <timeFrom>2010-11-30T23:51:22.000Z</timeFrom>
+        <timeUntil>2010-11-30T23:55:22.000Z</timeUntil>
+    </station>
+</ns2:contract>
+

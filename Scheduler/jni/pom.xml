@@ -1,45 +1,73 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-	<modelVersion>4.0.0</modelVersion>
-	<parent>
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
         <groupId>com.smartroute</groupId>
         <artifactId>smart-route-parent</artifactId>
         <version>0.0.1-SNAPSHOT</version>
-	</parent>
-        
-        <artifactId>smart-route-jni</artifactId>
+    </parent>
 
-        <build>
+    <artifactId>smart-route-jni</artifactId>
+
+    <build>
         <plugins>
-        <plugin>
-        <groupId>org.codehaus.mojo</groupId>
-        <artifactId>build-helper-maven-plugin</artifactId>
-        <version>1.7</version>
-        <executions>
-          <execution>
-            <id>add-resource</id>
-            <phase>generate-resources</phase>
-            <goals>
-              <goal>add-resource</goal>
-            </goals>
-            <configuration>
-              <resources>
-                <resource>
-                  <directory>.</directory>
-                  
-                  <!--<targetPath>jni</targetPath>-->
-                  <excludes>
-                    <exclude>*.cpp</exclude>
-                    <exclude>*.h</exclude>
-                  </excludes>
-                </resource>
-              </resources>
-            </configuration>
-          </execution>
-        </executions>
-      </plugin>
+
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>build-helper-maven-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>add-resource</id>
+                        <phase>generate-resources</phase>
+                        <goals>
+                            <goal>add-resource</goal>
+                        </goals>
+                        <configuration>
+                            <resources>
+                                <resource>
+                                    <directory>src/main/xsd</directory>
+
+                                    <!--<targetPath>jni</targetPath> -->
+                                    <excludes>
+                                        <exclude>*.cpp</exclude>
+                                        <exclude>*.h</exclude>
+                                    </excludes>
+                                </resource>
+                            </resources>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>add-source</id>
+                        <phase>generate-sources</phase>
+                        <goals>
+                            <goal>add-source</goal>
+                        </goals>
+                        <configuration>
+                            <sources>
+                                <source>${project.build.directory}/generated-sources/jaxb</source>
+                            </sources>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>jaxb2-maven-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>xjc</id>
+                        <goals>
+                            <goal>xjc</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <packageName>com.smartroute.scheduler.jni</packageName>
+                    <bindingFiles>binding.xml</bindingFiles>
+                </configuration>
+            </plugin>
         </plugins>
-        </build>
+    </build>
 
 </project>

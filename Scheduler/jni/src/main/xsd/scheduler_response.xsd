@@ -1,16 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="scheduler_response"
+    xmlns:cmn="common_types" xmlns="scheduler_response">
 
+    <xs:import schemaLocation="common_types.xsd" namespace="common_types" />
+    
     <xs:simpleType name="truckId">
       <xs:restriction base="xs:integer"/>
     </xs:simpleType>
 
     <xs:simpleType name="contractId">
       <xs:restriction base="xs:integer"/>
-    </xs:simpleType>
-
-    <xs:simpleType name="coord">
-      <xs:restriction base="xs:decimal"/>
     </xs:simpleType>
 
     <xs:complexType name="assignment">
@@ -21,8 +20,8 @@
       <xs:sequence>
         <xs:element name="contractId" type="contractId" minOccurs="0"/>
         <xs:element name="sequenceNum" type="xs:nonNegativeInteger" minOccurs="0"/>
-        <xs:element name="latitude" type="coord"/>
-        <xs:element name="longitude" type="coord"/>
+        <xs:element name="latitude" type="cmn:coord"/>
+        <xs:element name="longitude" type="cmn:coord"/>
         <xs:element name="arrival" type="xs:dateTime"/>
         <xs:element name="departure" type="xs:dateTime"/>
       </xs:sequence>
