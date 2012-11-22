@@ -17,8 +17,17 @@
 
     <dependencies>
         <dependency>
-            <groupId>com.smartroute</groupId>
+            <groupId>${project.groupId}</groupId>
             <artifactId>smart-route-jni</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>smart-route-scheduler</artifactId>
+            <version>${project.version}</version>
+            <type>dll</type>
+            <scope>provided</scope>
         </dependency>
 
         <!-- Declare the APIs we depend on and need for compilation. All of them
@@ -245,4 +254,8 @@
 
     </profiles>
 
+
+
+
+    
 </project>
