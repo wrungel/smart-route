@@ -4,28 +4,28 @@ DIR_UNIT_TEST_PP     = ../3rdParty/UnitTest++
 INC_UNIT_TEST_PP     = ${DIR_UNIT_TEST_PP}/src
 LIB_UNIT_TEST_PP     = ${DIR_UNIT_TEST_PP}/libUnitTest++.a
 
+OUT_DIR = ../out
 OBJ = loadAmmount.o situation.o mySqlHelper.o DatabaseReader.o
 OBJ_TEST = Test/unit_tests.o Test/TestDBConnection.o
 
 all: schedulerlib scheduler test
 
 test:  $(OBJ) $(OBJ_TEST) ${LIB_UNIT_TEST_PP}
-	g++ $(CFLAGS) -o unit_tests -lmysqlcppconn -lboost_date_time $(OBJ) $(OBJ_TEST) ${LIB_UNIT_TEST_PP}
+	g++ $(CFLAGS) -o $(OUT_DIR)/unit_tests -lmysqlcppconn -lboost_date_time $(OBJ) $(OBJ_TEST) ${LIB_UNIT_TEST_PP}
 
 schedulerlib: $(OBJ)
-        g++ $(CFLAGS) -o libScheduler.so -lmysqlcppconn -lboost_date_time -shared \
-        -I/usr/local/jdk1.6.0_03/include \
-        -I/usr/local/jdk1.6.0_03/include/linux com_marakana_jniexamples_Hello.c
+	g++ $(CFLAGS) -shared -o $(OUT_DIR)/libScheduler.so -lmysqlcppconn -lboost_date_time $(OBJ)
 
-scheduler: main.o
-	g++ $(CFLAGS) -o Scheduler -lmysqlcppconn -lboost_date_time main.o $(OBJ)
+scheduler: main.o $(OUT_DIR)/libScheduler.so
+	g++ $(CFLAGS) -o $(OUT_DIR)/Scheduler -lmysqlcppconn -lboost_date_time main.o $(OBJ) -L../out -lScheduler
 
 %.o: %.cpp
-	g++ -c $(CFLAGS) -I${INC_UNIT_TEST_PP} -o $@ $<
+	g++ -fPIC -c $(CFLAGS) -I${INC_UNIT_TEST_PP} -o $@ $<
 
 clean:
 	rm -rf Test/*.o
 	rm -rf ./*.o
-	rm -rf ./unit_tests
+	rm -rf $(OUT_DIR)/*
+
 
 
