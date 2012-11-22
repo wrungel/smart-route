@@ -1,7 +1,5 @@
 package com.smartroute.test;
 
-import org.junit.After;
-
 import com.google.common.base.Joiner;
 import com.smartroute.model.Contract;
 import com.smartroute.model.ContractStation;
