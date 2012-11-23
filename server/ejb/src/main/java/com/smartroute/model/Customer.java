@@ -15,12 +15,15 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 import java.io.Serializable;
 
+import static javax.persistence.GenerationType.IDENTITY;
+
 @Entity
 @XmlRootElement
 public class Customer implements Serializable {
 
     @Id
-    @GeneratedValue(strategy=GenerationType.IDENTITY)
+    @GeneratedValue(strategy = IDENTITY)
+    @Column(unique = true, nullable = false)
     private Long id;
 
     @Size(min = 10, max = 24)

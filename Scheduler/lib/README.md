@@ -38,3 +38,9 @@ Add to users' maven `settings.xml` (`/home/usr/.m2/settings.xml` or `C:\Users\us
     </activeProfiles>
         ...
     </settngs>
+
+ 
+## TODO
+* remove os-depoendent suffix from boost library references in pom.xml
+ 
+ 

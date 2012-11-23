@@ -68,7 +68,7 @@
 
                     </compilerStartOptions>
                     <linkerEndOptions>
-
+                        <!-- TODO: move boost version dependent suffix to settints.xml -->
                         <linkerEndOption>-shared -L${boost.lib} -L${mysql.connector.cpp.lib}
                             -lmysqlcppconn
                             -llibboost_date_time-mgw46-mt-1_52</linkerEndOption>

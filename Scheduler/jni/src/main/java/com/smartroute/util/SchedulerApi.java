@@ -22,7 +22,7 @@ public class SchedulerApi {
      * @param maxSuggestionsPerOrder
      * @return xml
      */
-    private native String fnTryScheduleFavorable(int[] orderIDs, int maxSuggestionsPerOrder);
+    public native String fnTryScheduleFavorable(int[] orderIDs, int maxSuggestionsPerOrder);
 
     /**
      * This routine is for generating 'best available' scheduler-suggestions.
@@ -33,7 +33,7 @@ public class SchedulerApi {
      * @param maxSuggestionsPerOrder
      * @return xml
      */
-    private native String fnBestAvailable(int[] orderIDs, int maxSuggestionsPerOrder);
+    public native String fnBestAvailable(int[] orderIDs, int maxSuggestionsPerOrder);
 
     /**
      * Gives a price estimate for an order.
@@ -44,12 +44,15 @@ public class SchedulerApi {
      */
     private native int fnEstimatePrice(String orderXML);
 
-    static final String SCHEDULER_LIB = "scheduler";
+    static final String SCHEDULER_LIB = "smart-route-scheduler";
+    
+    static {
+        System.loadLibrary(SCHEDULER_LIB);
+        System.out.println("Library loaded");
+    }
 
     public static void main(String[] args)
     {
-        System.loadLibrary(SCHEDULER_LIB);
-        System.out.println("Library loaded");
 
         SchedulerApi scheduler = new SchedulerApi();
 

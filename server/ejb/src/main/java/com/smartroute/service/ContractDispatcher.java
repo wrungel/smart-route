@@ -1,5 +1,7 @@
 package com.smartroute.service;
 
+import com.smartroute.util.SchedulerApi;
+
 import com.smartroute.model.Contract;
 import org.slf4j.Logger;
 
@@ -16,13 +18,12 @@ import javax.persistence.EntityManager;
 @MessageDriven(activationConfig = { 
         @ActivationConfigProperty(propertyName = "acknowledgeMode", propertyValue = "Auto-acknowledge"), 
         @ActivationConfigProperty(propertyName = "destinationType", propertyValue = "javax.jms.Queue"),  
-        @ActivationConfigProperty(propertyName = "destination", propertyValue = "scheduler/Queue"),  
+        @ActivationConfigProperty(propertyName = "destination", propertyValue = "java:/queue/scheduler"),  
         @ActivationConfigProperty(propertyName = "subscriptionDurability", propertyValue = "Durable")  })
-//@MessageDriven(mappedName="java:/scheduler/Queue")
-public class Scheduler implements MessageListener {
+public class ContractDispatcher implements MessageListener {
 
     @Inject
-    private Logger log;
+    Logger log;
     
     @Inject EntityManager em;
     
@@ -30,8 +31,10 @@ public class Scheduler implements MessageListener {
     public void onMessage(Message message) {
         log.debug("received message");
         
+        
+        
         // TODO: 1) call the scheduler per jni
-        // TODO: 2) push results to the frontend client
+        // TODO: 2) push results to the frontend client os dispatcher
 
         
         long orderId = -1;
@@ -40,6 +43,10 @@ public class Scheduler implements MessageListener {
             log.info("orderId = " + orderId);
             Contract order = em.find(Contract.class, orderId);
             log.info("processing Order " + order);
+            
+            String bestAvailable = new SchedulerApi().fnBestAvailable(new int[]{-1}, -1);
+            log.info("bestAvailable: " + bestAvailable);
+            
         } catch (JMSException e) {            
             e.printStackTrace();
         }
