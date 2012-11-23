@@ -426,9 +426,4 @@
         </outbound-socket-binding>
     </socket-binding-group>
 
-    <deployments>
-        <deployment name="smart-route.ear" runtime-name="smart-route.ear">
-            <content sha1="1d6b1da426d0ff2d6d9b285f394896375b6a8adb"/>
-        </deployment>
-    </deployments>
 </server>

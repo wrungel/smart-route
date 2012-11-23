@@ -39,7 +39,7 @@
             </snapshots>
         </repository>
 
-<!--         <repository>
+        <repository>
             <id>prime-repo</id>
             <name>PrimeFaces Maven Repository</name>
             <url>http://repository.primefaces.org</url>
@@ -50,7 +50,7 @@
             <snapshots>
                 <enabled>false</enabled>
             </snapshots>
-        </repository> -->
+        </repository>
     </repositories>
 
     <dependencyManagement>

@@ -6,10 +6,11 @@
         <groupId>com.smartroute</groupId>
         <artifactId>smart-route-parent</artifactId>
         <version>0.0.1-SNAPSHOT</version>
+        <relativePath>../../pom.xml</relativePath>
     </parent>
 
     <artifactId>smart-route-scheduler</artifactId>
-    <packaging>dll</packaging>
+    <packaging>so</packaging>
 
     <dependencies>
         <dependency>
@@ -49,29 +50,15 @@
 
                         </source>
 
+<!--
                         <source>
-                            <!-- define this in User settings.xml: -->
-                            <directory>${boost.include}</directory>
-                            <dependencyAnalysisParticipation>false</dependencyAnalysisParticipation>
-                        </source>
-
-                        <source>
-                            <!-- define this in User settings.xml: -->
                             <directory>${mysql.connector.cpp.include}</directory>
                             <dependencyAnalysisParticipation>false</dependencyAnalysisParticipation>
                         </source>
-
+-->
                     </sources>
-                    <compilerStartOptions>
-
-                        <compilerStartOption></compilerStartOption>
-
-                    </compilerStartOptions>
                     <linkerEndOptions>
-                        <!-- TODO: move boost version dependent suffix to settints.xml -->
-                        <linkerEndOption>-shared -L${boost.lib} -L${mysql.connector.cpp.lib}
-                            -lmysqlcppconn
-                            -llibboost_date_time-mgw46-mt-1_52</linkerEndOption>
+                        <linkerEndOption>-shared -lmysqlcppconn -lboost_date_time</linkerEndOption>
                     </linkerEndOptions>
                 </configuration>
                 <executions>

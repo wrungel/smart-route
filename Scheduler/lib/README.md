@@ -20,7 +20,7 @@ To fix compilation error which occurs under Windows 7 64 bit, fix
 #### Configure Maven
 Add to users' maven `settings.xml` (`/home/usr/.m2/settings.xml` or `C:\Users\user\.m2\settings.xml`) the following properties (replace paths like `D:\\..` with your own):
 
-    <settngs> 
+    <settings> 
         ...
     <profiles>
         <profile>
@@ -37,7 +37,7 @@ Add to users' maven `settings.xml` (`/home/usr/.m2/settings.xml` or `C:\Users\us
         <activeProfile>native</activeProfile>
     </activeProfiles>
         ...
-    </settngs>
+    </settings>
 
  
 ## TODO
