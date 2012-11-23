@@ -41,29 +41,38 @@
                             <directory>../src</directory>
                             <fileNames>
                                 <fileName>main.cpp</fileName>
+                                <fileName>loadAmmount.cpp</fileName>
+                                <fileName>DatabaseReader.cpp</fileName>
+                                <fileName>mySqlHelper.cpp</fileName>
+                                <fileName>situation.cpp</fileName>
                             </fileNames>
 
                         </source>
 
                         <source>
-                            <directory>D:\\bin\\boost\\1.52.0\\src</directory>
+                            <!-- define this in User settings.xml: -->
+                            <directory>${boost.include}</directory>
                             <dependencyAnalysisParticipation>false</dependencyAnalysisParticipation>
                         </source>
 
                         <source>
-                            <directory>D:\\bin\\mysql-connector-c++-noinstall-1.1.1-win32\\include</directory>
+                            <!-- define this in User settings.xml: -->
+                            <directory>${mysql.connector.cpp.include}</directory>
                             <dependencyAnalysisParticipation>false</dependencyAnalysisParticipation>
                         </source>
 
                     </sources>
                     <compilerStartOptions>
-                
-                     <compilerStartOption></compilerStartOption>
-                    
+
+                        <compilerStartOption></compilerStartOption>
+
                     </compilerStartOptions>
-                    <linkerStartOptions>
-                        <linkerStartOption>-shared -mno-cygwin -Wl,--add-stdcall-alias</linkerStartOption>
-                    </linkerStartOptions>
+                    <linkerEndOptions>
+
+                        <linkerEndOption>-shared -L${boost.lib} -L${mysql.connector.cpp.lib}
+                            -lmysqlcppconn
+                            -llibboost_date_time-mgw46-mt-1_52</linkerEndOption>
+                    </linkerEndOptions>
                 </configuration>
                 <executions>
                     <execution>
