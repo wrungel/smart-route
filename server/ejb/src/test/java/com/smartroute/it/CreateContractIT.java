@@ -1,5 +1,20 @@
 package com.smartroute.it;
 
+import java.math.BigDecimal;
+
+import javax.inject.Inject;
+
+import org.jboss.arquillian.container.test.api.Deployment;
+import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.shrinkwrap.api.Archive;
+import org.jboss.shrinkwrap.api.ShrinkWrap;
+import org.jboss.shrinkwrap.api.asset.EmptyAsset;
+import org.jboss.shrinkwrap.api.spec.WebArchive;
+import org.jboss.shrinkwrap.resolver.api.DependencyResolvers;
+import org.jboss.shrinkwrap.resolver.api.maven.MavenDependencyResolver;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+
 import com.smartroute.model.Account;
 import com.smartroute.model.Cargo;
 import com.smartroute.model.Contract;
@@ -22,24 +37,9 @@ import com.smartroute.service.ContractService;
 import com.smartroute.service.CustomerRegistration;
 import com.smartroute.util.Resources;
 import com.smartroute.util.SchedulerApi;
-import org.jboss.arquillian.container.test.api.Deployment;
-import org.jboss.arquillian.junit.Arquillian;
-import org.jboss.shrinkwrap.api.Archive;
-import org.jboss.shrinkwrap.api.ShrinkWrap;
-import org.jboss.shrinkwrap.api.asset.EmptyAsset;
-import org.jboss.shrinkwrap.api.spec.WebArchive;
-import org.jboss.shrinkwrap.resolver.api.DependencyResolvers;
-import org.jboss.shrinkwrap.resolver.api.maven.MavenDependencyResolver;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-
-import javax.inject.Inject;
-
-import java.io.File;
-import java.math.BigDecimal;
 
 @RunWith(Arquillian.class)
-public class CreateContractTest {
+public class CreateContractIT {
 
     @Inject org.slf4j.Logger log;
 
