@@ -5,7 +5,7 @@ INC_UNIT_TEST_PP     = ${DIR_UNIT_TEST_PP}/src
 LIB_UNIT_TEST_PP     = ${DIR_UNIT_TEST_PP}/libUnitTest++.a
 
 OUT_DIR = ../out
-JNI_API_DIR = ../lib/target/native/javah
+JNI_API_DIR = ../lib/linux/target/native/javah
 
 OBJ = loadAmmount.o situation.o mySqlHelper.o DatabaseReader.o
 OBJ_TEST = Test/unit_tests.o Test/TestDBConnection.o
