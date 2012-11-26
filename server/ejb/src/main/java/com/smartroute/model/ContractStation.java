@@ -40,6 +40,8 @@ public class ContractStation implements java.io.Serializable {
 
     @Enumerated(EnumType.STRING)
     private ContractStationKind kind;
+    
+    private Integer units;
 
     @Temporal(TemporalType.TIMESTAMP)
     private Date timeFrom;
@@ -89,6 +91,15 @@ public class ContractStation implements java.io.Serializable {
     public void setKind(ContractStationKind kind) {
         this.kind = kind;
     }
+    
+    public Integer getUnits() {
+		return units;
+	}
+    
+    public void setUnits(Integer units) {
+		this.units = units;
+	}
+    
 
     public Date getTimeFrom() {
         return this.timeFrom;

@@ -8,14 +8,18 @@
 	<ui:define name="content">
 		<h:form>
 
+			<p:growl id="messages" showDetail="true" life="2000" />
+			
 			<p:panel id="contractData" header="Contract data">
 				<h:panelGrid columns="3" cellpadding="5">
 					<h:outputLabel value="Weight: " />
-					<p:inputText id="weight" value="#{contractEditor.contract.entireWeightKg}" />
-					<p:message for="weight" /> 
+					<p:inputText id="weight"
+						value="#{contractEditor.contract.entireWeightKg}" />
+					<p:message for="weight" />
 
 					<h:outputLabel value="Sealed: " />
-					<p:selectBooleanCheckbox id="sealed" value="#{contractEditor.contract.sealed}" />
+					<p:selectBooleanCheckbox id="sealed"
+						value="#{contractEditor.contract.sealed}" />
 					<p:message for="sealed" />
 
 					<h:outputLabel value="Price: " />
@@ -23,11 +27,13 @@
 					<p:message for="price" />
 
 					<h:outputLabel value="Units: " />
-					<p:inputText id="units" value="#{contractEditor.contract.entireVolumeUnits}" />
+					<p:inputText id="units"
+						value="#{contractEditor.contract.entireVolumeUnits}" />
 					<p:message for="units" />
 
 					<h:outputLabel value="Volume: " />
-					<p:inputText id="volume" value="#{contractEditor.contract.entireVolumeM3}" />
+					<p:inputText id="volume"
+						value="#{contractEditor.contract.entireVolumeM3}" />
 					<p:message for="volume" />
 
 					<h:outputLabel value="Comment: " />
@@ -39,37 +45,67 @@
 			</p:panel>
 
 			<p:panel id="startStation" header="Start station">
-				<h:panelGrid columns="3" cellpadding="5">
-					<h:outputLabel value="Time from: " />
-					<p:calendar id="startTimeFrom" value="#{contractEditor.start.timeFrom}"
-						pattern="MM/dd/yyyy HH:mm" />
-					<p:message for="startTimeFrom" />
+				<h:panelGrid columns="2" cellpadding="5">
+					<h:panelGrid columns="3" cellpadding="5">
+						<h:outputLabel value="Time from: " />
+						<p:calendar id="startTimeFrom"
+							value="#{contractEditor.start.timeFrom}"
+							pattern="MM/dd/yyyy HH:mm" />
+						<p:message for="startTimeFrom" />
 
-					<h:outputLabel value="Time until: " />
-					<p:calendar id="startTimeUntil" value="#{contractEditor.start.timeUntil}"
-						pattern="MM/dd/yyyy HH:mm" />
-					<p:message for="startTimeUntil" />
+						<h:outputLabel value="Time until: " />
+						<p:calendar id="startTimeUntil"
+							value="#{contractEditor.start.timeUntil}"
+							pattern="MM/dd/yyyy HH:mm" />
+						<p:message for="startTimeUntil" />
 
-					<h:outputLabel value="Address: " />
-					<p:inputText id="startAddress" value="#{contractEditor.start.address}" />
-					<p:message for="startAddress" />
+						<h:outputLabel value="Address: " />
+						<p:inputText id="startAddress"
+							value="#{contractEditor.start.address}" />
+						<p:message for="startAddress" />
 
-					<h:outputLabel value="ZIP: " />
-					<p:inputText id="startZip" value="#{contractEditor.start.zip}" />
-					<p:message for="startZip" />
+						<h:outputLabel value="ZIP: " />
+						<p:inputText id="startZip" value="#{contractEditor.start.zip}" />
+						<p:message for="startZip" />
 
-					<h:outputLabel value="Load: " />
-					<p:selectBooleanCheckbox id="startLoad" value="#{contractEditor.start.load}" />
-					<p:message for="startLoad" />
-					
-					<h:outputLabel value="Latitude: " />
-					<p:inputText id="startLatitude" value="#{contractEditor.start.latitude}" />
-					<p:message for="startLatitude" />
-					
-					<h:outputLabel value="Longitude: " />
-					<p:inputText id="startLongitude" value="#{contractEditor.start.longitude}" />
-					<p:message for="startLongitude" />
+						<h:outputLabel value="Load: " />
+						<p:selectBooleanCheckbox id="startLoad"
+							value="#{contractEditor.start.load}" />
+						<p:message for="startLoad" />
+
+						<h:outputLabel value="Units: " />
+						<p:inputText id="startUnits" value="#{contractEditor.start.units}" />
+						<p:message for="startUnits" />
+
+						<h:outputLabel value="Latitude: " />
+						<p:inputText id="startLatitude"
+							value="#{contractEditor.start.latitude}" />
+						<p:message for="startLatitude" />
+
+						<h:outputLabel value="Longitude: " />
+						<p:inputText id="startLongitude"
+							value="#{contractEditor.start.longitude}" />
+						<p:message for="startLongitude" />
+					</h:panelGrid>
+
+					<h:panelGrid columns="1">
+						<script src="http://maps.google.com/maps/api/js?sensor=false"
+							type="text/javascript"></script>
+
+
+						<p:gmap center="50.784361, 6.053046" zoom="10" type="ROADMAP"
+							model="#{startStationMapBean.draggableModel}"
+							style="width:600px;height:400px">
+							<p:ajax event="markerDrag" listener="#{startStationMapBean.onMarkerDrag}"
+								update="messages" />
+								
+				        <p:ajax event="pointSelect" listener="#{startStationMapBean.onPointSelect}" update="messages" /> 
+        							
+						</p:gmap>
+
+					</h:panelGrid>
 				</h:panelGrid>
+
 			</p:panel>
 
 			<p:panel id="endStation" header="End station">
@@ -80,8 +116,8 @@
 					<p:message for="endTimeFrom" />
 
 					<h:outputLabel value="Time until: " />
-					<p:calendar id="endTimeUntil" value="#{contractEditor.end.timeUntil}"
-						pattern="MM/dd/yyyy HH:mm" />
+					<p:calendar id="endTimeUntil"
+						value="#{contractEditor.end.timeUntil}" pattern="MM/dd/yyyy HH:mm" />
 					<p:message for="endTimeUntil" />
 
 					<h:outputLabel value="Address: " />
@@ -93,21 +129,28 @@
 					<p:message for="endZip" />
 
 					<h:outputLabel value="Load: " />
-					<p:selectBooleanCheckbox id="endLoad" value="#{contractEditor.end.load}" />
+					<p:selectBooleanCheckbox id="endLoad"
+						value="#{contractEditor.end.load}" />
 					<p:message for="endLoad" />
-					
+
+					<h:outputLabel value="Units: " />
+					<p:inputText id="endUnits" value="#{contractEditor.end.units}" />
+					<p:message for="endUnits" />
+
 					<h:outputLabel value="Latitude: " />
-					<p:inputText id="endLatitude" value="#{contractEditor.end.latitude}" />
+					<p:inputText id="endLatitude"
+						value="#{contractEditor.end.latitude}" />
 					<p:message for="endLatitude" />
-					
+
 					<h:outputLabel value="Longitude: " />
-					<p:inputText id="endLongitude" value="#{contractEditor.end.longitude}" />
+					<p:inputText id="endLongitude"
+						value="#{contractEditor.end.longitude}" />
 					<p:message for="endLongitude" />
 				</h:panelGrid>
 			</p:panel>
 
-			<h:commandButton value="Submit" id="submit"  
-             action="#{contractEditor.saveContract}"/>  
+			<h:commandButton value="Submit" id="submit"
+				action="#{contractEditor.saveContract}" />
 
 			<h:commandButton value="Reset" type="reset" />
 
