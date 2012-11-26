@@ -22,11 +22,11 @@
             <version>${project.version}</version>
         </dependency>
 
-        <!-- Declare the APIs we depend on and need for compilation. All of them
-            are provided by JBoss AS 7 -->
+        <!-- Declare the APIs we depend on and need for compilation. All 
+            of them are provided by JBoss AS 7 -->
 
-        <!-- Import the EJB API, we use provided scope as the API is included in
-            JBoss AS 7 -->
+        <!-- Import the EJB API, we use provided scope as the API is included 
+            in JBoss AS 7 -->
         <dependency>
             <groupId>org.jboss.spec.javax.ejb</groupId>
             <artifactId>jboss-ejb-api_3.1_spec</artifactId>
@@ -39,16 +39,16 @@
             <scope>provided</scope>
         </dependency>
 
-        <!-- Import the CDI API, we use provided scope as the API is included in
-            JBoss AS 7 -->
+        <!-- Import the CDI API, we use provided scope as the API is included 
+            in JBoss AS 7 -->
         <dependency>
             <groupId>javax.enterprise</groupId>
             <artifactId>cdi-api</artifactId>
             <scope>provided</scope>
         </dependency>
 
-        <!-- Import the JPA API, we use provided scope as the API is included in
-            JBoss AS 7 -->
+        <!-- Import the JPA API, we use provided scope as the API is included 
+            in JBoss AS 7 -->
         <dependency>
             <groupId>org.hibernate.javax.persistence</groupId>
             <artifactId>hibernate-jpa-2.0-api</artifactId>
@@ -66,16 +66,16 @@
 
         <!-- Now we declare any tools needed -->
 
-        <!-- Annotation processor to generate the JPA 2.0 metamodel classes for
-            typesafe criteria queries -->
+        <!-- Annotation processor to generate the JPA 2.0 metamodel classes 
+            for typesafe criteria queries -->
         <dependency>
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-jpamodelgen</artifactId>
             <scope>provided</scope>
         </dependency>
 
-        <!-- Annotation processor that raising compilation errors whenever constraint
-            annotations are incorrectly used. -->
+        <!-- Annotation processor that raising compilation errors whenever 
+            constraint annotations are incorrectly used. -->
         <dependency>
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-validator-annotation-processor</artifactId>
@@ -160,8 +160,8 @@
 
 
         <!-- Optional, but highly recommended -->
-        <!-- Arquillian allows you to test enterprise code such as EJBs and Transactional(JTA)
-            JPA from JUnit/TestNG -->
+        <!-- Arquillian allows you to test enterprise code such as EJBs and 
+            Transactional(JTA) JPA from JUnit/TestNG -->
         <dependency>
             <groupId>org.jboss.arquillian.junit</groupId>
             <artifactId>arquillian-junit-container</artifactId>
@@ -197,10 +197,10 @@
 
     <profiles>
         <profile>
-            <!-- The default profile skips all tests, though you can tune it to run
-                just unit tests based on a custom pattern -->
-            <!-- Seperate profiles are provided for running all tests, including Arquillian
-                tests that execute in the specified container -->
+            <!-- The default profile skips all tests, though you can tune 
+                it to run just unit tests based on a custom pattern -->
+            <!-- Seperate profiles are provided for running all tests, including 
+                Arquillian tests that execute in the specified container -->
             <id>default</id>
             <activation>
                 <activeByDefault>true</activeByDefault>
@@ -219,10 +219,10 @@
         </profile>
 
         <profile>
-            <!-- An optional Arquillian testing profile that executes tests in your
-                JBoss AS instance -->
-            <!-- This profile will start a new JBoss AS instance, and execute the
-                test, shutting it down when done -->
+            <!-- An optional Arquillian testing profile that executes tests 
+                in your JBoss AS instance -->
+            <!-- This profile will start a new JBoss AS instance, and execute 
+                the test, shutting it down when done -->
             <!-- Run with: mvn clean test -Parq-jbossas-managed -->
             <id>arq-jbossas-managed</id>
             <dependencies>
@@ -235,8 +235,8 @@
         </profile>
 
         <profile>
-            <!-- An optional Arquillian testing profile that executes tests in a remote
-                JBoss AS instance -->
+            <!-- An optional Arquillian testing profile that executes tests 
+                in a remote JBoss AS instance -->
             <!-- Run with: mvn clean test -Parq-jbossas-remote -->
             <id>arq-jbossas-remote</id>
             <dependencies>
@@ -247,44 +247,44 @@
                 </dependency>
             </dependencies>
         </profile>
- 	<profile>
-      		<id>win32</id>
-		<activation>
-        		<os>
-         			<family>windows</family>
-        		</os>
-      		</activation>
-		<dependencies>
- 		<dependency>
-            <groupId>${project.groupId}</groupId>
-            <artifactId>smart-route-win32</artifactId>
-            <version>${project.version}</version>
-            <type>dll</type>
-            <scope>provided</scope>
-        </dependency>
+        <profile>
+            <id>win32</id>
+            <activation>
+                <os>
+                    <family>windows</family>
+                </os>
+            </activation>
+            <dependencies>
+                <dependency>
+                    <groupId>${project.groupId}</groupId>
+                    <artifactId>smart-route-win32</artifactId>
+                    <version>${project.version}</version>
+                    <type>dll</type>
+                    <scope>provided</scope>
+                </dependency>
             </dependencies>
-		
-    </profile>
 
-    <profile>
-      <id>linux</id>
-      <activation>
-<os>
+        </profile>
+
+        <profile>
+            <id>linux</id>
+            <activation>
+                <os>
                     <family>unix</family>
                 </os>
-      </activation>
+            </activation>
             <dependencies>
 
- <dependency>
-            <groupId>${project.groupId}</groupId>
-            <artifactId>smart-route-linux</artifactId>
-            <version>${project.version}</version>
-            <type>so</type>
-            <scope>provided</scope>
-        </dependency>
+                <dependency>
+                    <groupId>${project.groupId}</groupId>
+                    <artifactId>smart-route-linux</artifactId>
+                    <version>${project.version}</version>
+                    <type>so</type>
+                    <scope>provided</scope>
+                </dependency>
             </dependencies>
 
-    </profile>
+        </profile>
 
 
     </profiles>

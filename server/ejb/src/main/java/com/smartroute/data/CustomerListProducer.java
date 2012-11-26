@@ -48,7 +48,7 @@ public class CustomerListProducer {
 		// Swap criteria statements if you would like to try out type-safe criteria queries, a new
 		// feature in JPA 2.0
 		// criteria.select(customer).orderBy(cb.asc(customer.get(Customer_.name)));
-		criteria.select(customer).orderBy(cb.asc(customer.get("name")));
+		criteria.select(customer);
 
 		customers = em.createQuery(criteria).getResultList();
 //		logger.info(on(", ").join(transform(customers, toStringFunction())));

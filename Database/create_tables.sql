@@ -3,7 +3,7 @@ USE `LkwSchedulerDB` ;
 
 CREATE TABLE IF NOT EXISTS Account
 (
- login VARCHAR(20),
+ login VARCHAR(20) UNIQUE,
  passwd VARCHAR(32),
  name VARCHAR(150),
  email VARCHAR(100),

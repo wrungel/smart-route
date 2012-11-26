@@ -1,10 +1,17 @@
 package com.smartroute.model;
 
-import org.hibernate.annotations.Index;
+import static javax.persistence.GenerationType.IDENTITY;
+
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
@@ -12,12 +19,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
-import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-
-import static javax.persistence.GenerationType.IDENTITY;
+import org.hibernate.annotations.Index;
 
 @Entity
 @org.hibernate.annotations.Table(appliesTo = "ContractStation",
@@ -36,6 +38,7 @@ public class ContractStation implements java.io.Serializable {
     @Column(nullable = false)	
     private Integer numberInSequence;
 
+    @Enumerated(EnumType.STRING)
     private ContractStationKind kind;
 
     @Temporal(TemporalType.TIMESTAMP)

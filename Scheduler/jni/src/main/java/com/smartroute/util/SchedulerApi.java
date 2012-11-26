@@ -1,11 +1,22 @@
 package com.smartroute.util;
 
+import java.util.Vector;
+
 /**
  * <p>
  * Scheduler C++/Java bridge.
  * </p>
- * Set the system variable <code>java.library.path</code> to path containing the scheduler.so or scheduler.dll on windows, e.g:<br/>
- * <blockquote><code>-Djava.library.path=D:\tmp\smart-route\Scheduler\windows\x64\Release</code></blockquote>
+ * 
+ * Set the system variable <code>java.library.path</code> to path containing dynamic libraries:
+ * <ul>
+ * <li>smart-route-linux.so or smart-route-win32.dll on windows</li>
+ * <li>mysqlcppconn.so (.dll)</li>
+ * <li>boost_date_time.so (.dll)</li>
+ * <li>libmysql.so (.dll)</li>
+ * </ul>
+ * Example:
+ * <blockquote><code>-Djava.library.path=E:\BIN\mysql-connector-c++-noinstall-1.1.1-win32\lib;E:\BIN\boost_1_52_0_libs\lib32;E:\BIN\mysql-5.5.28-win32\lib;C:\Users\maxx\.m2\repository\com\smartroute\smart-route-win32\0.0.1-SNAPSHOT"</code></blockquote>
+ * 
  *
  * @author frol
  *
@@ -44,13 +55,30 @@ public class SchedulerApi {
      */
     private native int fnEstimatePrice(String orderXML);
 
-    static final String SCHEDULER_LIB = "smart-route-scheduler";
+    static final String SCHEDULER_LIB = "smart-route-win32-0.0.1-SNAPSHOT";
     
     static {
-        System.loadLibrary(SCHEDULER_LIB);
+    	try {
+    		java.lang.reflect.Field LIBRARIES = null;
+			LIBRARIES = ClassLoader.class.getDeclaredField("loadedLibraryNames");
+			@SuppressWarnings("unchecked")
+			final Vector<String> libraries = (Vector<String>) LIBRARIES.get(SchedulerApi.class.getClassLoader());
+			for (String s: libraries) {
+				System.out.println("ALREADY LOADED: " + s);
+			}
+		} catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException e) {
+			e.printStackTrace();
+		}
+
+    	//System.out.println(System.getProperty("java.library.path"));
+    	System.loadLibrary("libmysql");
+    	System.load("mysqlcppconn");
+    	System.load("boost_date_time-vc100-mt-1_52");
+        System.load(SCHEDULER_LIB);
         System.out.println("Library loaded");
     }
 
+    
     public static void main(String[] args)
     {
 

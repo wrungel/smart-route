@@ -12,6 +12,7 @@ import javax.inject.Named;
 
 import com.smartroute.model.Contract;
 import com.smartroute.model.ContractStation;
+import com.smartroute.model.ContractStationKind;
 import com.smartroute.service.ContractService;
 
 @SessionScoped
@@ -28,19 +29,26 @@ public class ContractEditor  implements Serializable {
         contract.setCustomer(authorization.getCurrent());
 
         ContractStation contractStation = new ContractStation();
-        contractStation.setAddress("Moscow");
+        contractStation.setKind(ContractStationKind.LOAD);
         contractStation.setNumberInSequence(1);
         contractStation.setContract(contract);
         contract.getStations().add(contractStation);
 
         contractStation = new ContractStation();
-        contractStation.setAddress("SPB");
+        contractStation.setKind(ContractStationKind.UNLOAD);
         contractStation.setNumberInSequence(2);
         contractStation.setContract(contract);
         contract.getStations().add(contractStation);
-
     }
 
+    private String contractCustomer;
+    
+    public String getContractCustomer() {
+    	return contractCustomer;
+    }
+    public void setContractCustomer(String contractCustomer) {
+		this.contractCustomer = contractCustomer;
+	}
 
     public Contract getContract() {
         return contract;
@@ -56,7 +64,13 @@ public class ContractEditor  implements Serializable {
         contract.getStations().add(contractStation); 
     }
 
-
+    public ContractStation getStart() {
+    	return contract.getStations().get(0);
+    }
+    
+    public ContractStation getEnd() {
+    	return contract.getStations().get(1);
+    }
 
     public void saveContract() {
         try {
@@ -65,13 +79,8 @@ public class ContractEditor  implements Serializable {
             init();
 
         } catch (Exception e) {
-            Throwable t = e;
-            while (e.getCause() != null && t != e.getCause()) {
-                t = e.getCause();
-            }
-
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(
-                    FacesMessage.SEVERITY_FATAL, t.getClass().getName(), t.getMessage()));            
+                    FacesMessage.SEVERITY_FATAL, e.getClass().getName(), e.getMessage()));            
         }
 
     }

@@ -17,9 +17,10 @@
     <param-value>bluesky</param-value>
   </context-param>
   <welcome-file-list>
-    <welcome-file>/customer/login.xhtml</welcome-file>
+    <welcome-file>/login.xhtml</welcome-file>
   </welcome-file-list>
-  <filter>
+  <!-- now activated and configured using @WebFilter annotation  -->
+<!--   <filter>
     <filter-name>AuthorizationFilter</filter-name>
     <filter-class>com.smartroute.util.AuthorizationFilter</filter-class>
   </filter>
@@ -27,7 +28,7 @@
     <filter-name>AuthorizationFilter</filter-name>
     <url-pattern>/customer/*</url-pattern>
   </filter-mapping>
-  <servlet>
+ -->  <servlet>
     <servlet-name>Faces Servlet</servlet-name>
     <servlet-class>javax.faces.webapp.FacesServlet</servlet-class>
     <load-on-startup>1</load-on-startup>

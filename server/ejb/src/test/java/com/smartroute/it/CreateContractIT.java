@@ -52,7 +52,6 @@ public class CreateContractIT {
              
         return ShrinkWrap.create(WebArchive.class, "test.war")
                 .addManifest()
-//                .addAsResource(new File("D:\\tmp\\smart-route\\Scheduler\\lib\\target\\smart-route-scheduler.dll"))
                 .addClasses(
                         Account.class,
                         Cargo.class,
@@ -101,12 +100,11 @@ public class CreateContractIT {
         account.setName("frol");
         account.setLogin("frol");
         account.setPasswd("frol123");
-        accountRepository.persist(account);
         Customer newCustomer = new Customer();
         newCustomer.setAccount(account);
         newCustomer.setAddress("Amsterdam");
         newCustomer.setPhone("+78129283988");
-        customerRegistration.register(newCustomer);
+        customerRegistration.register(account, newCustomer);
         contract.setCustomer(newCustomer);
         
         contractService.create(contract);

@@ -30,5 +30,9 @@ public class CustomerRepository implements Serializable {
         return customer;
 	}
 	
+	public void persist(Customer customer) {
+		em.persist(customer);
+	}
+	
 	
 }

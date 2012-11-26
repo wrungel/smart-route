@@ -1,77 +1,73 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-    <modelVersion>4.0.0</modelVersion>
-    <parent>
-        <groupId>com.smartroute</groupId>
-        <artifactId>smart-route-native</artifactId>
-        <version>0.0.1-SNAPSHOT</version>
-    </parent>
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>com.smartroute</groupId>
+		<artifactId>smart-route-native</artifactId>
+		<version>0.0.1-SNAPSHOT</version>
+	</parent>
 
-    <artifactId>smart-route-linux</artifactId>
-    <packaging>so</packaging>
+	<artifactId>smart-route-linux</artifactId>
+	<packaging>so</packaging>
 
-    <dependencies>
-        <dependency>
-            <groupId>${project.groupId}</groupId>
-            <artifactId>smart-route-jni</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-    </dependencies>
+	<dependencies>
+		<dependency>
+			<groupId>${project.groupId}</groupId>
+			<artifactId>smart-route-jni</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+	</dependencies>
 
-    <build>
-        <plugins>
+	<build>
+		<plugins>
 
-            <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>native-maven-plugin</artifactId>
-                <version>1.0-alpha-7</version>
-                <extensions>true</extensions>
-                <configuration>
-                    <!-- trigger javah -->
-			<javahOS>linux</javahOS>
-                    <javahClassNames>
-                        <javahClassName>com.smartroute.util.SchedulerApi</javahClassName>
-                    </javahClassNames>
-                    <compilerProvider>generic-classic</compilerProvider>
-                    <compilerExecutable>g++</compilerExecutable>
-                    <linkerExecutable>g++</linkerExecutable>
-                    <sources>
-                        <source>
-                            <directory>../../src</directory>
-                            <fileNames>
-                                <fileName>com_smartroute_util_SchedulerApi.cpp</fileName>
-                                <fileName>loadAmmount.cpp</fileName>
-                                <fileName>DatabaseReader.cpp</fileName>
-                                <fileName>mySqlHelper.cpp</fileName>
-                                <fileName>situation.cpp</fileName>
-                            </fileNames>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>native-maven-plugin</artifactId>
+				<version>1.0-alpha-7</version>
+				<extensions>true</extensions>
+				<configuration>
+					<!-- trigger javah -->
+					<javahOS>linux</javahOS>
+					<javahClassNames>
+						<javahClassName>com.smartroute.util.SchedulerApi</javahClassName>
+					</javahClassNames>
+					<compilerProvider>generic-classic</compilerProvider>
+					<compilerExecutable>g++</compilerExecutable>
+					<linkerExecutable>g++</linkerExecutable>
+					<sources>
+						<source>
+							<directory>../../src</directory>
+							<fileNames>
+								<fileName>com_smartroute_util_SchedulerApi.cpp</fileName>
+								<fileName>loadAmmount.cpp</fileName>
+								<fileName>DatabaseReader.cpp</fileName>
+								<fileName>mySqlHelper.cpp</fileName>
+								<fileName>situation.cpp</fileName>
+							</fileNames>
+						</source>
 
-                        </source>
-
-<!--
-                        <source>
-                            <directory>${mysql.connector.cpp.include}</directory>
-                            <dependencyAnalysisParticipation>false</dependencyAnalysisParticipation>
-                        </source>
--->
-                    </sources>
-                    <linkerEndOptions>
-                        <linkerEndOption>-shared -lmysqlcppconn -lboost_date_time</linkerEndOption>
-                    </linkerEndOptions>
-                </configuration>
-                <executions>
-                    <execution>
-                        <id>javah</id>
-                        <phase>generate-sources</phase>
-                        <goals>
-                            <goal>javah</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-        </plugins>
-    </build>
+						<!-- <source> <directory>${mysql.connector.cpp.include}</directory> 
+							<dependencyAnalysisParticipation>false</dependencyAnalysisParticipation> 
+							</source> -->
+					</sources>
+					<linkerEndOptions>
+						<linkerEndOption>-shared -lmysqlcppconn -lboost_date_time</linkerEndOption>
+					</linkerEndOptions>
+				</configuration>
+				<executions>
+					<execution>
+						<id>javah</id>
+						<phase>generate-sources</phase>
+						<goals>
+							<goal>javah</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
 
 
 </project>

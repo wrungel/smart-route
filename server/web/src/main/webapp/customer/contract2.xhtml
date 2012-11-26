@@ -1,78 +1,116 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets"
-	xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html" xmlns:p="http://primefaces.org/ui"
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
 	template="/WEB-INF/templates/default.xhtml">
 	<ui:define name="content">
 		<h:form>
 
-			<p:layout style="min-width:800px;min-height:600px;" id="layout">
-				<p:layoutUnit position="west" resizable="true" size="200" minSize="250" maxSize="300">
+			<p:panel id="contractData" header="Contract data">
+				<h:panelGrid columns="3" cellpadding="5">
+					<h:outputLabel value="Weight: " />
+					<p:inputText id="weight" value="#{contractEditor.contract.entireWeightKg}" />
+					<p:message for="weight" /> 
 
-					<p:panel header="Order">
-						<h:panelGrid columns="2" cellpadding="5">
-							<h:outputText value="Price: " />
-							<p:inputMask value="#{contractEditor.contract.price}" />
+					<h:outputLabel value="Sealed: " />
+					<p:selectBooleanCheckbox id="sealed" value="#{contractEditor.contract.sealed}" />
+					<p:message for="sealed" />
 
-							<h:outputText value="Comment: " />
-							<p:inputTextarea value="#{contractEditor.contract.customersComment}" />
+					<h:outputLabel value="Price: " />
+					<p:inputText id="price" value="#{contractEditor.contract.price}" />
+					<p:message for="price" />
 
-							<p:commandButton value="Reset" type="reset" />
-							<p:commandButton value="Submit" update="display" oncomplete="dialog.show()" />
+					<h:outputLabel value="Units: " />
+					<p:inputText id="units" value="#{contractEditor.contract.entireVolumeUnits}" />
+					<p:message for="units" />
 
-						</h:panelGrid>
-					</p:panel>
+					<h:outputLabel value="Volume: " />
+					<p:inputText id="volume" value="#{contractEditor.contract.entireVolumeM3}" />
+					<p:message for="volume" />
 
-
-					<p:accordionPanel   value="#{contractEditor.contract.stations}" var="station">
-						<p:tab id="dr" title="#{station.address}">
-											<p:draggable  for="dr" revert="false"  
-                        handle=".ui-panel-titlebar" stack=".ui-panel"/>  
-						
-							<p:panelGrid columns="3">
-
-								<h:outputText value="Address: " />
-								<p:inputTextarea id="address" rows="6" cols="33" value="#{station.address}" />
-								<h:message for="address" errorClass="invalid" />
-
-								<h:outputText value="zipk: " />
-								<h:inputText id="zip" value="#{station.zip}" />
-								<h:message for="zip" errorClass="invalid" />
-
-								<h:outputText value="Kind: " />
-								<p:selectBooleanButton id="kind" value="#{station.load}" onLabel="Load" offLabel="Unload" />
-								<h:message for="kind" errorClass="invalid" />
-
-								<h:outputText value="Time from: " />
-								<p:calendar id="timeFrom" value="#{station.timeFrom}" pattern="MM/dd/yyyy HH:mm" />
-								<h:message for="timeFrom" errorClass="invalid" />
-
-								<h:outputText value="Time until: " />
-								<p:calendar id="timeUntil" value="#{station.timeUntil}" pattern="MM/dd/yyyy HH:mm" />
-								<h:message for="timeUntil" errorClass="invalid" />
-							</p:panelGrid>
-
-
-						</p:tab>
-					</p:accordionPanel>
-				</p:layoutUnit>
-
-				<p:layoutUnit position="center">  
-	        Center  
-	    </p:layoutUnit>
-			</p:layout>
-
-			<p:dialog widgetVar="dialog" modal="true">
-				<h:panelGrid id="display" columns="2" cellpadding="5">
-
-					<h:outputText value="Price: " />
-					<h:outputText value="#{contractEditor.contract.price}" />
-
-					<h:outputText value="Comment: " />
-					<h:outputText value="#{contractEditor.contract.customersComment}" />
-
+					<h:outputLabel value="Comment: " />
+					<p:inputTextarea id="comment"
+						value="#{contractEditor.contract.customersComment}" />
+					<p:message for="comment" />
 
 				</h:panelGrid>
-			</p:dialog>
+			</p:panel>
+
+			<p:panel id="startStation" header="Start station">
+				<h:panelGrid columns="3" cellpadding="5">
+					<h:outputLabel value="Time from: " />
+					<p:calendar id="startTimeFrom" value="#{contractEditor.start.timeFrom}"
+						pattern="MM/dd/yyyy HH:mm" />
+					<p:message for="startTimeFrom" />
+
+					<h:outputLabel value="Time until: " />
+					<p:calendar id="startTimeUntil" value="#{contractEditor.start.timeUntil}"
+						pattern="MM/dd/yyyy HH:mm" />
+					<p:message for="startTimeUntil" />
+
+					<h:outputLabel value="Address: " />
+					<p:inputText id="startAddress" value="#{contractEditor.start.address}" />
+					<p:message for="startAddress" />
+
+					<h:outputLabel value="ZIP: " />
+					<p:inputText id="startZip" value="#{contractEditor.start.zip}" />
+					<p:message for="startZip" />
+
+					<h:outputLabel value="Load: " />
+					<p:selectBooleanCheckbox id="startLoad" value="#{contractEditor.start.load}" />
+					<p:message for="startLoad" />
+					
+					<h:outputLabel value="Latitude: " />
+					<p:inputText id="startLatitude" value="#{contractEditor.start.latitude}" />
+					<p:message for="startLatitude" />
+					
+					<h:outputLabel value="Longitude: " />
+					<p:inputText id="startLongitude" value="#{contractEditor.start.longitude}" />
+					<p:message for="startLongitude" />
+				</h:panelGrid>
+			</p:panel>
+
+			<p:panel id="endStation" header="End station">
+				<h:panelGrid columns="3" cellpadding="5">
+					<h:outputLabel value="Time from: " />
+					<p:calendar id="endTimeFrom" value="#{contractEditor.end.timeFrom}"
+						pattern="MM/dd/yyyy HH:mm" />
+					<p:message for="endTimeFrom" />
+
+					<h:outputLabel value="Time until: " />
+					<p:calendar id="endTimeUntil" value="#{contractEditor.end.timeUntil}"
+						pattern="MM/dd/yyyy HH:mm" />
+					<p:message for="endTimeUntil" />
+
+					<h:outputLabel value="Address: " />
+					<p:inputText id="endAddress" value="#{contractEditor.end.address}" />
+					<p:message for="endAddress" />
+
+					<h:outputLabel value="ZIP: " />
+					<p:inputText id="endZip" value="#{contractEditor.end.zip}" />
+					<p:message for="endZip" />
+
+					<h:outputLabel value="Load: " />
+					<p:selectBooleanCheckbox id="endLoad" value="#{contractEditor.end.load}" />
+					<p:message for="endLoad" />
+					
+					<h:outputLabel value="Latitude: " />
+					<p:inputText id="endLatitude" value="#{contractEditor.end.latitude}" />
+					<p:message for="endLatitude" />
+					
+					<h:outputLabel value="Longitude: " />
+					<p:inputText id="endLongitude" value="#{contractEditor.end.longitude}" />
+					<p:message for="endLongitude" />
+				</h:panelGrid>
+			</p:panel>
+
+			<h:commandButton value="Submit" id="submit"  
+             action="#{contractEditor.saveContract}"/>  
+
+			<h:commandButton value="Reset" type="reset" />
+
 		</h:form>
 
 	</ui:define>

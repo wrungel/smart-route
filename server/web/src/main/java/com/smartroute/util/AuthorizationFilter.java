@@ -1,8 +1,8 @@
 package com.smartroute.util;
 
 
-import com.smartroute.controller.Authorization;
-import org.slf4j.Logger;
+import java.io.IOException;
+import java.net.URLEncoder;
 
 import javax.inject.Inject;
 import javax.servlet.Filter;
@@ -15,8 +15,9 @@ import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import java.io.IOException;
-import java.net.URLEncoder;
+import org.slf4j.Logger;
+
+import com.smartroute.controller.Authorization;
 
 @WebFilter("/customer/*")
 public class AuthorizationFilter implements Filter {

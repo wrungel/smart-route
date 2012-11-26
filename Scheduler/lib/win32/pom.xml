@@ -1,96 +1,112 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-    <modelVersion>4.0.0</modelVersion>
-    <parent>
-        <groupId>com.smartroute</groupId>
-        <artifactId>smart-route-native</artifactId>
-        <version>0.0.1-SNAPSHOT</version>
-    </parent>
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>com.smartroute</groupId>
+		<artifactId>smart-route-native</artifactId>
+		<version>0.0.1-SNAPSHOT</version>
+	</parent>
 
-    <artifactId>smart-route-win32</artifactId>
-    <packaging>dll</packaging>
+	<!-- 
+	Only Microsoft Visual Studio 2010 Express C++ 32bit compiler is supported.  
+	Set up Visual Stdio before runing Maven: 
+	"C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\vcvars32.bat"
+	 Required libraries and headers (includes):
+	 * MySQL Server
+	 * MySQL C++ Connector
+	 * boost_date_time
+	 Does not run in Cygwin environment.
+	 -->
 
-<!-- 	<properties>
-		<maven.native.include.os>win32</maven.native.include.os>
-		<maven.native.compiler.name>msvc</maven.native.compiler.name>
-	</properties>
- -->
-    <dependencies>
-        <dependency>
-            <groupId>${project.groupId}</groupId>
-            <artifactId>smart-route-jni</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-    </dependencies>
 
-    <build>
-        <plugins>
+	<artifactId>smart-route-win32</artifactId>
+	<packaging>dll</packaging>
 
-            <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>native-maven-plugin</artifactId>
-                <version>1.0-alpha-7</version>
-                <extensions>true</extensions>
-                <configuration>
-                    <!-- trigger javah -->
-                    <javahOS>win32</javahOS>
-                    <javahClassNames>
-                        <javahClassName>com.smartroute.util.SchedulerApi</javahClassName>
-                    </javahClassNames>
-                    <compilerProvider>generic</compilerProvider>
-                    <compilerExecutable>E:\BIN\mingw-w64-bin_i686-mingw_20111220\bin\x86_64-w64-mingw32-g++.exe</compilerExecutable>
-                    <linkerExecutable>E:\BIN\mingw-w64-bin_i686-mingw_20111220\bin\x86_64-w64-mingw32-g++.exe</linkerExecutable>
- -->                    <sources>
-                        <source>
-                            <directory>../../src</directory>
-                            <fileNames>
-                                <fileName>com_smartroute_util_SchedulerApi.cpp</fileName>
-                                <fileName>loadAmmount.cpp</fileName>
-                                <fileName>DatabaseReader.cpp</fileName>
-                                <fileName>mySqlHelper.cpp</fileName>
-                                <fileName>situation.cpp</fileName>
-                            </fileNames>
+	<!-- <properties> <maven.native.include.os>win32</maven.native.include.os> 
+		<maven.native.compiler.name>msvc</maven.native.compiler.name> </properties> -->
+	<dependencies>
+		<dependency>
+			<groupId>${project.groupId}</groupId>
+			<artifactId>smart-route-jni</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+	</dependencies>
 
-                        </source>
+	<build>
+		<plugins>
 
-                        <source>
-                            <directory>../../windows</directory>
-                            <dependencyAnalysisParticipation>false</dependencyAnalysisParticipation>
-                        </source>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>native-maven-plugin</artifactId>
+				<version>1.0-alpha-7</version>
+				<extensions>true</extensions>
+				<configuration>
+					<!-- trigger javah -->
+					<javahOS>win32</javahOS>
+					<javahClassNames>
+						<javahClassName>com.smartroute.util.SchedulerApi</javahClassName>
+					</javahClassNames>
+					<compilerProvider>msvc</compilerProvider>
+					<sources>
+						<source>
+							<directory>../../src</directory>
+							<fileNames>
+								<fileName>com_smartroute_util_SchedulerApi.cpp</fileName>
+								<fileName>loadAmmount.cpp</fileName>
+								<fileName>DatabaseReader.cpp</fileName>
+								<fileName>mySqlHelper.cpp</fileName>
+								<fileName>situation.cpp</fileName>
+							</fileNames>
 
-                        <source>
-                            <directory>${boost.include}</directory>
-                            <dependencyAnalysisParticipation>false</dependencyAnalysisParticipation>
-                        </source>
+						</source>
 
-                        <source>
-                            <directory>${mysql.connector.cpp.include}</directory>
-                            <dependencyAnalysisParticipation>false</dependencyAnalysisParticipation>
-                        </source>
+						<source>
+							<directory>../../windows</directory>
+							<dependencyAnalysisParticipation>false</dependencyAnalysisParticipation>
+						</source>
 
-                    </sources>
-                    
-                  <compilerStartOptions>
-                  	<compilerStartOption>-DHAVE_INT8_T</compilerStartOption>
-                  </compilerStartOptions>
-                    
-                    <linkerEndOptions>
-                        <linkerEndOption>-shared "-L${mysql.connector.cpp.lib}" "-L${boost.lib}" -lmysqlcppconn -llibboost_date_time-mgw-mt-d-1_52</linkerEndOption>
-                    </linkerEndOptions>
-                </configuration>
-                <executions>
-                    <execution>
-                        <id>javah</id>
-                        <phase>generate-sources</phase>
-                        <goals>
-                            <goal>javah</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-        </plugins>
-    </build>
+						<source>
+							<directory>${boost.include}</directory>
+							<dependencyAnalysisParticipation>false</dependencyAnalysisParticipation>
+						</source>
+
+						<source>
+							<directory>${mysql.connector.cpp.include}</directory>
+							<dependencyAnalysisParticipation>false</dependencyAnalysisParticipation>
+						</source>
+
+					</sources>
+
+
+
+- 					<compilerStartOptions>
+						<compilerStartOption>/EHsc</compilerStartOption>
+					</compilerStartOptions>
+
+					<linkerStartOptions>
+						<linkerStartOption>/INCREMENTAL:NO /DLL</linkerStartOption>
+					</linkerStartOptions>
+					<linkerEndOptions>
+						<linkerEndOption>/LIBPATH:"E:\BIN\boost_1_52_0_libs\lib32" /LIBPATH:"E:\BIN\mysql-connector-c++-noinstall-1.1.1-win32\lib" mysqlcppconn.lib boost_date_time-vc100-mt-1_52.lib kernel32.lib</linkerEndOption>
+					</linkerEndOptions>
+
+					<!-- <linkerEndOptions> <linkerEndOption>-shared "-L${mysql.connector.cpp.lib}" 
+						"-L${boost.lib}" -lmysqlcppconn -llibboost_date_time-mgw-mt-d-1_52</linkerEndOption> 
+						</linkerEndOptions> -->
+				</configuration>
+				<executions>
+					<execution>
+						<id>javah</id>
+						<phase>generate-sources</phase>
+						<goals>
+							<goal>javah</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
 
 
 </project>

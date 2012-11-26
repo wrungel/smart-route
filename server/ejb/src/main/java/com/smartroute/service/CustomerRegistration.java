@@ -1,6 +1,7 @@
 package com.smartroute.service;
 
 
+import com.smartroute.model.Account;
 import com.smartroute.model.Customer;
 import org.slf4j.Logger;
 
@@ -12,17 +13,22 @@ import javax.persistence.EntityManager;
 @Stateless
 public class CustomerRegistration {
 
-   @Inject
-   private Logger log;
+	@Inject AccountRepository accountRepository;
+	@Inject CustomerRepository customerRepository;
 
-   @Inject
-   private EntityManager em;
+	@Inject
+	private Logger log;
 
-   @Inject
-   private Event<Customer> customerEventSrc;
+	@Inject
+	private EntityManager em;
 
-   public void register(Customer customer) throws Exception {
-      em.persist(customer);
-      customerEventSrc.fire(customer);
-   }
+	@Inject
+	private Event<Customer> customerEventSrc;
+
+	public void register(Account account, Customer customer) throws Exception {
+		accountRepository.persist(account);		
+		customer.setAccount(account);
+		customerRepository.persist(customer);
+		customerEventSrc.fire(customer);
+	}
 }

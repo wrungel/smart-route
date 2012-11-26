@@ -47,12 +47,11 @@ public class CustomerRegistrationIT {
         account.setName("frol");
         account.setLogin("frol");
         account.setPasswd("frol123");
-        accountRepository.persist(account);
         Customer newCustomer = new Customer();
         newCustomer.setAccount(account);
         newCustomer.setAddress("Amsterdam");
         newCustomer.setPhone("+78129283988");
-        customerRegistration.register(newCustomer);
+        customerRegistration.register(account, newCustomer);
         assertNotNull(newCustomer.getId());
         log.info("Customer was persisted with id " + newCustomer.getId());
     }

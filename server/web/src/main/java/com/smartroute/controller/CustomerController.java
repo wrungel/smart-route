@@ -10,6 +10,7 @@ import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
 
+import com.smartroute.model.Account;
 import com.smartroute.model.Customer;
 import com.smartroute.service.CustomerRegistration;
 
@@ -28,10 +29,17 @@ public class CustomerController {
 
     @Inject
     private ContractService orderService;
-
+    
     private Customer newCustomer;
 
-
+    private Account newAccount;
+    
+    @Produces
+    @Named
+    public Account getNewAccount() {
+		return newAccount;
+	}
+    
     @Produces
     @Named
     public Customer getNewCustomer() {
@@ -39,8 +47,8 @@ public class CustomerController {
     }
 
     public void register() throws Exception {
-
-        customerRegistration.register(newCustomer);
+    	
+        customerRegistration.register(newAccount, newCustomer);
         facesContext.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Registered!", "Registration successful"));
         initNewCustomer();
     }
@@ -48,5 +56,6 @@ public class CustomerController {
     @PostConstruct
     public void initNewCustomer() {
         newCustomer = new Customer();
+        newAccount = new Account();
     }
 }

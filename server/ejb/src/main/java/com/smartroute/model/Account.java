@@ -20,7 +20,7 @@ public class Account implements java.io.Serializable {
     @Column(unique = true, nullable = false)
     private Integer id;
 
-    @Column(length = 20)	
+    @Column(length = 20, unique=true, nullable=false)
     private String login;
 
     @Column(length = 32)	

@@ -17,6 +17,26 @@
       <h:form id="reg">
          <h2>Customer Registration</h2>
          <h:panelGrid columns="3" columnClasses="titleCell">
+         
+            <h:outputLabel for="accountLogin" value="Login: "/>
+            <h:inputText id="accountLogin" value="#{newAccount.login}" />
+            <h:message for="accountLogin" errorClass="invalid"/>
+         
+            <h:outputLabel for="accountName" value="Name: "/>
+            <h:inputText id="accountName" value="#{newAccount.name}" />
+            <h:message for="accountName" errorClass="invalid"/>
+         
+           	<h:outputLabel for="accountEmail" value="Email: "/>
+            <h:inputText id="accountEmail" value="#{newAccount.email}" />
+            <h:message for="accountEmail" errorClass="invalid"/>
+
+           	<h:outputLabel for="accountPassword" value="Password: "/>
+            <h:inputText id="accountPassword" value="#{newAccount.passwd}" />
+            <h:message for="accountPassword" errorClass="invalid"/>
+            
+            
+            
+
             <h:outputLabel for="companyName" value="Company Name:"/>
             <h:inputText id="companyName" value="#{newCustomer.companyName}" />
             <h:message for="companyName" errorClass="invalid"/>
@@ -47,6 +67,22 @@
             <f:facet name="header">Id</f:facet>
                 #{_customer.id}
             </h:column>
+
+         <h:column>
+            <f:facet name="header">Account Login</f:facet>
+                #{_customer.account.login}
+            </h:column>
+
+         <h:column>
+            <f:facet name="header">Account name</f:facet>
+                #{_customer.account.name}
+            </h:column>
+
+         <h:column>
+            <f:facet name="header">Account Email</f:facet>
+                #{_customer.account.email}
+            </h:column>
+            
          <h:column>
             <f:facet name="header">Company Name</f:facet>
                 #{_customer.companyName}

@@ -61,7 +61,8 @@ public class Authorization implements Serializable {
 
     public void login() throws IOException {
         current = customerRepository.findCustomerByLogin(username);
-        if (current == null || current != null && current.getAccount().getPasswd().equals(password)) {
+        
+        if (current == null || current != null && !current.getAccount().getPasswd().equals(password)) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Unknown login or invalid password, try again"));
             username = password = null;
             return;
