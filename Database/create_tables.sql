@@ -75,8 +75,10 @@ CREATE TABLE IF NOT EXISTS ContractStation
  INDEX(contract_id, numberInSequence),
 
  kind ENUM('LOAD', 'UNLOAD', 'DRIVE_BY'), -- DRIVE_BY not used, reserved for advanced features
+ units INT,
  timeFrom DATETIME,
  timeUntil DATETIME,
+
  address VARCHAR(300),                   -- complete adress
  zip     VARCHAR(10),                    -- Postleitzahl
  latitude  DECIMAL(8, 6),                -- geo coordinate
