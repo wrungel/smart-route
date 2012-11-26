@@ -28,10 +28,9 @@ com_smartroute_util_SchedulerApi.o:
 	g++ -fPIC -c $(CFLAGS) -I${INC_UNIT_TEST_PP} -o $@ $<
 
 makeoutdir:
-	if [! -d "$(OUT_DIR)"]; \
- then \
- mkdir $(OUT_DIR); \
- fi \
+	if [ ! -d "$(OUT_DIR)" ] ; then \
+	mkdir $(OUT_DIR); \
+	fi \
 
 clean:
 	rm -rf Test/*.o
