@@ -1,1 +1,1 @@
-mysql -u LkwScheduler -p < create_tables.sql
+mysql -u LkwScheduler -p < create_tables_LkwSchedulerDB.sql

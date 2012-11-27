@@ -1,6 +1,3 @@
-CREATE DATABASE IF NOT EXISTS `LkwSchedulerDB` ;
-USE `LkwSchedulerDB` ;
-
 CREATE TABLE IF NOT EXISTS Account
 (
  login VARCHAR(20) UNIQUE,
@@ -30,10 +27,10 @@ CREATE TABLE IF NOT EXISTS Driver  -- or Spedition?!
 CREATE TABLE IF NOT EXISTS Truck
 (
  id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
- driver_id INT NOT NULL,                        -- foreign key
+ driver_id INT NOT NULL,                       -- foreign key
  isAvailable BOOL,                             -- whether it is available for scheduling
  truckModel VARCHAR(150),
- truckIdNummer VARCHAR(10),                  -- kfz-Nummer
+ truckIdNummer VARCHAR(10),                    -- kfz-Nummer
  capacityUnits SMALLINT,         				       -- Euro-Paletten
  capacityKg INT,
  capacityM3 DECIMAL(5, 3),    				         -- cubiq meter
@@ -74,8 +71,7 @@ CREATE TABLE IF NOT EXISTS ContractStation
  numberInSequence TINYINT NOT NULL,      -- the number inside of the itinerary for the contract
  INDEX(contract_id, numberInSequence),
 
- kind ENUM('LOAD', 'UNLOAD', 'DRIVE_BY'), -- DRIVE_BY not used, reserved for advanced features
- units INT,
+ kind ENUM('LOAD', 'UNLOAD', 'DRIVE_BY'),
  timeFrom DATETIME,
  timeUntil DATETIME,
 

@@ -5,7 +5,7 @@ INC_UNIT_TEST_PP     = ${DIR_UNIT_TEST_PP}/src
 LIB_UNIT_TEST_PP     = ${DIR_UNIT_TEST_PP}/libUnitTest++.a
 
 OUT_DIR = ../out
-JNI_API_DIR = ../lib/linux/target/native/javah
+JNI_API_DIR = ../lib/target/native/javah
 
 OBJ = loadAmmount.o situation.o mySqlHelper.o DatabaseReader.o
 OBJ_TEST = Test/unit_tests.o Test/TestDBConnection.o
@@ -14,6 +14,8 @@ all: schedulerlib scheduler test
 
 test:  $(OBJ) $(OBJ_TEST) ${LIB_UNIT_TEST_PP} makeoutdir
 	g++ $(CFLAGS) -o $(OUT_DIR)/unit_tests -lmysqlcppconn -lboost_date_time $(OBJ) $(OBJ_TEST) ${LIB_UNIT_TEST_PP}
+	cp ../../Database/create_tables.sql $(OUT_DIR)/create_tables.sql
+	cp Test/*.sql $(OUT_DIR)
 
 schedulerlib: $(OBJ) com_smartroute_util_SchedulerApi.o makeoutdir
 	g++ $(CFLAGS) -shared -o $(OUT_DIR)/libScheduler.so -lmysqlcppconn -lboost_date_time $(OBJ) com_smartroute_util_SchedulerApi.o

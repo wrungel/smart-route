@@ -69,7 +69,7 @@ void CDatabaseReader::ReadContractStations(std::vector<CContract>& contracts)
   BOOST_ASSERT(contracts.size() > 0);
 
   static std::string readContractStationsSql =
-    "SELECT * FROM ContractStation WHERE contractId=? ORDER BY numberInSequence;";
+    "SELECT * FROM ContractStation WHERE contract_id=? ORDER BY numberInSequence;";
 
   std::auto_ptr<sql::PreparedStatement> readContractStationStmt(_connection->prepareStatement(readContractStationsSql));
 
@@ -102,9 +102,9 @@ void CDatabaseReader::ReadContractStationsRow(CShipmentStation& station, const s
 {
   ReadCoordinate(station._coord, rs);
   station._kind = ReadShipmentStationKind(rs);
-  station._loadAmmount._weightKg = rs.getUInt("weightKg");
-  station._loadAmmount._liter = getDecimal(rs, "volumeM3", 3);       // volume
-  station._loadAmmount._units = rs.getUInt("volumeUnits"); // paletten;
+  //station._loadAmmount._weightKg = rs.getInt("weightKg");
+  //station._loadAmmount._liter = getDecimal(rs, "volumeM3", 3);       // volume
+  //station._loadAmmount._units = rs.getUInt("units"); // paletten;
   ReadTimePeriod(station._timePeriod, rs);
 }
 
@@ -218,8 +218,8 @@ void CDatabaseReader::ReadTruckRoutes(CFramingData& framingData)
 {
   static std::string readRouteStationsSql =
   "SELECT *"
-  " FROM RouteStation JOIN Route WHERE Route.id=RouteStation.routeId"
-  " AND Route.truckId=(?) AND Route.isRealRoute=true"
+  " FROM RouteStation JOIN Route WHERE Route.id=RouteStation.route_id"
+  " AND Route.truck_id=(?) AND Route.isRealRoute=true"
   " GROUP BY RouteStation.numberInSequence";
 
   std::auto_ptr<sql::PreparedStatement> readRouteStationsStmt(_connection->prepareStatement(readRouteStationsSql));
@@ -248,7 +248,7 @@ void CDatabaseReader::ReadRouteStationRow(CRouteStation& routeStation, const sql
   routeStation._capacity._weightKg = rs.getUInt("leftKg");
   routeStation._capacity._liter = getDecimal(rs, "leftM3", 3);  // volume
   routeStation._capacity._units = rs.getUInt("leftUnits");
-  if (!rs.isNull("contractId"))
+  if (!rs.isNull("contract_id"))
   {
     routeStation._contractIndex = CRouteStation::KUnloadedContract;
   }
