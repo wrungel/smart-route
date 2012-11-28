@@ -245,6 +245,9 @@ void CDatabaseReader::ReadTruckRoutes(CFramingData& framingData)
 
   std::auto_ptr<sql::PreparedStatement> readRouteStationsStmt(_connection->prepareStatement(readRouteStationsSql));
 
+  static std::string readCargosSql = "SELECT * FROM Cargo WHERE routeStation_id=?";
+  std::auto_ptr<sql::PreparedStatement> readCargosStmt(_connection->prepareStatement(readCargosSql));
+
   for(TTruckIndex truckIndex = 0; truckIndex < static_cast<TTruckIndex>(framingData._trucks.size()); ++truckIndex)
   {
     const CTruck& truck = framingData._trucks[truckIndex];
@@ -255,6 +258,20 @@ void CDatabaseReader::ReadTruckRoutes(CFramingData& framingData)
     {
       CRouteStation routeStation;
       ReadRouteStationRow(routeStation, *routeStationsRS);
+
+      // read cargos
+      {
+        int stationId = routeStationsRS->getInt("id");
+        readCargosStmt->setInt(1, stationId);
+        std::auto_ptr<sql::ResultSet> cargosRS(readCargosStmt->executeQuery());
+        while(cargosRS->next())
+        {
+          CCargo cargo;
+          ReadCargoRow(cargo, *cargosRS);
+          routeStation._station->_cargo.push_back(cargo);
+        }
+      }
+
       route.push_back(routeStation);
     }
     framingData._truckRoute.push_back(route);
@@ -263,9 +280,9 @@ void CDatabaseReader::ReadTruckRoutes(CFramingData& framingData)
 
 void CDatabaseReader::ReadRouteStationRow(CRouteStation& routeStation, const sql::ResultSet& rs)
 {
-  boost::shared_ptr<CShipmentStation> shipmenStation(new CShipmentStation);
-  ReadContractStationsRow(*shipmenStation, rs);
-  routeStation._station = shipmenStation;
+  boost::shared_ptr<CShipmentStation> shipmentStation(new CShipmentStation);
+  ReadContractStationsRow(*shipmentStation, rs);
+  routeStation._station = shipmentStation;
   routeStation._capacity._weightKg = rs.getUInt("leftKg");
   routeStation._capacity._liter = getDecimal(rs, "leftM3", 3);  // volume
   routeStation._capacity._units = rs.getUInt("leftUnits");
