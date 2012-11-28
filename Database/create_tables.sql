@@ -141,7 +141,7 @@ CREATE TABLE IF NOT EXISTS Cargo
  volumeUnits SMALLINT,                   -- Euro-Paletten
  cargoType VARCHAR(50),                  -- TODO: clear requirements, should it be INT or ENUM?
  routeStation_id INT,
- contractStation_id INT,
+ contractStation_id INT,                 -- at least one of these 2 foreign keys should be NOT NULL, a cargo can belong to a routeStation or to a contractStation, or to both (if route station is copied from contract station)
 
 CONSTRAINT fk_RouteStation_Cargo FOREIGN KEY (routeStation_id) REFERENCES RouteStation(id) ON DELETE SET NULL ON UPDATE CASCADE,
 CONSTRAINT fk_ContractStation_Cargo FOREIGN KEY (contractStation_id) REFERENCES ContractStation(id) ON DELETE SET NULL ON UPDATE CASCADE
