@@ -70,8 +70,10 @@ void CDatabaseReader::ReadContractStations(std::vector<CContract>& contracts)
 
   static std::string readContractStationsSql =
     "SELECT * FROM ContractStation WHERE contract_id=? ORDER BY numberInSequence;";
-
   std::auto_ptr<sql::PreparedStatement> readContractStationStmt(_connection->prepareStatement(readContractStationsSql));
+
+  static std::string readCargosSql = "SELECT * FROM Cargo WHERE contractStation_id=?";
+  std::auto_ptr<sql::PreparedStatement> readCargosStmt(_connection->prepareStatement(readCargosSql));
 
   for(std::vector<CContract>::iterator contract = contracts.begin(); contract != contracts.end(); ++contract)
   {
@@ -85,6 +87,20 @@ void CDatabaseReader::ReadContractStations(std::vector<CContract>& contracts)
       {
         boost::shared_ptr<CShipmentStation> station(new CShipmentStation);
         ReadContractStationsRow(*station, *contractStationsRS);
+
+        // read cargos
+        {
+          int stationId = contractStationsRS->getInt("id");
+          readCargosStmt->setInt(1, stationId);
+          std::auto_ptr<sql::ResultSet> cargosRS(readCargosStmt->executeQuery());
+          while(cargosRS->next())
+          {
+            CCargo cargo;
+            ReadCargoRow(cargo, *cargosRS);
+            station->_cargo.push_back(cargo);
+          }
+        }
+
         contract->_itinerary.push_back(station);
       }
 
@@ -102,10 +118,15 @@ void CDatabaseReader::ReadContractStationsRow(CShipmentStation& station, const s
 {
   ReadCoordinate(station._coord, rs);
   station._kind = ReadShipmentStationKind(rs);
-  //station._loadAmmount._weightKg = rs.getInt("weightKg");
-  //station._loadAmmount._liter = getDecimal(rs, "volumeM3", 3);       // volume
-  //station._loadAmmount._units = rs.getUInt("units"); // paletten;
   ReadTimePeriod(station._timePeriod, rs);
+}
+
+void CDatabaseReader::ReadCargoRow(CCargo& cargo, const sql::ResultSet& rs)
+{
+  cargo._weightKg = rs.getUInt("weightKg");
+  cargo._liter = getDecimal(rs, "volumeM3", 3);   // volume
+  cargo._units = rs.getUInt("volumeUnits");       // paletten;
+  cargo._cargoType = rs.getString("cargoType");
 }
 
 CShipmentStation::EKind CDatabaseReader::ReadShipmentStationKind(const sql::ResultSet& rs)
@@ -248,7 +269,7 @@ void CDatabaseReader::ReadRouteStationRow(CRouteStation& routeStation, const sql
   routeStation._capacity._weightKg = rs.getUInt("leftKg");
   routeStation._capacity._liter = getDecimal(rs, "leftM3", 3);  // volume
   routeStation._capacity._units = rs.getUInt("leftUnits");
-  if (!rs.isNull("contract_id"))
+  if (!rs.isNull("contractStation_id"))
   {
     routeStation._contractIndex = CRouteStation::KUnloadedContract;
   }

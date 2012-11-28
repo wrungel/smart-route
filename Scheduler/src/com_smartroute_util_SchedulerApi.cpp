@@ -1,8 +1,11 @@
 #include "com_smartroute_util_SchedulerApi.h"
+
+#include <boost/assert.hpp>
 #include <string.h>
 
 JNIEXPORT jstring JNICALL Java_com_smartroute_util_SchedulerApi_fnTryScheduleFavorable (JNIEnv *env, jobject obj, jintArray orderIDs, jint maxSuggestionsPerOrder)
 {
+  BOOST_ASSERT(maxSuggestionsPerOrder == 8);
   jstring ret = env->NewStringUTF("<suggestions></suggestions>");
   return ret;
 }

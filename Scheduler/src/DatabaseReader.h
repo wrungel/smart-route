@@ -41,6 +41,8 @@ namespace Scheduler
       void ReadTruckRow(CTruck& aTruck, const sql::ResultSet& rs);
       void ReadRouteStationRow(CRouteStation& routeStation, const sql::ResultSet& rs);
 
+      void ReadCargoRow(CCargo& cargo, const sql::ResultSet& rs);
+
       void CheckTimePeriodsForItinerary(const TItinerary& aItinerary);
 
     public:

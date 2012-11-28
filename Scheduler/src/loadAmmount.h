@@ -2,6 +2,7 @@
 #define SCHEDULER_LOAD_AMMOUNT_H
 
 #include <limits>
+#include <string>
 
 namespace Scheduler
 {
@@ -24,6 +25,12 @@ namespace Scheduler
   };
 
   CLoadAmmount GetMin(const CLoadAmmount& a, const CLoadAmmount& b);
+
+  struct CCargo : public CLoadAmmount
+  {
+    CCargo() : CLoadAmmount(), _cargoType("") {}
+    std::string _cargoType;
+  };
 }
 
 #endif // SCHEDULER_LOAD_AMMOUNT_H

@@ -154,14 +154,22 @@ namespace Test{
     CHECK_EQUAL(CShipmentStation::KLoad, dep->_kind);
     CHECK_EQUAL( CShipmentStation::KUnload, arr->_kind);
 
-    /* TODO:
-    CHECK_EQUAL(0, dep->_loadAmmount._weightKg);
-    CHECK_EQUAL(0, dep->_loadAmmount._liter);
-    CHECK_EQUAL(5, dep->_loadAmmount._units);
-    CHECK_EQUAL(0, arr->_loadAmmount._weightKg);
-    CHECK_EQUAL(0, arr->_loadAmmount._liter);
-    CHECK_EQUAL(5, arr->_loadAmmount._units); */
+    CHECK_EQUAL(2, dep->_cargo.size());
+    CHECK_EQUAL(2, arr->_cargo.size());
+    for (int i = 0; i < 2; i++)
+    {
+      CHECK(dep->_cargo[i]._cargoType != "");
+      CHECK(arr->_cargo[i]._cargoType != "");
+    }
+    CHECK(dep->_cargo[0]._cargoType != dep->_cargo[1]._cargoType);
+    CHECK(arr->_cargo[0]._cargoType != arr->_cargo[1]._cargoType);
 
+    CHECK_EQUAL(1000, dep->_cargo[0]._weightKg + dep->_cargo[1]._weightKg);
+    CHECK_EQUAL(3200, dep->_cargo[0]._liter + dep->_cargo[1]._liter);
+    CHECK_EQUAL(5, dep->_cargo[0]._units + dep->_cargo[1]._units);
+    CHECK_EQUAL(1000, arr->_cargo[0]._weightKg + arr->_cargo[1]._weightKg);
+    CHECK_EQUAL(3200, arr->_cargo[0]._liter + arr->_cargo[1]._liter);
+    CHECK_EQUAL(5, arr->_cargo[0]._units + arr->_cargo[1]._units);
     {
       using namespace boost::posix_time;
       using namespace boost::gregorian;

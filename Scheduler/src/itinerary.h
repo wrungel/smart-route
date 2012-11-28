@@ -26,16 +26,16 @@ namespace Scheduler
       _kind(KDriveby),
       _timePeriod(boost::posix_time::ptime(boost::gregorian::date(1970,1,1), boost::posix_time::hours(0)),
                   boost::posix_time::ptime(boost::gregorian::date(1970,1,1), boost::posix_time::hours(0))),
-      _loadAmmount()
+      _cargo()
     {}
 
-    CCoordinate _coord;
+    CCoordinate                    _coord;
 
     enum EKind {KLoad, KUnload, KDriveby};
 
-    EKind _kind;
+    EKind                          _kind;
     boost::posix_time::time_period _timePeriod;
-    CLoadAmmount _loadAmmount;
+    std::vector<CCargo>            _cargo;
   };
   typedef std::vector<boost::shared_ptr<CShipmentStation> > TItinerary;
 
