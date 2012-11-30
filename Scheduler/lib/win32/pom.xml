@@ -10,21 +10,44 @@
 
 	<!-- 
 	Only Microsoft Visual Studio 2010 Express C++ 32bit compiler is supported.  
-	Set up Visual Stdio before runing Maven: 
+	
+    Set up Visual Stdio before runing Maven: 
 	"C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\vcvars32.bat"
 	 Required libraries and headers (includes):
 	 * MySQL Server
 	 * MySQL C++ Connector
 	 * boost_date_time
-	 Does not run in Cygwin environment.
+	Does not work in Cygwin environment!
+    
+    Define in Users's Maven settings.xml (%HOME%/.m2/settings.xml):
+    ${boost.include}
+    ${boost.lib}
+    ${mysql.connector.cpp.include}
+    ${mysql.connector.cpp.lib}
+    
+    Example:
+    
+    <profiles>
+        <profile>
+            <id>native</id>
+            <properties>
+                <boost.include>D:\bin\boost\1.52.0\src</boost.include>
+                <boost.lib>D:\bin\boost\1.52.0\lib32</boost.lib>
+                <mysql.connector.cpp.include>D:\bin\mysql-connector-c++-noinstall-1.1.1-win32\include</mysql.connector.cpp.include>
+                <mysql.connector.cpp.lib>D:\bin\mysql-connector-c++-noinstall-1.1.1-win32\lib</mysql.connector.cpp.lib>
+            </properties>
+        </profile>
+    </profiles>
+
+    <activeProfiles>
+        <activeProfile>native</activeProfile>
+    </activeProfiles>    
 	 -->
 
 
 	<artifactId>smart-route-win32</artifactId>
 	<packaging>dll</packaging>
 
-	<!-- <properties> <maven.native.include.os>win32</maven.native.include.os> 
-		<maven.native.compiler.name>msvc</maven.native.compiler.name> </properties> -->
 	<dependencies>
 		<dependency>
 			<groupId>${project.groupId}</groupId>
@@ -88,12 +111,9 @@
 						<linkerStartOption>/INCREMENTAL:NO /DLL</linkerStartOption>
 					</linkerStartOptions>
 					<linkerEndOptions>
-						<linkerEndOption>/LIBPATH:"E:\BIN\boost_1_52_0_libs\lib32" /LIBPATH:"E:\BIN\mysql-connector-c++-noinstall-1.1.1-win32\lib" mysqlcppconn.lib boost_date_time-vc100-mt-1_52.lib kernel32.lib</linkerEndOption>
+						<linkerEndOption>/LIBPATH:"${boost.lib}" /LIBPATH:"${mysql.connector.cpp.lib}" mysqlcppconn.lib boost_date_time-vc100-mt-1_52.lib kernel32.lib</linkerEndOption>
 					</linkerEndOptions>
 
-					<!-- <linkerEndOptions> <linkerEndOption>-shared "-L${mysql.connector.cpp.lib}" 
-						"-L${boost.lib}" -lmysqlcppconn -llibboost_date_time-mgw-mt-d-1_52</linkerEndOption> 
-						</linkerEndOptions> -->
 				</configuration>
 				<executions>
 					<execution>
