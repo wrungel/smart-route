@@ -49,7 +49,7 @@ public class AbstractPersistenceTest {
         emfBean.setPersistenceUnitName("test");
         emfBean.setPackagesToScan("com.smartroute.model");
         emfBean.setMappingResources("META-INF/orm-test.xml");
-        emfBean.setDataSource(new SingleConnectionDataSource("jdbc:mysql://localhost/LkwSchedulerDB", "TestScheduler", "TestScheduler5", true));
+        emfBean.setDataSource(new SingleConnectionDataSource("jdbc:mysql://localhost/LkwSchedulerDBTest", "TestScheduler", "TestScheduler5", true));
         emfBean.afterPropertiesSet();
         return emfBean.getNativeEntityManagerFactory();        
     }
