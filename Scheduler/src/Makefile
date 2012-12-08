@@ -6,12 +6,14 @@ FixPath = $1
 JNI_API_DIR = ../lib/linux/target/native/javah
 MAKEOUTDIR = makeoutdirLinux
 CP = cp
+JAVAJNIINCLUDE = $(JAVA_HOME)/include/linux
 else
 RM = DEL /Q
 FixPath = $(subst /,\,$1)
 JNI_API_DIR = ../lib/windows/target/native/javah
 MAKEOUTDIR = makeoutdirWin
 CP = copy
+JAVAJNIINCLUDE = $(JAVA_HOME)/include/windows
 endif
 
 CFLAGS = -g -Wall -W -ansi
@@ -35,13 +37,19 @@ test:  $(OBJ) $(OBJ_TEST) ${LIB_UNIT_TEST_PP} $(MAKEOUTDIR)
 schedulerlib: $(OBJ) com_smartroute_util_SchedulerApi.o $(MAKEOUTDIR)
 	g++ $(CFLAGS) -shared -o $(OUT_DIR)/libScheduler.so -lmysqlcppconn -lboost_date_time $(OBJ) com_smartroute_util_SchedulerApi.o
 
-scheduler: main.o $(OUT_DIR)/libScheduler.so $(MAKEOUTDIR)
+scheduler: main.o schedulerlib $(OUT_DIR)/libScheduler.so $(MAKEOUTDIR)
 	g++ $(CFLAGS) -o $(OUT_DIR)/Scheduler -lmysqlcppconn -lboost_date_time main.o $(OBJ) -L../out -lScheduler
 
-com_smartroute_util_SchedulerApi.o:
-	g++ -fPIC -c $(CFLAGS) -I$(JNI_API_DIR) -I$(JAVA_HOME)/include -I$(JAVA_HOME)/include/linux -o com_smartroute_util_SchedulerApi.o com_smartroute_util_SchedulerApi.cpp
+com_smartroute_util_SchedulerApi.o: com_smartroute_util_SchedulerApi.cpp $(JNI_API_DIR)/com_smartroute_util_SchedulerApi.h
+	g++ -fPIC -c $(CFLAGS) -I$(JNI_API_DIR) -I$(JAVA_HOME)/include -I$(JAVAJNIINCLUDE) -o com_smartroute_util_SchedulerApi.o com_smartroute_util_SchedulerApi.cpp
 
-%.o: %.cpp
+main.o: main.cpp
+	g++ -fPIC -c $(CFLAGS) -o $@ $<
+
+Test/%.o: Test/%.cpp
+	g++ -fPIC -c $(CFLAGS) -I${INC_UNIT_TEST_PP} -o $@ $<
+
+%.o: %.cpp %.h
 	g++ -fPIC -c $(CFLAGS) -I${INC_UNIT_TEST_PP} -o $@ $<
 
 makeoutdirLinux:
