@@ -39,11 +39,9 @@ namespace Scheduler
       void ReadContractStationsRow(CShipmentStation& station, const sql::ResultSet& rs);
 
       void ReadTruckRow(CTruck& aTruck, const sql::ResultSet& rs);
-      void ReadRouteStationRow(CRouteStation& routeStation, const sql::ResultSet& rs);
+      void ReadRouteStationRow(CTruckRouteStation& truckRouteStation, const sql::ResultSet& rs);
 
       void ReadCargoRow(CCargo& cargo, const sql::ResultSet& rs);
-
-      void CheckTimePeriodsForItinerary(const TItinerary& aItinerary);
 
     public:
       //! special exception class for Database reader

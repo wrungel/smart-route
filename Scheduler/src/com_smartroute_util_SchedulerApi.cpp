@@ -27,6 +27,8 @@ int ReadDB()
      dbReader.DoReadFromDatabase(framingData);
 
      dbReader.Close();
+
+     return 1;
   }
   catch (sql::SQLException& e)
   {
@@ -60,5 +62,7 @@ JNIEXPORT jstring JNICALL Java_com_smartroute_util_SchedulerApi_fnBestAvailable 
 
 JNIEXPORT jint JNICALL Java_com_smartroute_util_SchedulerApi_fnEstimatePrice(JNIEnv *env, jobject obj, jstring orderXML)
 {
-  return 100;
+  int retReadDB = ReadDB();
+
+  return retReadDB;
 }

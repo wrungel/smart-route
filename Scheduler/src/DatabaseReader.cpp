@@ -26,7 +26,7 @@ void CDatabaseReader::DoReadFromDatabase(CFramingData& framingData)
   ReadContracts(framingData._contracts);
   ReadContractStations(framingData._contracts);
   ReadTrucks(framingData._trucks, framingData._contracts);
-  framingData._truckRoute.reserve(framingData._trucks.size());
+  framingData._truckRoutes.reserve(framingData._trucks.size());
   ReadTruckRoutes(framingData);
 }
 
@@ -77,7 +77,7 @@ void CDatabaseReader::ReadContractStations(std::vector<CContract>& contracts)
 
   for(std::vector<CContract>::iterator contract = contracts.begin(); contract != contracts.end(); ++contract)
   {
-    BOOST_ASSERT(contract->_itinerary.size() == 0);
+    BOOST_ASSERT(contract->_stationSeqence.size() == 0);
     try
     {
       readContractStationStmt->setInt(1, contract->_id);
@@ -101,10 +101,16 @@ void CDatabaseReader::ReadContractStations(std::vector<CContract>& contracts)
           }
         }
 
-        contract->_itinerary.push_back(station);
+        contract->_stationSeqence.push_back(station);
       }
 
-      CheckTimePeriodsForItinerary(contract->_itinerary);
+      // CheckTimePeriodsForItinerary
+      std::string exceptionText = contract->_stationSeqence.CheckTimePeriodsValidity();
+      if (exceptionText != "")
+      {
+        throw CDBReaderException(exceptionText);
+      }
+
     }
     catch (CDBReaderException& err)
     {
@@ -173,22 +179,6 @@ void CDatabaseReader::ReadTimePeriod(boost::posix_time::time_period& aTimePeriod
   aTimePeriod = time_period(timeFrom, timeUntil);
 }
 
-void CDatabaseReader::CheckTimePeriodsForItinerary(const TItinerary& aItinerary)
-{
-  for (unsigned char i = 0; i < aItinerary.size(); ++i)
-  {
-    for (unsigned char j = i + 1; j < aItinerary.size(); ++j)
-    {
-      if (aItinerary[i]->_timePeriod.is_after(aItinerary[j]->_timePeriod.end()))
-      {
-        std::stringstream exceptionText;
-        exceptionText << "time period for station " << i << " is after tme period for station " << j;
-        throw CDBReaderException(exceptionText.str());
-      }
-    }
-  }
-}
-
 void CDatabaseReader::ReadTrucks(std::vector<CTruck>& trucks,
                                  const std::vector<CContract>& contracts)
 {
@@ -253,10 +243,10 @@ void CDatabaseReader::ReadTruckRoutes(CFramingData& framingData)
     const CTruck& truck = framingData._trucks[truckIndex];
     readRouteStationsStmt->setInt(1, truck._id);
     std::auto_ptr<sql::ResultSet> routeStationsRS(readRouteStationsStmt->executeQuery());
-    TRoute route;
+    CTruckRoute route;
     while(routeStationsRS->next())
     {
-      CRouteStation routeStation;
+      CTruckRouteStation routeStation;
       ReadRouteStationRow(routeStation, *routeStationsRS);
 
       // read cargos
@@ -274,18 +264,18 @@ void CDatabaseReader::ReadTruckRoutes(CFramingData& framingData)
 
       route.push_back(routeStation);
     }
-    framingData._truckRoute.push_back(route);
+    framingData._truckRoutes.push_back(route);
   }
 }
 
-void CDatabaseReader::ReadRouteStationRow(CRouteStation& routeStation, const sql::ResultSet& rs)
+void CDatabaseReader::ReadRouteStationRow(CTruckRouteStation& routeStation, const sql::ResultSet& rs)
 {
   boost::shared_ptr<CShipmentStation> shipmentStation(new CShipmentStation);
   ReadContractStationsRow(*shipmentStation, rs);
   routeStation._station = shipmentStation;
-  routeStation._capacity._weightKg = rs.getUInt("leftKg");
-  routeStation._capacity._liter = getDecimal(rs, "leftM3", 3);  // volume
-  routeStation._capacity._units = rs.getUInt("leftUnits");
+  routeStation._remainingTruckCapacity._weightKg = rs.getUInt("leftKg");
+  routeStation._remainingTruckCapacity._liter = getDecimal(rs, "leftM3", 3);  // volume
+  routeStation._remainingTruckCapacity._units = rs.getUInt("leftUnits");
   if (!rs.isNull("contractStation_id"))
   {
     routeStation._contractIndex = CRouteStation::KUnloadedContract;
