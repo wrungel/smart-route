@@ -5,8 +5,6 @@
 #include <string>
 #include <sstream>
 
-#include "itineraryStation.h"
-
 namespace Scheduler
 {
   template <class taStation>
