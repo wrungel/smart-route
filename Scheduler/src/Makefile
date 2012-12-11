@@ -18,24 +18,29 @@ endif
 
 CFLAGS = -g -Wall -W -ansi
 
+DIR_TYNIXML          = ../3rdParty/tinyxml
+LIB_TYNIXML          = ../3rdParty/tinyxml/libtinyxml.a
+
 DIR_UNIT_TEST_PP     = ../3rdParty/UnitTest++
 INC_UNIT_TEST_PP     = ${DIR_UNIT_TEST_PP}/src
 LIB_UNIT_TEST_PP     = ${DIR_UNIT_TEST_PP}/libUnitTest++.a
 
 OUT_DIR = ../out
 
-OBJ = loadAmmount.o situation.o mySqlHelper.o DatabaseReader.o
+OBJ = loadAmmount.o situation.o mySqlHelper.o DatabaseReader.o xmlHelper.o
 OBJ_TEST = Test/unit_tests.o Test/TestDBConnection.o
+
+INCLUDES = -I${INC_UNIT_TEST_PP} -I${DIR_TYNIXML}
 
 all: schedulerlib scheduler test
 
-test:  $(OBJ) $(OBJ_TEST) ${LIB_UNIT_TEST_PP} $(MAKEOUTDIR)
-	g++ $(CFLAGS) -o $(OUT_DIR)/unit_tests -lmysqlcppconn -lboost_date_time $(OBJ) $(OBJ_TEST) ${LIB_UNIT_TEST_PP}
+test:  $(OBJ) $(OBJ_TEST) ${LIB_UNIT_TEST_PP} $(MAKEOUTDIR) $(LIB_TYNIXML)
+	g++ $(CFLAGS) -o $(OUT_DIR)/unit_tests -lmysqlcppconn -lboost_date_time $(OBJ) $(OBJ_TEST) ${LIB_UNIT_TEST_PP} $(LIB_TYNIXML)
 	$(CP) $(call FixPath, ../../Database/create_tables.sql) $(call FixPath,$(OUT_DIR)/create_tables.sql)
 	$(CP) $(call FixPath, Test/*.sql) $(call FixPath, $(OUT_DIR))
 
-schedulerlib: $(OBJ) com_smartroute_util_SchedulerApi.o $(MAKEOUTDIR)
-	g++ $(CFLAGS) -shared -o $(OUT_DIR)/libScheduler.so -lmysqlcppconn -lboost_date_time $(OBJ) com_smartroute_util_SchedulerApi.o
+schedulerlib: $(OBJ) com_smartroute_util_SchedulerApi.o $(MAKEOUTDIR) $(LIB_TYNIXML)
+	g++ $(CFLAGS) -shared -o $(OUT_DIR)/libScheduler.so -lmysqlcppconn -lboost_date_time $(OBJ) com_smartroute_util_SchedulerApi.o $(LIB_TYNIXML)
 
 scheduler: main.o schedulerlib $(OUT_DIR)/libScheduler.so $(MAKEOUTDIR)
 	g++ $(CFLAGS) -o $(OUT_DIR)/Scheduler -lmysqlcppconn -lboost_date_time main.o $(OBJ) -L../out -lScheduler
@@ -47,10 +52,10 @@ main.o: main.cpp
 	g++ -fPIC -c $(CFLAGS) -o $@ $<
 
 Test/%.o: Test/%.cpp
-	g++ -fPIC -c $(CFLAGS) -I${INC_UNIT_TEST_PP} -o $@ $<
+	g++ -fPIC -c $(CFLAGS) ${INCLUDES} -o $@ $<
 
 %.o: %.cpp %.h
-	g++ -fPIC -c $(CFLAGS) -I${INC_UNIT_TEST_PP} -o $@ $<
+	g++ -fPIC -c $(CFLAGS) ${INCLUDES} -o $@ $<
 
 makeoutdirLinux:
 	if [ ! -d "$(OUT_DIR)" ] ; then \
@@ -64,6 +69,9 @@ clean:
 	$(RM) $(call FixPath, Test/*.o)
 	$(RM) $(call FixPath, ./*.o)
 	$(RM) $(call FixPath, $(OUT_DIR)/*)
+	$(RM) $(call FixPath, $(DIR_TYNIXML)/*.o)
+	$(RM) $(call FixPath, $(DIR_TYNIXML)/*.a)
 
-
+$(LIB_TYNIXML):
+	cd $(DIR_TYNIXML); make; ar rcs libtinyxml.a tinyxml.o tinyxmlparser.o xmltest.o tinyxmlerror.o tinystr.o
 

@@ -7,16 +7,17 @@
 #include "contract.h"
 #include "route.h"
 
-// structures used by scheduler search engine
 
 namespace Scheduler
 {
+
+  // data read from database, representing current situation, resp. input data
   struct CFramingData
   {
     std::vector<CTruck> _trucks;
     std::vector<CContract> _contracts;
 
-     //! an entry for each truck
+    //! an entry for each truck
     std::vector<CTruckRoute> _truckRoutes;
   };
 };
