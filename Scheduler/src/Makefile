@@ -28,22 +28,22 @@ LIB_UNIT_TEST_PP     = ${DIR_UNIT_TEST_PP}/libUnitTest++.a
 OUT_DIR = ../out
 
 OBJ = loadAmmount.o situation.o mySqlHelper.o DatabaseReader.o xmlHelper.o
-OBJ_TEST = Test/unit_tests.o Test/TestDBConnection.o
+OBJ_TEST = Test/unit_tests.o Test/TestDBConnection.o Test/TestContractReader.o
 
 INCLUDES = -I${INC_UNIT_TEST_PP} -I${DIR_TYNIXML}
 
 all: schedulerlib scheduler test
 
 test:  $(OBJ) $(OBJ_TEST) ${LIB_UNIT_TEST_PP} $(MAKEOUTDIR) $(LIB_TYNIXML)
-	g++ $(CFLAGS) -o $(OUT_DIR)/unit_tests -lmysqlcppconn -lboost_date_time $(OBJ) $(OBJ_TEST) ${LIB_UNIT_TEST_PP} $(LIB_TYNIXML)
+	g++ $(CFLAGS) -o $(OUT_DIR)/unit_tests $(OBJ) $(OBJ_TEST) $(LIB_UNIT_TEST_PP) $(LIB_TYNIXML) -lmysqlcppconn -lboost_date_time
 	$(CP) $(call FixPath, ../../Database/create_tables.sql) $(call FixPath,$(OUT_DIR)/create_tables.sql)
 	$(CP) $(call FixPath, Test/*.sql) $(call FixPath, $(OUT_DIR))
 
 schedulerlib: $(OBJ) com_smartroute_util_SchedulerApi.o $(MAKEOUTDIR) $(LIB_TYNIXML)
-	g++ $(CFLAGS) -shared -o $(OUT_DIR)/libScheduler.so -lmysqlcppconn -lboost_date_time $(OBJ) com_smartroute_util_SchedulerApi.o $(LIB_TYNIXML)
+	g++ $(CFLAGS) -shared -o $(OUT_DIR)/libScheduler.so $(OBJ) com_smartroute_util_SchedulerApi.o $(LIB_TYNIXML) -lmysqlcppconn -lboost_date_time
 
 scheduler: main.o schedulerlib $(OUT_DIR)/libScheduler.so $(MAKEOUTDIR)
-	g++ $(CFLAGS) -o $(OUT_DIR)/Scheduler -lmysqlcppconn -lboost_date_time main.o $(OBJ) -L../out -lScheduler
+	g++ $(CFLAGS) -o $(OUT_DIR)/Scheduler main.o $(OBJ) -L../out -lScheduler -lmysqlcppconn -lboost_date_time
 
 com_smartroute_util_SchedulerApi.o: com_smartroute_util_SchedulerApi.cpp $(JNI_API_DIR)/com_smartroute_util_SchedulerApi.h
 	g++ -fPIC -c $(CFLAGS) -I$(JNI_API_DIR) -I$(JAVA_HOME)/include -I$(JAVAJNIINCLUDE) -o com_smartroute_util_SchedulerApi.o com_smartroute_util_SchedulerApi.cpp
@@ -73,5 +73,5 @@ clean:
 	$(RM) $(call FixPath, $(DIR_TYNIXML)/*.a)
 
 $(LIB_TYNIXML):
-	cd $(DIR_TYNIXML); make; ar rcs libtinyxml.a tinyxml.o tinyxmlparser.o xmltest.o tinyxmlerror.o tinystr.o
+	cd $(DIR_TYNIXML); make; ar rvs libtinyxml.a tinyxml.o tinyxmlparser.o xmltest.o tinyxmlerror.o tinystr.o
 
