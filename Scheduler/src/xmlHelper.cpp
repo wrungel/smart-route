@@ -1,5 +1,6 @@
 #include "xmlHelper.h"
 
+#include "HelperFunctions.h"
 #include "shipmentStation.h"
 
 namespace Scheduler
@@ -37,6 +38,25 @@ namespace Scheduler
     }
 
     return false;
+  }
+
+  bool CXmlHelper::ParseLatLong(const TiXmlElement* fatherElement, CCoordinate& coordinate)
+  {
+    //"latitude""longitude"
+    const TiXmlElement* latitudeElem = fatherElement->FirstChildElement("latitude");
+    const TiXmlElement* longitudeElem = fatherElement->FirstChildElement("longitude");
+    if (!latitudeElem || !longitudeElem)
+    {
+      return false;
+    }
+
+    std::string latStr = latitudeElem->GetText();
+    coordinate._lat = ParseDecimal(latStr, CCoordinate::KDigitsAfterComma);
+    std::string longStr = longitudeElem->GetText();
+    coordinate._long = ParseDecimal(longStr, CCoordinate::KDigitsAfterComma);
+
+    bool parsingSuccessful = coordinate.IsValid();
+    return parsingSuccessful;
   }
 
 }

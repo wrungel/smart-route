@@ -2,6 +2,8 @@
 
 #include <sstream>
 
+#include "HelperFunctions.h"
+
 namespace Scheduler{
 
 void PrintSqlException(const sql::SQLException &e)
@@ -35,28 +37,7 @@ int getLastInsertId(sql::Connection* conn)
 int getDecimal(const sql::ResultSet& rs, const std::string& column, unsigned char numAfterComma)
 {
   std::string s = rs.getString(column);
-  std::size_t pos = s.find('.');
-  int beforeComma = atoi(s.substr(0, pos).c_str());
-  if (numAfterComma == 0)
-  {
-    return beforeComma;
-  }
-  else
-  {
-    unsigned int afterComma = atoi(s.substr(pos + 1, numAfterComma).c_str());
-    for(unsigned char i = 0; i < numAfterComma; i++)
-    {
-      beforeComma *= 10;
-    }
-    if (s.find('-') == 0)
-    {
-      return beforeComma - afterComma;
-    }
-    else
-    {
-      return beforeComma + afterComma;
-    }
-  }
+  return ParseDecimal(s, numAfterComma);
 }
 
 //! divides arg by 10^power and sets it as Decimal into the prepared statement

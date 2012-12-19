@@ -27,6 +27,7 @@ namespace Scheduler
     void LoadXml(const std::string& xmlStr) { _currentDoc.Parse(xmlStr.c_str(), 0, TIXML_ENCODING_UTF8); }
 
     bool ParseStationLoadingKind(const TiXmlElement* xmlElement, CShipmentStation::EKind& eKind);
+    bool ParseLatLong(const TiXmlElement* fatherElement, CCoordinate& coordinate);
 
     TiXmlDocument _currentDoc;
 
