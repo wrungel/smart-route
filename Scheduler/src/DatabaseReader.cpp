@@ -156,8 +156,14 @@ CShipmentStation::EKind CDatabaseReader::ReadShipmentStationKind(const sql::Resu
 
 void CDatabaseReader::ReadCoordinate(CCoordinate& coord, const sql::ResultSet& rs)
 {
-  coord._lat = getDecimal(rs, "latitude", 6);
-  coord._long = getDecimal(rs, "longitude", 6);
+  coord._lat = getDecimal(rs, "latitude", CCoordinate::KDigitsAfterComma);
+  coord._long = getDecimal(rs, "longitude", CCoordinate::KDigitsAfterComma);
+  if (!coord.IsValid())
+  {
+    std::string latStr = rs.getString("latitude");
+    std::string longStr = rs.getString("longitude");
+    throw new CDBReaderException("read a bad coordinate: (" + latStr + ", " + longStr + ")");
+  }
 }
 
 void CDatabaseReader::ReadTimePeriod(boost::posix_time::time_period& aTimePeriod,
