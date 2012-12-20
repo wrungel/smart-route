@@ -142,9 +142,9 @@ namespace Test{
     CHECK_EQUAL(5, firstContract._loadAmmount._units);
 
     _dbReader.ReadContractStations(frameData._contracts);
-    CHECK(firstContract._stationSeqence.size() == 2);
-    boost::shared_ptr<CShipmentStation> dep = firstContract._stationSeqence[0];
-    boost::shared_ptr<CShipmentStation> arr = firstContract._stationSeqence[1];
+    CHECK(firstContract._stationSequence.size() == 2);
+    boost::shared_ptr<CShipmentStation> dep = firstContract._stationSequence[0];
+    boost::shared_ptr<CShipmentStation> arr = firstContract._stationSequence[1];
 
     CHECK_EQUAL(52489653, dep->_coord._lat);
     CHECK_EQUAL(13454837, dep->_coord._long);

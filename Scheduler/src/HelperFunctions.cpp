@@ -22,7 +22,7 @@ int ParseDecimal(const std::string& toParse, unsigned char numAfterComma)
     return beforeComma;
   }
 
-  int scaleFactor = 1;
+  unsigned int scaleFactor = 1;
   for(unsigned char i = 1; i < numAfterComma; i++)
   {
     scaleFactor *= 10;

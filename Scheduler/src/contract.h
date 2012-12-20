@@ -20,7 +20,9 @@ namespace Scheduler
     CLoadAmmount                  _loadAmmount; //total
 
     typedef CItinerary<boost::shared_ptr<CShipmentStation> > TStationSequence;
-    TStationSequence              _stationSeqence;
+    TStationSequence              _stationSequence;
+
+    CContract() : _id(0), _wasSuggestedBefore(false), _sealed(false), _price(0), _loadAmmount(), _stationSequence() {}
   };
 
   typedef signed char TContractIndex;

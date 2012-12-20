@@ -77,7 +77,7 @@ void CDatabaseReader::ReadContractStations(std::vector<CContract>& contracts)
 
   for(std::vector<CContract>::iterator contract = contracts.begin(); contract != contracts.end(); ++contract)
   {
-    BOOST_ASSERT(contract->_stationSeqence.size() == 0);
+    BOOST_ASSERT(contract->_stationSequence.size() == 0);
     try
     {
       readContractStationStmt->setInt(1, contract->_id);
@@ -101,11 +101,11 @@ void CDatabaseReader::ReadContractStations(std::vector<CContract>& contracts)
           }
         }
 
-        contract->_stationSeqence.push_back(station);
+        contract->_stationSequence.push_back(station);
       }
 
       // CheckTimePeriodsForItinerary
-      std::string exceptionText = contract->_stationSeqence.CheckTimePeriodsValidity();
+      std::string exceptionText = contract->_stationSequence.CheckTimePeriodsValidity();
       if (exceptionText != "")
       {
         throw CDBReaderException(exceptionText);

@@ -29,6 +29,8 @@ namespace Scheduler
   struct CCargo : public CLoadAmmount
   {
     CCargo() : CLoadAmmount(), _cargoType("") {}
+    CCargo(unsigned int weightKg, unsigned int liter, unsigned short units, const std::string& cargoType)
+      : CLoadAmmount(weightKg, liter, units), _cargoType(cargoType) {}
     std::string _cargoType;
   };
 }
