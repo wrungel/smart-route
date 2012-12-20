@@ -4,9 +4,9 @@
 
 #include "DatabaseReader.h"
 #include "mySqlHelper.h"
+#include "xmlHelper.h"
 
 #include "com_smartroute_util_SchedulerApi.h"
-
 
 using namespace Scheduler;
 
@@ -42,6 +42,19 @@ int ReadDB()
   }
 }
 
+// ! conversion jstring ->std::string for UTF
+void GetJStringContent(JNIEnv *env, jstring javastr, std::string &resultStr)
+{
+  if (!javastr) {
+    resultStr.clear();
+    return;
+  }
+
+  const char *s = env->GetStringUTFChars(javastr, 0);
+  resultStr=s;
+  env->ReleaseStringUTFChars(javastr, s);
+}
+
 JNIEXPORT jstring JNICALL Java_com_smartroute_util_SchedulerApi_fnTryScheduleFavorable (JNIEnv *env, jobject obj, jintArray orderIDs, jint maxSuggestionsPerOrder)
 {
   BOOST_ASSERT(maxSuggestionsPerOrder == 8);
@@ -62,7 +75,19 @@ JNIEXPORT jstring JNICALL Java_com_smartroute_util_SchedulerApi_fnBestAvailable 
 
 JNIEXPORT jint JNICALL Java_com_smartroute_util_SchedulerApi_fnEstimatePrice(JNIEnv *env, jobject obj, jstring orderXML)
 {
-  int retReadDB = ReadDB();
+  try
+  {
+    std::string orderXmlStr;
+    GetJStringContent(env, orderXML, orderXmlStr);
 
-  return retReadDB;
+    CXmlHelper xmlHelper;
+    std::auto_ptr<CContract> contract = xmlHelper.ReadContract(orderXmlStr);
+
+    int retReadDB = ReadDB();
+    return retReadDB;
+  }
+  catch(...)
+  {
+    return -1;
+  }
 }
