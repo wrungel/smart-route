@@ -1,0 +1,16 @@
+    <route>
+        <station>
+           <contractId>1</contractId>
+           <sequnceNum>1</sequnceNum>
+           <latitude> 52.489784 </latitude>
+           <longitude> 13.45695 </longitude>
+           <departure>2013-05-29T10:30:00</departure>
+        </station>
+        <station>
+           <contractId>1</contractId>
+           <sequnceNum>2</sequnceNum>
+           <latitude> 51.241286 </latitude>
+           <longitude> 6.8525 </longitude>
+           <arrival>2013-05-30T10:30:00</arrival>
+        </station>
+    </route>

@@ -1,0 +1,18 @@
+    <contract sealed="false" id="1">
+       <station>
+         <latitude> 52.489784 </latitude>
+         <longitude> 13.45695 </longitude>
+         <kind> LOAD </kind>
+         <units> 5 </units>
+         <timeFrom> 2013-05-29T09:30:10</timeFrom>
+         <timeUntil> 2013-05-29T10:30:00 </timeUntil>
+       </station>
+       <station>
+         <latitude> 51.241286 </latitude>
+         <longitude> 6.8525 </longitude>
+         <kind> UNLOAD </kind>
+         <units> 5 </units>
+         <timeFrom> 2013-05-30T09:30:10.5 </timeFrom>
+         <timeUntil> 2013-05-30T10:30:00</timeUntil>
+       </station>
+     </contract>
