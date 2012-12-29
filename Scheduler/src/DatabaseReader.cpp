@@ -244,6 +244,9 @@ void CDatabaseReader::ReadTruckRoutes(CFramingData& framingData)
   static std::string readCargosSql = "SELECT * FROM Cargo WHERE routeStation_id=?";
   std::auto_ptr<sql::PreparedStatement> readCargosStmt(_connection->prepareStatement(readCargosSql));
 
+  static std::string readContractStationTimeSql = "SELECT timeFrom, timeUntil FROM ContractStation WHERE id=?;";
+  std::auto_ptr<sql::PreparedStatement> readContractStationTimeStmt(_connection->prepareStatement(readContractStationTimeSql));
+
   for(TTruckIndex truckIndex = 0; truckIndex < static_cast<TTruckIndex>(framingData._trucks.size()); ++truckIndex)
   {
     const CTruck& truck = framingData._trucks[truckIndex];
@@ -253,7 +256,7 @@ void CDatabaseReader::ReadTruckRoutes(CFramingData& framingData)
     while(routeStationsRS->next())
     {
       CTruckRouteStation routeStation;
-      ReadRouteStationRow(routeStation, *routeStationsRS);
+      ReadRouteStationRow(routeStation, *routeStationsRS, readContractStationTimeStmt);
 
       // read cargos
       {
@@ -274,17 +277,29 @@ void CDatabaseReader::ReadTruckRoutes(CFramingData& framingData)
   }
 }
 
-void CDatabaseReader::ReadRouteStationRow(CTruckRouteStation& routeStation, const sql::ResultSet& rs)
+void CDatabaseReader::ReadRouteStationRow(CTruckRouteStation& routeStation,
+                                          const sql::ResultSet& rs,
+                                          const std::auto_ptr<sql::PreparedStatement>& readContractStationTimeStmt)
 {
   boost::shared_ptr<CShipmentStation> shipmentStation(new CShipmentStation);
-  ReadContractStationsRow(*shipmentStation, rs);
+  ReadCoordinate(shipmentStation->_coord, rs);
+  shipmentStation->_kind = ReadShipmentStationKind(rs);
   routeStation._station = shipmentStation;
+
+  ReadTimePeriod(routeStation._plannedTimePeriod, rs);
+
   routeStation._remainingTruckCapacity._weightKg = rs.getUInt("leftKg");
   routeStation._remainingTruckCapacity._liter = getDecimal(rs, "leftM3", 3);  // volume
   routeStation._remainingTruckCapacity._units = rs.getUInt("leftUnits");
   if (!rs.isNull("contractStation_id"))
   {
     routeStation._contractIndex = CRouteStation::KUnloadedContract;
+
+    // reading original time period from contract station
+    int contractStationId = rs.getInt("contractStation_id");
+    readContractStationTimeStmt->setInt(1, contractStationId);
+    std::auto_ptr<sql::ResultSet> contractStationRS(readContractStationTimeStmt->executeQuery());
+    ReadTimePeriod(routeStation._station->_timePeriod, *contractStationRS);
   }
   else
   {

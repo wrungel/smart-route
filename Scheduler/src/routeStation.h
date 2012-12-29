@@ -27,6 +27,15 @@ namespace Scheduler
   struct CTruckRouteStation : public CRouteStation
   {
     CLoadAmmount _remainingTruckCapacity;
+    boost::posix_time::time_period _plannedTimePeriod; // sub-period of station._timePeriod
+
+    CTruckRouteStation()
+    :
+     CRouteStation(),
+     _remainingTruckCapacity(),
+     _plannedTimePeriod(boost::posix_time::ptime(boost::gregorian::date(1970,1,1), boost::posix_time::hours(0)),
+                 boost::posix_time::ptime(boost::gregorian::date(1970,1,1), boost::posix_time::hours(0)))
+    {}
   };
 }
 #endif // SCHEDULER_ROUTE_STATION_H
