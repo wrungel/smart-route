@@ -10,6 +10,16 @@
 
 namespace Scheduler
 {
+  static inline boost::posix_time::ptime DefaultDateTime()
+  {
+    return  boost::posix_time::ptime(boost::gregorian::date(1970,1,1), boost::posix_time::hours(0));
+  }
+
+  static inline boost::posix_time::time_period DefaultTimePeriod()
+  {
+    return  boost::posix_time::time_period(DefaultDateTime(), DefaultDateTime());
+  }
+
   struct CShipmentStation
   {
     enum EKind {KLoad, KUnload, KDriveby};
@@ -17,8 +27,7 @@ namespace Scheduler
     CShipmentStation()
     : _coord(),
       _kind(KDriveby),
-      _timePeriod(boost::posix_time::ptime(boost::gregorian::date(1970,1,1), boost::posix_time::hours(0)),
-                  boost::posix_time::ptime(boost::gregorian::date(1970,1,1), boost::posix_time::hours(0))),
+      _timePeriod(DefaultTimePeriod()),
       _cargo()
     {}
 

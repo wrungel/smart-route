@@ -33,8 +33,7 @@ namespace Scheduler
     :
      CRouteStation(),
      _remainingTruckCapacity(),
-     _plannedTimePeriod(boost::posix_time::ptime(boost::gregorian::date(1970,1,1), boost::posix_time::hours(0)),
-                 boost::posix_time::ptime(boost::gregorian::date(1970,1,1), boost::posix_time::hours(0)))
+     _plannedTimePeriod(DefaultTimePeriod())
     {}
   };
 }
