@@ -11,6 +11,8 @@ namespace Scheduler
 {
   struct CContract
   {
+    static boost::posix_time::time_duration KMinStationDuration;
+
     unsigned int                  _id;
     //! whether some assignemnt for this contract was already suggested by an earliear run
     bool                          _wasSuggestedBefore;
@@ -23,6 +25,11 @@ namespace Scheduler
     TStationSequence              _stationSequence;
 
     CContract() : _id(0), _wasSuggestedBefore(false), _sealed(false), _price(0), _loadAmmount(), _stationSequence() {}
+
+    typedef unsigned short TStationIndex;
+
+    //! whether Station A has to be visited before station B
+    bool AMustbeBeforeB(TStationIndex indexA, TStationIndex indexB) const;
   };
 
   typedef signed char TContractIndex;

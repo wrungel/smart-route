@@ -27,7 +27,7 @@ LIB_UNIT_TEST_PP     = ${DIR_UNIT_TEST_PP}/libUnitTest++.a
 
 OUT_DIR = ../out
 
-OBJ = loadAmmount.o situation.o mySqlHelper.o DatabaseReader.o xmlHelper.o HelperFunctions.o
+OBJ = loadAmmount.o situation.o mySqlHelper.o DatabaseReader.o xmlHelper.o HelperFunctions.o contract.o route.o
 OBJ_TEST = Test/unit_tests.o Test/TestDBConnection.o Test/TestContractReader.o
 
 INCLUDES = -I${INC_UNIT_TEST_PP} -I${DIR_TYNIXML}

@@ -16,8 +16,11 @@ namespace Scheduler
     static const TContractIndex KNoContract = -2;
 
     TContractIndex _contractIndex;
-
     boost::shared_ptr<CShipmentStation> _station;
+
+    CRouteStation() : _contractIndex(0), _station() {}
+    CRouteStation(TContractIndex index, CShipmentStation* station) : _contractIndex(index), _station(station) {}
+    CRouteStation(TContractIndex index, const boost::shared_ptr<CShipmentStation>& sharedStation) : _contractIndex(index), _station(sharedStation) {}
 
     CShipmentStation* operator-> () { return _station.operator->(); }
     CShipmentStation& operator* ()  { return _station.operator*(); }
