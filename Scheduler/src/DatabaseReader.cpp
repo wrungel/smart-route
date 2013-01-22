@@ -252,7 +252,7 @@ void CDatabaseReader::ReadTruckRoutes(CFramingData& framingData)
     const CTruck& truck = framingData._trucks[truckIndex];
     readRouteStationsStmt->setInt(1, truck._id);
     std::auto_ptr<sql::ResultSet> routeStationsRS(readRouteStationsStmt->executeQuery());
-    CTruckRoute route;
+    CTruckRoute* route = new CTruckRoute();
     while(routeStationsRS->next())
     {
       CTruckRouteStation routeStation;
@@ -271,7 +271,7 @@ void CDatabaseReader::ReadTruckRoutes(CFramingData& framingData)
         }
       }
 
-      route.push_back(routeStation);
+      route->push_back(routeStation);
     }
     framingData._truckRoutes.push_back(route);
   }

@@ -60,3 +60,9 @@ std::auto_ptr<boost::ptr_vector<CRoute> > CreateRoutes(TContractIndex contractIn
 
   return result;
 }
+
+
+CTruckRoute* CTruckRoute::MergeWith(const CRoute& aRoute)
+{
+  return 0;
+}

@@ -7,6 +7,7 @@
 #include "contract.h"
 #include "route.h"
 
+#include <boost/ptr_container/ptr_vector.hpp>
 
 namespace Scheduler
 {
@@ -17,8 +18,9 @@ namespace Scheduler
     std::vector<CTruck> _trucks;
     std::vector<CContract> _contracts;
 
-    //! an entry for each truck
-    std::vector<CTruckRoute> _truckRoutes;
+    /*! an entry for each truck
+     a pointer container because CTruckRoute is non-copyable */
+    boost::ptr_vector<CTruckRoute> _truckRoutes;
   };
 };
 
