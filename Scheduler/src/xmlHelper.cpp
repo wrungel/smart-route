@@ -124,7 +124,7 @@ namespace Scheduler
       bool stationParsedSuccessfully = ParseStation(stationElement, *station);
       if (stationParsedSuccessfully)
       {
-        contract->_stationSequence.push_back(station);
+        contract->_sequence.push_back(station);
       }
 
       stationElement = stationElement->NextSiblingElement("station");

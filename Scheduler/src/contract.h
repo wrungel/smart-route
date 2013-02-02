@@ -9,7 +9,9 @@
 
 namespace Scheduler
 {
-  struct CContract
+  typedef CItinerary<boost::shared_ptr<CShipmentStation> > TContractStationSequence;
+
+  struct CContract : public TContractStationSequence
   {
     static boost::posix_time::time_duration KMinStationDuration;
 
@@ -21,10 +23,7 @@ namespace Scheduler
     unsigned int                  _price;
     CLoadAmmount                  _loadAmmount; //total
 
-    typedef CItinerary<boost::shared_ptr<CShipmentStation> > TStationSequence;
-    TStationSequence              _stationSequence;
-
-    CContract() : _id(0), _wasSuggestedBefore(false), _sealed(false), _price(0), _loadAmmount(), _stationSequence() {}
+    CContract() : TContractStationSequence(), _id(0), _wasSuggestedBefore(false), _sealed(false), _price(0), _loadAmmount() {}
 
     typedef unsigned short TStationIndex;
 

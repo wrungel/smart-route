@@ -2,6 +2,9 @@
 
 #include <vector>
 #include <algorithm>
+#include <deque>
+
+#include "mergingNode.hpp"
 
 using namespace Scheduler;
 
@@ -34,6 +37,7 @@ struct SStationRep
     }
 };
 
+// creating (general) route(s) from a contract
 std::auto_ptr<boost::ptr_vector<CRoute> > CreateRoutes(TContractIndex contractIndex,
                                                        const CContract& contract)
 {
@@ -42,7 +46,7 @@ std::auto_ptr<boost::ptr_vector<CRoute> > CreateRoutes(TContractIndex contractIn
   // following vector represents a station ordering
   // it will be transformed via next_permutation() in order iterate over all feasible station orderings
   std::vector<SStationRep> repSequence;
-  for (TStationIndex i = 0; i < contract._stationSequence.size(); i++)
+  for (TStationIndex i = 0; i < contract._sequence.size(); i++)
   {
     repSequence.push_back(SStationRep(i, contract));
   }
@@ -52,7 +56,7 @@ std::auto_ptr<boost::ptr_vector<CRoute> > CreateRoutes(TContractIndex contractIn
     CRoute* pRoute = new CRoute();
     for (std::vector<SStationRep>::iterator it = repSequence.begin(); it != repSequence.end() ; ++it)
     {
-      pRoute->push_back(CRouteStation(contractIndex, contract._stationSequence[it->_index]));
+      pRoute->_sequence.push_back(CRouteStation(contractIndex, contract._sequence[it->_index]));
     }
     result->push_back(pRoute);
   }
@@ -61,7 +65,23 @@ std::auto_ptr<boost::ptr_vector<CRoute> > CreateRoutes(TContractIndex contractIn
   return result;
 }
 
+/*********** Combining general routes
+*/
+//! create (0..N) routes as combination with a passed route
+TRouteVecPtr CRoute::MergeWith (const CRoute& aRoute)
+{
+  TRouteVecPtr result(new boost::ptr_vector<CRoute>);
+  CRoute* pRoute = new CRoute();
 
+  typedef CMergingNode<CRoute, CRoute, CRoute> TMergingNode;
+  std::deque<TMergingNode> agenda;
+  agenda.push_back(TMergingNode(_sequence.begin(), aRoute._sequence.begin(), pRoute));
+
+  return result;
+}
+
+/*********** Combining truck routes
+*/
 CTruckRoute* CTruckRoute::MergeWith(const CRoute& aRoute)
 {
   return 0;

@@ -142,9 +142,9 @@ namespace Test{
     CHECK_EQUAL(5, firstContract._loadAmmount._units);
 
     _dbReader.ReadContractStations(frameData._contracts);
-    CHECK(firstContract._stationSequence.size() == 2);
-    boost::shared_ptr<CShipmentStation> dep = firstContract._stationSequence[0];
-    boost::shared_ptr<CShipmentStation> arr = firstContract._stationSequence[1];
+    CHECK(firstContract._sequence.size() == 2);
+    boost::shared_ptr<CShipmentStation> dep = firstContract._sequence[0];
+    boost::shared_ptr<CShipmentStation> arr = firstContract._sequence[1];
 
     CHECK_EQUAL(52489653, dep->_coord._lat);
     CHECK_EQUAL(13454837, dep->_coord._long);
@@ -206,8 +206,8 @@ namespace Test{
     _dbReader.ReadTruckRoutes(frameData);
 
     CHECK_EQUAL(2, frameData._truckRoutes.size());
-    CHECK_EQUAL(0, frameData._truckRoutes[0].size());
-    CHECK_EQUAL(2, frameData._truckRoutes[1].size());
+    CHECK_EQUAL(0, frameData._truckRoutes[0]._sequence.size());
+    CHECK_EQUAL(2, frameData._truckRoutes[1]._sequence.size());
   }
 
 

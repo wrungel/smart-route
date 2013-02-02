@@ -25,7 +25,7 @@ namespace Scheduler
     TRouteVecPtr MergeWith (const CRoute& aRoute);
    };
 
-  /*! create (0..N) routes from a order
+  /*! create (0..N) routes from an order
   @contractIndex the contract index is stored in each route station (in order be able to identify original contract station)
   @contract
   */

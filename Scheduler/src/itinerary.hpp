@@ -8,20 +8,23 @@
 namespace Scheduler
 {
   template <class taStation>
-  class CItinerary : public std::vector<taStation>
+  struct CItinerary
   {
-  public:
+     typedef typename std::vector<taStation> TSequence;
+     typedef typename TSequence::iterator iterator;
+     typedef typename TSequence::const_iterator const_iterator;
      std::string CheckTimePeriodsValidity() const; // empty string means its valid
+     TSequence _sequence;
   };
 
   template<class taStation>
   std::string CItinerary<taStation>::CheckTimePeriodsValidity() const
   {
-    for (unsigned char i = 0; i < this->size(); ++i)
+    for (unsigned char i = 0; i < _sequence.size(); ++i)
     {
-      for (unsigned char j = i + 1; j < this->size(); ++j)
+      for (unsigned char j = i + 1; j < _sequence.size(); ++j)
       {
-        if ((*this)[i]->_timePeriod.is_after((*this)[j]->_timePeriod.end()))
+        if (_sequence[i]->_timePeriod.is_after(_sequence[j]->_timePeriod.end()))
         {
           std::stringstream exceptionText;
           exceptionText << "time period for station " << i << " is after tme period for station " << j;

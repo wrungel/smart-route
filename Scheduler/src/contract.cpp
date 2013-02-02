@@ -9,16 +9,16 @@ boost::posix_time::time_duration CContract::KMinStationDuration = boost::posix_t
 
 bool CContract::AMustbeBeforeB(TStationIndex indexA, TStationIndex indexB) const
 {
-  BOOST_ASSERT(indexA < _stationSequence.size());
-  BOOST_ASSERT(indexB < _stationSequence.size());
+  BOOST_ASSERT(indexA < _sequence.size());
+  BOOST_ASSERT(indexB < _sequence.size());
 
   if (indexA == indexB)
   {
     return false;
   }
 
-  const CShipmentStation& stationA = *(_stationSequence[indexA]);
-  const CShipmentStation& stationB = *(_stationSequence[indexB]);
+  const CShipmentStation& stationA = *(_sequence[indexA]);
+  const CShipmentStation& stationB = *(_sequence[indexB]);
 
   if (stationA._kind == CShipmentStation::KLoad && stationB._kind == CShipmentStation::KUnload)
   {
