@@ -3,7 +3,6 @@
 
 #include <set>
 
-#include <boost/noncopyable.hpp>
 #include <boost/ptr_container/ptr_vector.hpp>
 
 #include "itinerary.hpp"

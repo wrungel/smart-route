@@ -5,6 +5,7 @@
 #include <deque>
 
 #include "mergingNode.hpp"
+#include "distanceService.h"
 
 using namespace Scheduler;
 
@@ -86,7 +87,7 @@ TRouteVecPtr CRoute::MergeWith (const CRoute& anOtherRoute)
 
     if (!expandableByFirst && !expandableBySecond)
     {
-      // wenn route is complete combination, store it as result
+      // if route is complete combination, store it as result
       if (expandingNode._pValue->_sequence.size() == this->_sequence.size() + anOtherRoute._sequence.size())
       {
         result->push_back(expandingNode._pValue);
@@ -156,6 +157,7 @@ TRouteVecPtr CRoute::MergeWith (const CRoute& anOtherRoute)
 
 bool CRoute::IsExtendibleByStation(const CRouteStation& aStation) const
 {
+  unsigned int distance = CDistanceService::Instance().GetDistanceSeconds(_sequence.back()->_coord, aStation._station->_coord);
   // TODO
   return false;
 }

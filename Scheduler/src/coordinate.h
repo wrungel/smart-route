@@ -22,6 +22,9 @@ namespace Scheduler
 
     bool IsValid() { return IsValidLatitude(_lat) && IsValidLongitude(_long); }
   };
+
+  inline bool operator==(const CCoordinate& lhs, const CCoordinate& rhs){ return lhs._lat == rhs._lat && lhs._long == rhs._long; }
+  inline bool operator!=(const CCoordinate& lhs, const CCoordinate& rhs){ return !operator==(lhs,rhs); }
 }
 
 #endif // SCHEDULER_COORDINATE_H

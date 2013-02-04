@@ -23,7 +23,9 @@ namespace Scheduler
     CRouteStation(TContractIndex index, const boost::shared_ptr<CShipmentStation>& sharedStation) : _contractIndex(index), _station(sharedStation) {}
 
     CShipmentStation* operator-> () { return _station.operator->(); }
+    const CShipmentStation* operator-> () const { return _station.operator->(); }
     CShipmentStation& operator* ()  { return _station.operator*(); }
+    const CShipmentStation& operator* () const { return _station.operator*(); }
   };
 
   //! class representing a station on a route specific for a single truck
