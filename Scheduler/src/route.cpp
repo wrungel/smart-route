@@ -68,21 +68,109 @@ std::auto_ptr<boost::ptr_vector<CRoute> > CreateRoutes(TContractIndex contractIn
 /*********** Combining general routes
 */
 //! create (0..N) routes as combination with a passed route
-TRouteVecPtr CRoute::MergeWith (const CRoute& aRoute)
+TRouteVecPtr CRoute::MergeWith (const CRoute& anOtherRoute)
 {
   TRouteVecPtr result(new boost::ptr_vector<CRoute>);
-  CRoute* pRoute = new CRoute();
 
-  typedef CMergingNode<CRoute, CRoute, CRoute> TMergingNode;
-  std::deque<TMergingNode> agenda;
-  agenda.push_back(TMergingNode(_sequence.begin(), aRoute._sequence.begin(), pRoute));
+  typedef CMergingNode<CRoute, CRoute, CRoute> TNode;
+  std::deque<TNode> agenda; // holding nodes to expand
+  agenda.push_back(TNode(_sequence.begin(), anOtherRoute._sequence.begin(), new CRoute));
+  while(!agenda.empty())
+  {
+    TNode& expandingNode = agenda.front();
+    bool expandableByFirst = expandingNode._firstIterator != _sequence.end()
+      &&  expandingNode._pValue->IsExtendibleByStation(*(expandingNode._firstIterator + 1)); // extendible by the next station in the first sequence
+    bool expandableBySecond = expandingNode._secondIterator != anOtherRoute._sequence.end()
+      &&  expandingNode._pValue->IsExtendibleByStation(*(expandingNode._secondIterator + 1)); // extendible by the next station in the second sequence
+    bool bothWayExpandable = expandableByFirst && expandableBySecond;
+
+    if (!expandableByFirst && !expandableBySecond)
+    {
+      // wenn route is complete combination, store it as result
+      if (expandingNode._pValue->_sequence.size() == this->_sequence.size() + anOtherRoute._sequence.size())
+      {
+        result->push_back(expandingNode._pValue);
+      }
+      else
+      {
+        // clean up
+        delete expandingNode._pValue;
+      }
+      // remove it from the agenda
+      agenda.pop_front();
+    }
+    else if (bothWayExpandable)
+    {
+      // make a copy of node and of the route,and expand the copy, so we still have original route for expanding by second
+      TNode newNode(expandingNode._firstIterator + 1,
+                    expandingNode._secondIterator,
+                    new CRoute(*(expandingNode._pValue)));
+      bool firstSuccessful = newNode._pValue->ExtendByStation(*(newNode._firstIterator));
+
+      // now alter the the 'original' route
+      ++(expandingNode._secondIterator);
+      bool secondSuccessful = expandingNode._pValue->ExtendByStation(*(expandingNode._secondIterator));
+
+      if (!secondSuccessful)
+      {
+        delete expandingNode._pValue; // clean up
+        agenda.pop_front();
+      }
+
+      if (!firstSuccessful)
+      {
+        delete newNode._pValue;
+      }
+      else
+      {
+        agenda.push_back(newNode);
+      }
+    }
+    else
+    {
+      if (expandableByFirst)
+      {
+        ++(expandingNode._firstIterator);
+        bool successful = expandingNode._pValue->ExtendByStation(*(expandingNode._firstIterator));
+        if (!successful)
+        {
+          delete expandingNode._pValue; // clean up
+          agenda.pop_front();
+        }
+      }
+      else // expandableBySecond is true
+      {
+        ++(expandingNode._secondIterator);
+        bool successful = expandingNode._pValue->ExtendByStation(*(expandingNode._secondIterator));
+        if (!successful)
+        {
+          delete expandingNode._pValue; // clean up
+          agenda.pop_front();
+        }
+      }
+    }
+  }
 
   return result;
+}
+
+bool CRoute::IsExtendibleByStation(const CRouteStation& aStation) const
+{
+  // TODO
+  return false;
+}
+
+ // returns whtether extension was successful
+bool CRoute::ExtendByStation(const CRouteStation& aStation)
+{
+  // TODO
+  return false;
 }
 
 /*********** Combining truck routes
 */
 CTruckRoute* CTruckRoute::MergeWith(const CRoute& aRoute)
 {
+  // TODO
   return 0;
 }

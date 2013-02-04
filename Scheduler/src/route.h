@@ -17,12 +17,19 @@ namespace Scheduler
   typedef std::auto_ptr<boost::ptr_vector<CRoute> > TRouteVecPtr;
 
    //! class representing a general route
-  struct CRoute : public CItinerary<CRouteStation>, boost::noncopyable
+  class CRoute : public CItinerary<CRouteStation>
   {
+  public:
     TContractSet _contracts;
 
     //! create (0..N) routes as combination with a passed route
     TRouteVecPtr MergeWith (const CRoute& aRoute);
+
+  private:
+    bool IsExtendibleByStation(const CRouteStation& aStation) const;
+
+    // returns whtether extension was successful
+    bool ExtendByStation(const CRouteStation& aStation);
    };
 
   /*! create (0..N) routes from an order
@@ -32,8 +39,9 @@ namespace Scheduler
   TRouteVecPtr CreateRoutes(TContractIndex contractIndex, const CContract& contract);
 
   //! class representing a route of a concrete truck
-  struct CTruckRoute : public CItinerary<CTruckRouteStation>, boost::noncopyable
+  class CTruckRoute : public CItinerary<CTruckRouteStation>
   {
+  public:
     /*! construct a new TruckRoute by merging with a 'general' Route
         @return pointer to best constructed route, caller must handle memory.
         NULL if no feasible merging is possible */
