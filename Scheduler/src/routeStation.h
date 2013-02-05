@@ -31,8 +31,11 @@ namespace Scheduler
   //! class representing a station on a route specific for a single truck
   struct CTruckRouteStation : public CRouteStation
   {
+    //! capacity after visiting  this station
     CLoadAmmount _remainingTruckCapacity;
-    boost::posix_time::time_period _plannedTimePeriod; // sub-period of station._timePeriod
+
+    //! when for a concrete truck is planned to be there, its a sub-period of station._timePeriod,
+    boost::posix_time::time_period _plannedTimePeriod;
 
     CTruckRouteStation()
     :

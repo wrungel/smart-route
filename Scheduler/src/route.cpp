@@ -157,16 +157,32 @@ TRouteVecPtr CRoute::MergeWith (const CRoute& anOtherRoute)
 
 bool CRoute::IsExtendibleByStation(const CRouteStation& aStation) const
 {
-  unsigned int distance = CDistanceService::Instance().GetDistanceSeconds(_sequence.back()->_coord, aStation._station->_coord);
+  if (this->_sequence.size() == 0)
+  {
+    return true;
+  }
+
+  unsigned int distance = CDistanceService::Instance().GetDistanceSeconds(_sequence.back()->_coord,
+                                                                          aStation._station->_coord);
+
   // TODO
+
   return false;
 }
 
  // returns whtether extension was successful
 bool CRoute::ExtendByStation(const CRouteStation& aStation)
 {
-  // TODO
-  return false;
+  this->_sequence.push_back(aStation);
+  // TODO: check whether the route still valid.
+  bool stillValid = true;
+  // If not, take the extension back
+  if (!stillValid)
+  {
+    this->_sequence.erase(--(this->_sequence.end()));
+  }
+
+  return stillValid;
 }
 
 /*********** Combining truck routes
