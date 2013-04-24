@@ -29,6 +29,7 @@ namespace Scheduler
 
     // returns whtether extension was successful
     bool ExtendByStation(const CRouteStation& aStation);
+
    };
 
   /*! create (0..N) routes from an order

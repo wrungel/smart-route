@@ -10,11 +10,15 @@ namespace Scheduler
   template <class taStation>
   struct CItinerary
   {
+    public:
      typedef typename std::vector<taStation> TSequence;
      typedef typename TSequence::iterator iterator;
      typedef typename TSequence::const_iterator const_iterator;
+     typedef typename TSequence::reverse_iterator reverse_iterator;
      std::string CheckTimePeriodsValidity() const; // empty string means its valid
+
      TSequence _sequence;
+     const taStation* LastStationWithContract() const;
   };
 
   template<class taStation>
@@ -33,6 +37,19 @@ namespace Scheduler
       }
     }
     return "";
+  }
+
+  template<class taStation>
+  const taStation* CItinerary<taStation>::LastStationWithContract() const
+  {
+    for (int i = _sequence.size() - 1; i >= 0 ; i--)
+    {
+      if (_sequence[i]._contractIndex >= 0)
+      {
+        return &(_sequence[i]);
+      }
+    }
+    return NULL;
   }
 }
 

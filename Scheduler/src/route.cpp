@@ -10,6 +10,8 @@
 using namespace Scheduler;
 
 
+std::vector<CContract>* CRouteStation::pContracts = NULL;
+
 typedef CContract::TStationIndex TStationIndex;
 
 // a helper structure
@@ -155,19 +157,45 @@ TRouteVecPtr CRoute::MergeWith (const CRoute& anOtherRoute)
   return result;
 }
 
-bool CRoute::IsExtendibleByStation(const CRouteStation& aStation) const
+bool CRoute::IsExtendibleByStation(const CRouteStation& aStationToAdd) const
 {
-  if (this->_sequence.size() == 0)
+  if (_sequence.size() == 0)
   {
     return true;
   }
 
-  unsigned int distance = CDistanceService::Instance().GetDistanceSeconds(_sequence.back()->_coord,
-                                                                          aStation._station->_coord);
+  // 1) check 'sealed'
+  const CRouteStation* lastStationWithContract = this->LastStationWithContract();
+  if (lastStationWithContract != NULL)
+  {
+    const CContract* lastContract = lastStationWithContract->Contract();
+    assert(lastContract);
 
-  // TODO
+    if (lastContract->_sealed)
+    {
+      // look whether the whole last contract is already in the route,
+      // so it suffices to look for the last station of contract
+      boost::shared_ptr<CShipmentStation> lastStationOfLastcontractPtr = lastContract->_sequence.back();
+      bool contractInRoute = lastStationOfLastcontractPtr->_coord == lastStationWithContract->_shipmentStation->_coord;
 
-  return false;
+      if (!contractInRoute)
+      {
+        return false;
+      }
+    }
+  }
+
+  // 2) distance check
+  const CRouteStation& lastStation = this->_sequence.back();
+  boost::posix_time::time_duration segmentTripDuration = CDistanceService::Instance().GetDistanceSeconds(lastStation->_coord, aStationToAdd->_coord);
+  boost::posix_time::ptime earliestDeparture = lastStation->_timePeriod.begin() + CContract::KMinStationDuration;
+  boost::posix_time::ptime latestArrival = aStationToAdd->_timePeriod.end() - CContract::KMinStationDuration;
+  if (earliestDeparture + segmentTripDuration > latestArrival)
+  {
+    return false;
+  }
+
+  return true;
 }
 
  // returns whtether extension was successful

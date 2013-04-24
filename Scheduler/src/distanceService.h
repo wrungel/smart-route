@@ -1,6 +1,8 @@
 #ifndef SCHEDULER_DISTANCE_SERVICE_H
 #define SCHEDULER_DISTANCE_SERVICE_H
 
+#include "boost/date_time/posix_time/posix_time_types.hpp"
+
 #include <utility>
 #include <boost/noncopyable.hpp>
 #include <boost/unordered/unordered_map.hpp>
@@ -23,6 +25,11 @@ namespace Scheduler
 
     // distance in seconds
     unsigned int GetDistanceSeconds(const CCoordinate& from, const CCoordinate& to);
+    // distance as time interval
+    boost::posix_time::time_duration GetDistance(const CCoordinate& from, const CCoordinate& to)
+    {
+      return boost::posix_time::seconds(GetDistanceSeconds(from, to));
+    }
 
   private:
     CDistanceService(); // singleton

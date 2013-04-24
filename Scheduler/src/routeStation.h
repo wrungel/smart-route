@@ -15,18 +15,31 @@ namespace Scheduler
     //! route station without contract
     static const TContractIndex KNoContract = -2;
 
+    static std::vector<CContract>* pContracts;
+
     TContractIndex _contractIndex;
-    boost::shared_ptr<CShipmentStation> _station;
+    boost::shared_ptr<CShipmentStation> _shipmentStation;
 
-    CRouteStation() : _contractIndex(0), _station() {}
-    CRouteStation(TContractIndex index, CShipmentStation* station) : _contractIndex(index), _station(station) {}
-    CRouteStation(TContractIndex index, const boost::shared_ptr<CShipmentStation>& sharedStation) : _contractIndex(index), _station(sharedStation) {}
+    CRouteStation() : _contractIndex(KNoContract), _shipmentStation() {}
+    CRouteStation(TContractIndex index, CShipmentStation* station) : _contractIndex(index), _shipmentStation(station) {}
+    CRouteStation(TContractIndex index, const boost::shared_ptr<CShipmentStation>& sharedStation) : _contractIndex(index), _shipmentStation(sharedStation) {}
 
-    CShipmentStation* operator-> () { return _station.operator->(); }
-    const CShipmentStation* operator-> () const { return _station.operator->(); }
-    CShipmentStation& operator* ()  { return _station.operator*(); }
-    const CShipmentStation& operator* () const { return _station.operator*(); }
-  };
+    CShipmentStation* operator-> () { return _shipmentStation.operator->(); }
+    const CShipmentStation* operator-> () const { return _shipmentStation.operator->(); }
+    CShipmentStation& operator* ()  { return _shipmentStation.operator*(); }
+    const CShipmentStation& operator* () const { return _shipmentStation.operator*(); }
+
+    const CContract* Contract() const
+    {
+       if (!IsContractIndexValid(_contractIndex))
+         return NULL;
+       else
+         return &((*pContracts)[_contractIndex]);
+    }
+
+    private:
+    static bool IsContractIndexValid(TContractIndex aIndex) { return aIndex >=0 && pContracts && static_cast<size_t>(aIndex) < pContracts->size();}
+ };
 
   //! class representing a station on a route specific for a single truck
   struct CTruckRouteStation : public CRouteStation

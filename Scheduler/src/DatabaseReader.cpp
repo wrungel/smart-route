@@ -267,7 +267,7 @@ void CDatabaseReader::ReadTruckRoutes(CFramingData& framingData)
         {
           CCargo cargo;
           ReadCargoRow(cargo, *cargosRS);
-          routeStation._station->_cargo.push_back(cargo);
+          routeStation._shipmentStation->_cargo.push_back(cargo);
         }
       }
 
@@ -284,7 +284,7 @@ void CDatabaseReader::ReadRouteStationRow(CTruckRouteStation& routeStation,
   boost::shared_ptr<CShipmentStation> shipmentStation(new CShipmentStation);
   ReadCoordinate(shipmentStation->_coord, rs);
   shipmentStation->_kind = ReadShipmentStationKind(rs);
-  routeStation._station = shipmentStation;
+  routeStation._shipmentStation = shipmentStation;
 
   ReadTimePeriod(routeStation._plannedTimePeriod, rs);
 
@@ -299,7 +299,7 @@ void CDatabaseReader::ReadRouteStationRow(CTruckRouteStation& routeStation,
     int contractStationId = rs.getInt("contractStation_id");
     readContractStationTimeStmt->setInt(1, contractStationId);
     std::auto_ptr<sql::ResultSet> contractStationRS(readContractStationTimeStmt->executeQuery());
-    ReadTimePeriod(routeStation._station->_timePeriod, *contractStationRS);
+    ReadTimePeriod(routeStation._shipmentStation->_timePeriod, *contractStationRS);
   }
   else
   {
