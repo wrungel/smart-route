@@ -57,6 +57,7 @@ std::auto_ptr<boost::ptr_vector<CRoute> > CreateRoutes(TContractIndex contractIn
   // now the iteration, for each feasible station ordering a route is created
   do{
     CRoute* pRoute = new CRoute();
+    pRoute->_sequence.reserve(repSequence.size());
     for (std::vector<SStationRep>::iterator it = repSequence.begin(); it != repSequence.end() ; ++it)
     {
       pRoute->_sequence.push_back(CRouteStation(contractIndex, contract._sequence[it->_index]));
@@ -77,7 +78,11 @@ TRouteVecPtr CRoute::MergeWith (const CRoute& anOtherRoute)
 
   typedef CMergingNode<CRoute, CRoute, CRoute> TNode;
   std::deque<TNode> agenda; // holding nodes to expand
-  agenda.push_back(TNode(_sequence.begin(), anOtherRoute._sequence.begin(), new CRoute));
+
+  CRoute* pRouteInConstruction = new CRoute();
+  pRouteInConstruction->_sequence.reserve(_sequence.size() + anOtherRoute._sequence.size());
+
+  agenda.push_back(TNode(_sequence.begin(), anOtherRoute._sequence.begin(), pRouteInConstruction));
   while(!agenda.empty())
   {
     TNode& expandingNode = agenda.front();

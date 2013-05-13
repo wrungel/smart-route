@@ -15,11 +15,25 @@ namespace Scheduler
      typedef typename TSequence::iterator iterator;
      typedef typename TSequence::const_iterator const_iterator;
      typedef typename TSequence::reverse_iterator reverse_iterator;
-     std::string CheckTimePeriodsValidity() const; // empty string means its valid
+
+
+     CItinerary();
+     CItinerary(const CItinerary& aItinerary);
+     CItinerary(const_iterator first, const_iterator last);
 
      TSequence _sequence;
+     std::string CheckTimePeriodsValidity() const; // empty string means its valid
      const taStation* LastStationWithContract() const;
   };
+
+  template<class taStation>
+  CItinerary<taStation>::CItinerary() : _sequence() {}
+
+  template<class taStation>
+  CItinerary<taStation>::CItinerary(const CItinerary& aItinerary) : _sequence(aItinerary._sequence) {}
+
+  template<class taStation>
+  CItinerary<taStation>::CItinerary(const_iterator first, const_iterator last) : _sequence(first, last) {}
 
   template<class taStation>
   std::string CItinerary<taStation>::CheckTimePeriodsValidity() const
