@@ -187,7 +187,7 @@ bool CRoute::IsExtendibleByStation(const CRouteStation& aStationToAdd) const
 
   // 2) distance check
   const CRouteStation& lastStation = this->_sequence.back();
-  boost::posix_time::time_duration segmentTripDuration = CDistanceService::Instance().GetDistanceSeconds(lastStation->_coord, aStationToAdd->_coord);
+  boost::posix_time::time_duration segmentTripDuration = CDistanceService::Instance().GetDistance(lastStation->_coord, aStationToAdd->_coord);
   boost::posix_time::ptime earliestDeparture = lastStation->_timePeriod.begin() + CContract::KMinStationDuration;
   boost::posix_time::ptime latestArrival = aStationToAdd->_timePeriod.end() - CContract::KMinStationDuration;
   if (earliestDeparture + segmentTripDuration > latestArrival)
@@ -211,12 +211,4 @@ bool CRoute::ExtendByStation(const CRouteStation& aStation)
   }
 
   return stillValid;
-}
-
-/*********** Combining truck routes
-*/
-CTruckRoute* CTruckRoute::MergeWith(const CRoute& aRoute)
-{
-  // TODO
-  return 0;
 }

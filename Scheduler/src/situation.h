@@ -6,6 +6,7 @@
 #include "truck.h"
 #include "contract.h"
 #include "route.h"
+#include "truckRoute.h"
 
 #include <boost/ptr_container/ptr_vector.hpp>
 
