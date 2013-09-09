@@ -87,9 +87,9 @@ TRouteVecPtr CRoute::MergeWith (const CRoute& anOtherRoute)
   {
     TNode& expandingNode = agenda.front();
     bool expandableByFirst = expandingNode._firstIterator != _sequence.end()
-      &&  expandingNode._pValue->IsExtendibleByStation(*(expandingNode._firstIterator + 1)); // extendible by the next station in the first sequence
+      &&  expandingNode._pValue->IsExtendibleByStation(*(expandingNode._firstIterator)); // extendible by the next station in the first sequence
     bool expandableBySecond = expandingNode._secondIterator != anOtherRoute._sequence.end()
-      &&  expandingNode._pValue->IsExtendibleByStation(*(expandingNode._secondIterator + 1)); // extendible by the next station in the second sequence
+      &&  expandingNode._pValue->IsExtendibleByStation(*(expandingNode._secondIterator)); // extendible by the next station in the second sequence
     bool bothWayExpandable = expandableByFirst && expandableBySecond;
 
     if (!expandableByFirst && !expandableBySecond)

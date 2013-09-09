@@ -16,12 +16,20 @@ namespace Scheduler
     TFirstIterator     _firstIterator;
     TSecondIterator    _secondIterator;
     taValueItinerary*  _pValue;
+    bool               _preferFirst;
 
     CMergingNode(TFirstIterator it1, TSecondIterator it2, taValueItinerary* value)
-    : _firstIterator(it1), _secondIterator(it2), _pValue(value) {}
+    : _firstIterator(it1), _secondIterator(it2), _pValue(value), _preferFirst(true) {}
+
+        CMergingNode(TFirstIterator it1, TSecondIterator it2, taValueItinerary* value, bool preferFirst)
+    : _firstIterator(it1), _secondIterator(it2), _pValue(value), _preferFirst(preferFirst) {}
 
     // copy constructor
-    CMergingNode(const CMergingNode& other): _firstIterator(other._firstIterator), _secondIterator(other._secondIterator), _pValue(other._pValue) {}
+    CMergingNode(const CMergingNode& other) :
+      _firstIterator(other._firstIterator),
+      _secondIterator(other._secondIterator),
+      _pValue(_pValue),
+      _preferFirst(other._preferFirst) {}
   };
 }
 

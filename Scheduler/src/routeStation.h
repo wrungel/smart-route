@@ -8,8 +8,9 @@
 namespace Scheduler
 {
   //! class representing a station on a general route .. which is possibly combined from multiple contracts
-  struct CRouteStation
+  class CRouteStation
   {
+  public:
     //! the contract is in database but not loaded into scheduler
     static const TContractIndex KUnloadedContract = -1;
     //! route station without contract
@@ -37,13 +38,15 @@ namespace Scheduler
          return &((*pContracts)[_contractIndex]);
     }
 
-    private:
-    static bool IsContractIndexValid(TContractIndex aIndex) { return aIndex >=0 && pContracts && static_cast<size_t>(aIndex) < pContracts->size();}
+  private:
+    static bool IsContractIndexValid(TContractIndex aIndex)
+     { return aIndex >=0 && pContracts && static_cast<size_t>(aIndex) < pContracts->size(); }
  };
 
   //! class representing a station on a route specific for a single truck
-  struct CTruckRouteStation : public CRouteStation
+  class CTruckRouteStation : public CRouteStation
   {
+  public:
     //! capacity after visiting  this station
     CLoadAmmount _remainingTruckCapacity;
 
@@ -53,6 +56,13 @@ namespace Scheduler
     CTruckRouteStation()
     :
      CRouteStation(),
+     _remainingTruckCapacity(),
+     _plannedTimePeriod(DefaultTimePeriod())
+    {}
+
+    CTruckRouteStation(const CRouteStation& aRouteStation)
+    :
+     CRouteStation(aRouteStation._contractIndex, aRouteStation._shipmentStation),
      _remainingTruckCapacity(),
      _plannedTimePeriod(DefaultTimePeriod())
     {}
