@@ -7,7 +7,6 @@
 
 namespace Scheduler
 {
-
   //! class representing a route of a concrete truck
   class CTruckRoute : public CItinerary<CTruckRouteStation>
   {
